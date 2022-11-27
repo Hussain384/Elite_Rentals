@@ -26,17 +26,19 @@ function SignUp({navigation}) {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.greeting}>Hello!</Text>
+      <Text style={styles.info}>Register your self</Text>
       <View style={styles.signUpForm}>
         <Text style={styles.formTitle}>Signup</Text>
         <View style={styles.dashLine} />
         <View style={styles.outCont}>
           <View style={styles.inputCont}>
-            <IconEmail
+            {/* <IconEmail
               style={styles.iconStyle}
               name="mail"
               size={20}
               color="blue"
-            />
+            /> */}
             <TextInput
               style={styles.input}
               placeholder="Email Address"
