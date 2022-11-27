@@ -1,117 +1,160 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
-import type {Node} from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+function SignUp({navigation}) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
 
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+  function SubmitEnteredData() {
+    console.log(
+      'You tapped the button!',
+      '>>Email:',
+      {email},
+      '>>Password:',
+      {password},
+      '>>Confirm Password:',
+      {confirmPass},
+    );
+  }
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.container}>
+      <View style={styles.signUpForm}>
+        <Text style={styles.formTitle}>Signup</Text>
+        <View style={styles.dashLine} />
+        <View style={styles.outCont}>
+          <View style={styles.inputCont}>
+            <IconEmail
+              style={styles.iconStyle}
+              name="mail"
+              size={20}
+              color="blue"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Email Address"
+              value={email}
+              onChangeText={setEmail}
+              placeholderTextColor="#CDCDCD"
+            />
+          </View>
+          <View style={styles.inputCont}>
+            <IconPassword
+              style={styles.iconStyle}
+              name="eye-off"
+              size={20}
+              color="blue"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              placeholderTextColor="#CDCDCD"
+              secureTextEntry={true}
+            />
+          </View>
+
+          <View style={styles.inputCont}>
+            <IconPassword
+              style={styles.iconStyle}
+              name="eye-off"
+              size={20}
+              color="blue"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              value={confirmPass}
+              onChangeText={setConfirmPass}
+              secureTextEntry={true}
+              placeholderTextColor="#CDCDCD"
+            />
+          </View>
+        </View>
+        <TouchableOpacity
+          style={styles.submitView}
+          onPress={() => SubmitEnteredData()}>
+          <Text style={styles.submitText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    backgroundColor: '#DFF8FF',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 40,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
+  formTitle: {
+    color: '#000',
+    fontSize: 30,
     fontWeight: '400',
   },
-  highlight: {
+  dashLine: {
+    height: 5,
+    width: 93,
+    backgroundColor: '#54CFEF',
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  signUpForm: {
+    backgroundColor: '#fff',
+    borderRadius: 50,
+    padding: 20,
+  },
+  outCont: {
+    marginBottom: 20,
+  },
+  inputCont: {
+    marginTop: 20,
+    marginBottom: 20,
+    flexDirection: 'row',
+    borderBottomWidth: 5,
+    borderBottomColor: '#E6E6E6',
+  },
+  input: {
+    width: '90%',
+    height: '100%',
+    color: '#000',
+  },
+  iconStyle: {
+    alignSelf: 'center',
+    width: '10%',
+  },
+  submitView: {
+    backgroundColor: '#3BC8ED',
+    height: '12%',
+    width: '40%',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 92,
+    bottom: -25,
+  },
+  submitText: {
+    color: '#fff',
+    fontSize: 15,
     fontWeight: '700',
+  },
+  forgetPassword: {
+    color: '#90DFF4',
+    fontSize: 11,
+  },
+  forgetPasswordView: {
+    alignSelf: 'flex-end',
   },
 });
 
-export default App;
+export default SignUp;
