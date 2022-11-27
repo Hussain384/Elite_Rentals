@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import IconEmail from 'react-native-vector-icons/Foundation';
+import IconPassword from 'react-native-vector-icons/Ionicons';
+
 function SignUp({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,16 +32,18 @@ function SignUp({navigation}) {
       <Text style={styles.greeting}>Hello!</Text>
       <Text style={styles.info}>Register your self</Text>
       <View style={styles.signUpForm}>
-        <Text style={styles.formTitle}>Signup</Text>
-        <View style={styles.dashLine} />
+        <View style={styles.formTitleView}>
+          <Text style={styles.formTitle}>Signup</Text>
+          <View style={styles.dashLine} />
+        </View>
         <View style={styles.outCont}>
           <View style={styles.inputCont}>
-            {/* <IconEmail
+            <IconEmail
               style={styles.iconStyle}
               name="mail"
               size={20}
               color="blue"
-            /> */}
+            />
             <TextInput
               style={styles.input}
               placeholder="Email Address"
@@ -48,12 +53,12 @@ function SignUp({navigation}) {
             />
           </View>
           <View style={styles.inputCont}>
-            {/* <IconPassword
+            <IconPassword
               style={styles.iconStyle}
               name="eye-off"
               size={20}
               color="blue"
-            /> */}
+            />
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -65,12 +70,12 @@ function SignUp({navigation}) {
           </View>
 
           <View style={styles.inputCont}>
-            {/* <IconPassword
+            <IconPassword
               style={styles.iconStyle}
               name="eye-off"
               size={20}
               color="blue"
-            /> */}
+            />
             <TextInput
               style={styles.input}
               placeholder="Confirm Password"
@@ -87,6 +92,9 @@ function SignUp({navigation}) {
           <Text style={styles.submitText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.signInButton}>
+        <Text style={styles.signInButtonText}>SIGN IN</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -97,6 +105,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 40,
+  },
+  greeting: {
+    alignSelf: 'center',
+    color: '#20ACF2',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  info: {
+    alignSelf: 'center',
+    color: '#20ACF2',
+    marginBottom: 20,
+  },
+
+  formTitleView: {
+    alignItems: 'flex-end',
   },
   formTitle: {
     color: '#000',
@@ -113,10 +136,12 @@ const styles = StyleSheet.create({
   signUpForm: {
     backgroundColor: '#fff',
     borderRadius: 50,
-    padding: 20,
+    borderTopLeftRadius: 200,
+    padding: 15,
   },
   outCont: {
     marginBottom: 20,
+    marginTop: 20,
   },
   inputCont: {
     marginTop: 20,
@@ -156,6 +181,15 @@ const styles = StyleSheet.create({
   },
   forgetPasswordView: {
     alignSelf: 'flex-end',
+  },
+  signInButtonText: {
+    color: '#57D0EF',
+    fontSize: 11,
+    fontWeight: 'bold',
+  },
+  signInButton: {
+    alignSelf: 'center',
+    marginTop: 45,
   },
 });
 
