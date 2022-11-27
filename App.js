@@ -46,12 +46,12 @@ function SignUp({navigation}) {
             />
           </View>
           <View style={styles.inputCont}>
-            <IconPassword
+            {/* <IconPassword
               style={styles.iconStyle}
               name="eye-off"
               size={20}
               color="blue"
-            />
+            /> */}
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -63,12 +63,12 @@ function SignUp({navigation}) {
           </View>
 
           <View style={styles.inputCont}>
-            <IconPassword
+            {/* <IconPassword
               style={styles.iconStyle}
               name="eye-off"
               size={20}
               color="blue"
-            />
+            /> */}
             <TextInput
               style={styles.input}
               placeholder="Confirm Password"
