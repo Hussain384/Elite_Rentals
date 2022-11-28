@@ -36,13 +36,13 @@ function SignUp({navigation}) {
           <Text style={styles.formTitle}>Signup</Text>
           <View style={styles.dashLine} />
         </View>
-        <View style={styles.outCont}>
-          <View style={styles.inputCont}>
+        <View style={styles.inputCont}>
+          <View style={styles.inputField}>
             <IconEmail
               style={styles.iconStyle}
               name="mail"
-              size={20}
-              color="blue"
+              size={22}
+              color="#38C7ED"
             />
             <TextInput
               style={styles.input}
@@ -52,12 +52,12 @@ function SignUp({navigation}) {
               placeholderTextColor="#CDCDCD"
             />
           </View>
-          <View style={styles.inputCont}>
+          <View style={styles.inputField}>
             <IconPassword
               style={styles.iconStyle}
               name="eye-off"
               size={20}
-              color="blue"
+              color="#38C7ED"
             />
             <TextInput
               style={styles.input}
@@ -69,12 +69,12 @@ function SignUp({navigation}) {
             />
           </View>
 
-          <View style={styles.inputCont}>
+          <View style={styles.inputField}>
             <IconPassword
               style={styles.iconStyle}
               name="eye-off"
               size={20}
-              color="blue"
+              color="#38C7ED"
             />
             <TextInput
               style={styles.input}
@@ -87,9 +87,9 @@ function SignUp({navigation}) {
           </View>
         </View>
         <TouchableOpacity
-          style={styles.submitView}
+          style={styles.submitButtonView}
           onPress={() => SubmitEnteredData()}>
-          <Text style={styles.submitText}>Sign Up</Text>
+          <Text style={styles.submitButtonText}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.signInButton}>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   greeting: {
     alignSelf: 'center',
     color: '#20ACF2',
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: 'bold',
   },
   info: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   formTitle: {
     color: '#000',
     fontSize: 30,
-    fontWeight: '400',
+    fontWeight: '450',
   },
   dashLine: {
     height: 5,
@@ -136,55 +136,47 @@ const styles = StyleSheet.create({
   signUpForm: {
     backgroundColor: '#fff',
     borderRadius: 50,
-    borderTopLeftRadius: 200,
-    padding: 15,
-  },
-  outCont: {
-    marginBottom: 20,
-    marginTop: 20,
+    borderTopLeftRadius: 180,
+    padding: 30,
   },
   inputCont: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginVertical: 20,
+  },
+  inputField: {
     flexDirection: 'row',
     borderBottomWidth: 5,
     borderBottomColor: '#E6E6E6',
+    marginBottom: 15,
   },
   input: {
     width: '90%',
     height: '100%',
     color: '#000',
+    fontSize: 15,
   },
   iconStyle: {
     alignSelf: 'center',
     width: '10%',
   },
-  submitView: {
+  submitButtonView: {
     backgroundColor: '#3BC8ED',
-    height: '12%',
-    width: '40%',
+    height: 45,
+    width: 110,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    left: 92,
-    bottom: -25,
+    left: 88,
+    bottom: -20,
   },
-  submitText: {
+  submitButtonText: {
     color: '#fff',
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  forgetPassword: {
-    color: '#90DFF4',
-    fontSize: 11,
-  },
-  forgetPasswordView: {
-    alignSelf: 'flex-end',
+    fontSize: 16,
+    fontWeight: '800',
   },
   signInButtonText: {
     color: '#57D0EF',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   signInButton: {
