@@ -1,99 +1,51 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import IconEmail from 'react-native-vector-icons/Foundation';
-import IconPassword from 'react-native-vector-icons/Ionicons';
+import {StyleSheet, View} from 'react-native';
 import Greeting from '../components/Greeting';
+import InputFormTitle from '../components/InputFormTitle';
+import SubmitButton from '../components/SubmitButton';
+import ChangeScreenButton from '../components/ChangeScreenButton';
+import InputFieldWithIcon from '../components/InputFieldWIthIcon';
 
 function SignUp({navigation}) {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
-  function SubmitEnteredData() {
-    console.log(
-      'You tapped the button!',
-      '>>Email:',
-      {email},
-      '>>Password:',
-      {password},
-      '>>Confirm Password:',
-      {confirmPass},
-    );
-  }
+
   return (
     <View style={styles.container}>
-      {/* <<Text style={styles.greeting}>Hello!</Text>
-      <Text style={styles.info}>Register your self</Text>> */}
-      <Greeting />
+      <Greeting type="signUp" />
       <View style={styles.signUpForm}>
-        <View style={styles.formTitleView}>
-          <Text style={styles.formTitle}>Signup</Text>
-          <View style={styles.dashLine} />
-        </View>
+        <InputFormTitle title="SignUp" />
         <View style={styles.inputCont}>
-          <View style={styles.inputField}>
-            <IconEmail
-              style={styles.iconStyle}
-              name="mail"
-              size={22}
-              color="#38C7ED"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email Address"
-              value={email}
-              onChangeText={setEmail}
-              placeholderTextColor="#CDCDCD"
-            />
-          </View>
-          <View style={styles.inputField}>
-            <IconPassword
-              style={styles.iconStyle}
-              name="eye-off"
-              size={20}
-              color="#38C7ED"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              placeholderTextColor="#CDCDCD"
-              secureTextEntry={true}
-            />
-          </View>
-
-          <View style={styles.inputField}>
-            <IconPassword
-              style={styles.iconStyle}
-              name="eye-off"
-              size={20}
-              color="#38C7ED"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              value={confirmPass}
-              onChangeText={setConfirmPass}
-              secureTextEntry={true}
-              placeholderTextColor="#CDCDCD"
-            />
-          </View>
+          <InputFieldWithIcon
+            type="Name"
+            iconType="Foundation"
+            state={name}
+            setState={setName}
+          />
+          <InputFieldWithIcon
+            type="Email"
+            iconType="Foundation"
+            state={email}
+            setState={setEmail}
+          />
+          <InputFieldWithIcon
+            type="Password"
+            iconType="Ionicons"
+            state={password}
+            setState={setPassword}
+          />
+          <InputFieldWithIcon
+            type="Confirm Password"
+            iconType="Ionicons"
+            state={confirmPass}
+            setState={setConfirmPass}
+          />
         </View>
-        <TouchableOpacity
-          style={styles.submitButtonView}
-          onPress={() => SubmitEnteredData()}>
-          <Text style={styles.submitButtonText}>SIGN UP</Text>
-        </TouchableOpacity>
+        <SubmitButton name="SIGN UP" />
       </View>
-      <TouchableOpacity style={styles.signInButton}>
-        <Text style={styles.signInButtonText}>SIGN IN</Text>
-      </TouchableOpacity>
+      <ChangeScreenButton name="SIGN IN" />
     </View>
   );
 }
@@ -115,21 +67,6 @@ const styles = StyleSheet.create({
     color: '#20ACF2',
     marginBottom: 20,
   },
-  formTitleView: {
-    alignItems: 'flex-end',
-  },
-  formTitle: {
-    color: '#000',
-    fontSize: 30,
-    fontWeight: '450',
-  },
-  dashLine: {
-    height: 5,
-    width: 93,
-    backgroundColor: '#54CFEF',
-    borderRadius: 5,
-    marginVertical: 10,
-  },
   signUpForm: {
     backgroundColor: '#fff',
     borderRadius: 50,
@@ -138,47 +75,6 @@ const styles = StyleSheet.create({
   },
   inputCont: {
     marginVertical: 20,
-  },
-  inputField: {
-    flexDirection: 'row',
-    borderBottomWidth: 5,
-    borderBottomColor: '#E6E6E6',
-    marginBottom: 15,
-  },
-  input: {
-    width: '90%',
-    height: '100%',
-    color: '#000',
-    fontSize: 15,
-  },
-  iconStyle: {
-    alignSelf: 'center',
-    width: '10%',
-  },
-  submitButtonView: {
-    backgroundColor: '#3BC8ED',
-    height: 45,
-    width: 110,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    left: 88,
-    bottom: -20,
-  },
-  submitButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '800',
-  },
-  signInButtonText: {
-    color: '#57D0EF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  signInButton: {
-    alignSelf: 'center',
-    marginTop: 45,
   },
 });
 export default SignUp;
