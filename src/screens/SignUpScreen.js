@@ -14,7 +14,7 @@ function SignUp({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Greeting type="signUp" />
+      <Greeting greet="Hello!" discription="Regiter your self " />
       <View style={styles.signUpForm}>
         <InputFormTitle title="SignUp" />
         <View style={styles.inputCont}>
