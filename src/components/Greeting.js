@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-function Greeting() {
+function Greeting({type}) {
   return (
     <View>
       <Text style={styles.greeting}>Hello!</Text>
