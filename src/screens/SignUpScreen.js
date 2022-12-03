@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Greeting from '../components/Greeting';
-import InputFormTitle from '../components/InputFormTitle';
-import SubmitButton from '../components/SubmitButton';
-import ChangeScreenButton from '../components/ChangeScreenButton';
-import InputFieldWithIcon from '../components/InputFieldWIthIcon';
+import {
+  Greeting,
+  InputFieldWithIcon,
+  InputFormTitle,
+  SubmitButton,
+  ChangeScreenButton,
+} from '../components';
 
 function SignUp({navigation}) {
   const [name, setName] = useState('');
@@ -45,7 +47,7 @@ function SignUp({navigation}) {
         </View>
         <SubmitButton name="SIGN UP" />
       </View>
-      <ChangeScreenButton name="SIGN IN" />
+      <ChangeScreenButton name="SIGN IN" changeTo="SignIn" />
     </View>
   );
 }

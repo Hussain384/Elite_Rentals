@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Greeting from '../components/Greeting';
-import InputFormTitle from '../components/InputFormTitle';
-import SubmitButton from '../components/SubmitButton';
-import ChangeScreenButton from '../components/ChangeScreenButton';
-import InputFieldWithIcon from '../components/InputFieldWIthIcon';
+import {
+  Greeting,
+  InputFieldWithIcon,
+  InputFormTitle,
+  SubmitButton,
+  ChangeScreenButton,
+} from '../components';
 
 function SignIn({navigation}) {
   const [email, setEmail] = useState('');
@@ -31,7 +33,7 @@ function SignIn({navigation}) {
         </View>
         <SubmitButton name="SIGN IN" />
       </View>
-      <ChangeScreenButton name="SIGN UP" />
+      <ChangeScreenButton name="SIGN UP" changeTo="SignUp" />
     </View>
   );
 }
