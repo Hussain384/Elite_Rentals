@@ -12,7 +12,7 @@ function SignIn({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Greeting type="signIn" />
+      <Greeting greet="Welcome!" discription="Login to your Account" />
       <View style={styles.signUpForm}>
         <InputFormTitle title="SignIn" />
         <View style={styles.inputCont}>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   signUpForm: {
     backgroundColor: '#fff',
     borderRadius: 50,
-    borderTopLeftRadius: 180,
+    borderTopRightRadius: 180,
     padding: 30,
   },
   inputCont: {

@@ -1,22 +1,19 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import SignIn from '../screens/SignInScreen';
 
-function SubmitButton({name}) {
+function ChangeButton({name}, {navigation}) {
   return (
     <View>
       <TouchableOpacity
         style={styles.buttonView}
-        onPress={() => {
-          SignIn;
-        }}>
+        onPress={() => navigation.navigate({name})}>
         <Text style={styles.buttonText}>{name}</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-export default SubmitButton;
+export default ChangeButton;
 
 const styles = StyleSheet.create({
   buttonText: {

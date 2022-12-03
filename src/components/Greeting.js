@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-function Greeting({type}) {
+function Greeting({greet, discription}) {
   return (
     <View>
-      <Text style={styles.greeting}>Hello!</Text>
-      <Text style={styles.info}>Register your self</Text>
+      <Text style={styles.greeting}>{greet}</Text>
+      <Text style={styles.discriptionStyle}>{discription}</Text>
     </View>
   );
 }
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
   },
-  info: {
+  discriptionStyle: {
     alignSelf: 'center',
     color: '#20ACF2',
     marginBottom: 20,
