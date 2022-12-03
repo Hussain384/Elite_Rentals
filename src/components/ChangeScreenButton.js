@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-function ChangeButton({name}, {navigation}) {
+function ChangeButton({name, changeTo}, {navigation}) {
   return (
     <View>
       <TouchableOpacity
         style={styles.buttonView}
-        onPress={() => navigation.navigate({name})}>
+        onPress={() => navigation.navigate({changeTo})}>
         <Text style={styles.buttonText}>{name}</Text>
       </TouchableOpacity>
     </View>
