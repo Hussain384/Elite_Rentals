@@ -12,19 +12,13 @@ function HomeScreen({navigation}) {
     <View style={styles.container}>
       <View style={styles.headerView}>
         <View style={styles.navigatorView}>
-          <MenuIcon
-            name="menu"
-            size={35}
-            color="#35C6ED"
-            style={styles.MenuIconStyle}
-          />
+          <MenuIcon name="menu" size={35} color="#35C6ED" />
         </View>
         <View style={styles.profileImageView}>
           <ProfileIcon
             name="account-circle-outline"
             size={45}
             color="#35C6ED"
-            style={styles.profileImageStyle}
           />
         </View>
       </View>
@@ -41,31 +35,11 @@ function HomeScreen({navigation}) {
         />
       </View>
       <View style={styles.footerView}>
-        <HomeIcon
-          name="home"
-          size={30}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
-        <HeartIcon
-          name="heart"
-          size={30}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
+        <HomeIcon name="home" size={30} color="#35C6ED" />
+        <HeartIcon name="heart" size={30} color="#35C6ED" />
 
-        <SearchIcon
-          name="search"
-          size={30}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
-        <ProfileIcon
-          name="account-circle-outline"
-          size={35}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
+        <SearchIcon name="search" size={30} color="#35C6ED" />
+        <ProfileIcon name="account-circle-outline" size={35} color="#35C6ED" />
       </View>
     </View>
   );
@@ -104,7 +78,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  profileImageStyle: {},
   main: {
     height: 590,
   },
