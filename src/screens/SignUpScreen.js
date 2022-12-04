@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import {
   Greeting,
   InputFieldWithIcon,
@@ -7,12 +7,60 @@ import {
   SubmitButton,
   ChangeScreenButton,
 } from '../components';
+import auth from '@react-native-firebase/auth';
+import {isEmpty} from 'lodash';
 
 function SignUp({navigation}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  function CheckValidity(valid) {
+    if (isEmpty(name)) {
+      Alert.alert('Error', 'Name cannot be empty');
+      return false;
+    } else if (isEmpty(email)) {
+      Alert.alert('Error', 'Email cannot be empty');
+      return false;
+    } else if (isEmpty(password)) {
+      Alert.alert('Error', 'password cannot be empty');
+      return false;
+    } else if (isEmpty(confirmPassword)) {
+      Alert.alert('Error', 'confirm password cannot be empty');
+      return false;
+    } else if (password !== confirmPassword) {
+      Alert.alert('Error', 'password and confirmPassword should be same');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const CreateAccount = () => {
+    if (CheckValidity) {
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(response => {
+          console.log('User account created!', response);
+          navigation.goBack();
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            Alert.alert('Error', 'That email address is already in use!');
+          }
+          if (error.code === 'auth/weak-password') {
+            Alert.alert(
+              'Error',
+              'The password should be atleast 6 charachters',
+            );
+          }
+          if (error.code === 'auth/invalid-email') {
+            Alert.alert('Error', 'That email address is invalid!');
+          }
+        });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -41,13 +89,17 @@ function SignUp({navigation}) {
           <InputFieldWithIcon
             type="Confirm Password"
             iconType="Ionicons"
-            state={confirmPass}
-            setState={setConfirmPass}
+            state={confirmPassword}
+            setState={setConfirmPassword}
           />
         </View>
-        <SubmitButton name="SIGN UP" />
+        <SubmitButton type="SIGN UP" onPress={CreateAccount} />
       </View>
-      <ChangeScreenButton name="SIGN IN" changeTo="SignIn" />
+      <ChangeScreenButton
+        name="SIGN IN"
+        changeTo="SignIn"
+        navigation={navigation}
+      />
     </View>
   );
 }

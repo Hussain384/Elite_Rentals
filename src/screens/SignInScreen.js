@@ -7,10 +7,31 @@ import {
   SubmitButton,
   ChangeScreenButton,
 } from '../components';
+import auth from '@react-native-firebase/auth';
 
 function SignIn({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const LogInAccount = async () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        navigation.navigate('Home');
+        console.log('User account signed in!');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -31,9 +52,13 @@ function SignIn({navigation}) {
             setState={setPassword}
           />
         </View>
-        <SubmitButton name="SIGN IN" />
+        <SubmitButton type="SIGN UP" onPress={LogInAccount} />
       </View>
-      <ChangeScreenButton name="SIGN UP" changeTo="SignUp" />
+      <ChangeScreenButton
+        name="SIGN UP"
+        changeTo="SignUp"
+        navigation={navigation}
+      />
     </View>
   );
 }

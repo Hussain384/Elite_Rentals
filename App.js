@@ -10,7 +10,7 @@ function App() {
   return (
     // <AuthNavigation />
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignIn">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="SignUp"
           component={SignUpScreen}
@@ -24,7 +24,7 @@ function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          // options={{headerShown: false}}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
