@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "1055422914956",
+    "project_id": "authproject-e959d",
+    "storage_bucket": "authproject-e959d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055422914956:android:a9311b1ce4c0ba003fb6a9",
+        "android_client_info": {
+          "package_name": "com.authproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGMdG2yg4LiCURNGj0aZ_yB2vN5TrlEdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055422914956:android:64a7d6e0053b96543fb6a9",
+        "android_client_info": {
+          "package_name": "com.elite_rentals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGMdG2yg4LiCURNGj0aZ_yB2vN5TrlEdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055422914956:android:14fb21e161941a243fb6a9",
+        "android_client_info": {
+          "package_name": "com.imagestoringapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGMdG2yg4LiCURNGj0aZ_yB2vN5TrlEdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055422914956:android:701db292c95c90043fb6a9",
+        "android_client_info": {
+          "package_name": "com.socioapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGMdG2yg4LiCURNGj0aZ_yB2vN5TrlEdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055422914956-jngd19r4llnudtc0v2jlp090rp6sashm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -40,6 +40,9 @@ function InputFieldWithIcon({iconType, type, state, setState}) {
         }
         value={state}
         onChangeText={setState}
+        // secureTextEntry={
+        //   type === 'Password' ? true : type === 'Confirm Password' && false
+        // }
         placeholderTextColor="#CDCDCD"
       />
     </View>
