@@ -1,13 +1,56 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import MenuIcon from 'react-native-vector-icons/Entypo';
-import HomeIcon from 'react-native-vector-icons/Octicons';
-import HeartIcon from 'react-native-vector-icons/Octicons';
-import SearchIcon from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AddIcon from 'react-native-vector-icons/Feather';
+import AddIcon from 'react-native-vector-icons/AntDesign';
+import Footer from '../components/Footer';
+import uuid from 'react-uuid';
+
+const DATA = [
+  {
+    id: uuid(),
+    title: 'First Item',
+    image: 'Images Here',
+    discription: 'more information about post',
+    ratings: ' here are ratings that are given by administration',
+    timeDuration: 'For how much time it is availible ',
+  },
+  {
+    id: uuid(),
+    title: 'Second Item',
+    image: 'Images Here',
+    discription: 'more information about post',
+    ratings: ' here are ratings that are given by administration',
+    timeDuration: 'For how much time it is availible ',
+  },
+  {
+    id: uuid(),
+    title: 'Third Item',
+    image: 'Images Here',
+    discription: 'more information about post',
+    ratings: ' here are ratings that are given by administration',
+    timeDuration: 'For how much time it is availible ',
+  },
+];
+
+const Item = ({title, image, discription, ratings, timeDuration}) => (
+  <View style={styles.item}>
+    {/* <Text style={styles.postImageStyle}>{image}</Text> */}
+    <Text style={styles.postTitleStyle}>{title}</Text>
+    {/* <Text style={styles.postdiscriptionStyle}>{discription}</Text>
+    <Text style={styles.postRatingsStyle}>{ratings}</Text>
+    <Text style={styles.postTimeDurationStyle}>{timeDuration}</Text> */}
+  </View>
+);
 
 function HomeScreen({navigation}) {
+  const renderItem = ({item}) => (
+    // <Item image={item.image} />
+    <Item title={item.title} />
+    // <Item title={item.discription} />
+    // <Item title={item.ratings} />
+    // <Item title={item.timeDuration} />
+  );
   return (
     <View style={styles.container}>
       <View style={styles.headerView}>
@@ -19,54 +62,35 @@ function HomeScreen({navigation}) {
             style={styles.MenuIconStyle}
           />
         </View>
-        <View style={styles.profileImageView}>
+        <TouchableOpacity
+          style={styles.profileImageView}
+          onPress={() => navigation.navigate('SignIn')}>
           <ProfileIcon
             name="account-circle-outline"
             size={45}
             color="#35C6ED"
             style={styles.profileImageStyle}
           />
-        </View>
+        </TouchableOpacity>
       </View>
-      <View style={styles.main}>
+      <View style={styles.mainBody}>
         <View style={styles.accountTitle}>
           <Text style={styles.accountTitleName}>Hi Mr. Kiyaani</Text>
           <Text style={styles.accountTitleDisc}>Hope You are Doing well</Text>
         </View>
+        <FlatList
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+        />
         <AddIcon
-          name="plus-circle"
-          size={80}
+          name="pluscircle"
+          size={60}
           color="#35C6ED"
           style={styles.AddIconStyle}
         />
       </View>
-      <View style={styles.footerView}>
-        <HomeIcon
-          name="home"
-          size={30}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
-        <HeartIcon
-          name="heart"
-          size={30}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
-
-        <SearchIcon
-          name="search"
-          size={30}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
-        <ProfileIcon
-          name="account-circle-outline"
-          size={35}
-          color="#35C6ED"
-          style={styles.MenuIconStyle}
-        />
-      </View>
+      <Footer />
     </View>
   );
 }
@@ -104,25 +128,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  profileImageStyle: {},
-  main: {
+  mainBody: {
     height: 590,
   },
   accountTitle: {
     left: 30,
     width: '100%',
-  },
-  footerView: {
-    height: 60,
-    width: '100%',
-    backgroundColor: '#fff',
-    borderRadius: 30,
-    flexDirection: 'row',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    position: 'absolute',
-    bottom: 0,
   },
   accountTitleName: {
     fontSize: 30,
@@ -135,7 +146,18 @@ const styles = StyleSheet.create({
   },
   AddIconStyle: {
     position: 'absolute',
-    right: 10,
-    bottom: 10,
+    // backgroundColor: '#',
+    borderRadius: 50,
+    right: 0,
+    bottom: 15,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  postTitleStyle: {
+    fontSize: 32,
   },
 });
