@@ -5,7 +5,7 @@ import HomeIcon from 'react-native-vector-icons/Octicons';
 import HeartIcon from 'react-native-vector-icons/Octicons';
 import SearchIcon from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AddIcon from 'react-native-vector-icons/Feather';
+import AddIcon from 'react-native-vector-icons/AntDesign';
 
 function HomeScreen({navigation}) {
   return (
@@ -27,19 +27,21 @@ function HomeScreen({navigation}) {
           <Text style={styles.accountTitleName}>Hi Mr. Kiyaani</Text>
           <Text style={styles.accountTitleDisc}>Hope You are Doing well</Text>
         </View>
-        <AddIcon
-          name="plus-circle"
-          size={80}
-          color="#35C6ED"
-          style={styles.AddIconStyle}
-        />
       </View>
       <View style={styles.footerView}>
-        <HomeIcon name="home" size={30} color="#35C6ED" />
-        <HeartIcon name="heart" size={30} color="#35C6ED" />
+        <HomeIcon name="home" size={25} color="#35C6ED" />
+        <HeartIcon
+          name="heart"
+          size={25}
+          color="#35C6ED"
+          style={styles.HeartIconStyle}
+        />
+        <View style={styles.AddIconStyle}>
+          <AddIcon name="pluscircleo" size={60} color="#35C6ED" />
+        </View>
 
-        <SearchIcon name="search" size={30} color="#35C6ED" />
-        <ProfileIcon name="account-circle-outline" size={35} color="#35C6ED" />
+        <SearchIcon name="search" size={25} color="#35C6ED" />
+        <ProfileIcon name="account-circle-outline" size={30} color="#35C6ED" />
       </View>
     </View>
   );
@@ -87,11 +89,9 @@ const styles = StyleSheet.create({
   },
   footerView: {
     height: 60,
-    width: '100%',
+    width: 370,
     backgroundColor: '#fff',
-    borderRadius: 30,
     flexDirection: 'row',
-    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-around',
     position: 'absolute',
@@ -107,8 +107,15 @@ const styles = StyleSheet.create({
     color: '#1CAAF1',
   },
   AddIconStyle: {
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
+    alignSelf: 'center',
+    height: 70,
+    bottom: 30,
+    backgroundColor: '#fff',
+    borderWidth: 5,
+    borderRadius: 50,
+    borderColor: '#fff',
+  },
+  HeartIconStyle: {
+    // marginRight: 70,
   },
 });
