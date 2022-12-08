@@ -41,13 +41,16 @@ export default Footer;
 
 const styles = StyleSheet.create({
   footerView: {
-    height: 60,
-    width: 370,
+    height: 55,
+    width: 360,
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     position: 'absolute',
     bottom: 0,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    // borderRadius: 50,
   },
 });
