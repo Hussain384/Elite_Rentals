@@ -44,7 +44,7 @@ const Item = ({title, image, discription, ratings, timeDuration}) => (
   <View style={styles.item}>
     <Image
       source={image}
-      style={{width: '100%', height: 300, borderRadius: 10}}
+      style={{width: '100%', height: 300, borderRadius: 10, marginBottom: 5}}
     />
     <View style={styles.postInfo}>
       <View style={styles.titleAndRatingView}>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   AddIconStyle: {
     position: 'absolute',
-    backgroundColor: '#DFF8FF',
+    backgroundColor: '#fff',
     borderRadius: 50,
     right: 0,
     bottom: 15,
