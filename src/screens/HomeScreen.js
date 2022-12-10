@@ -103,7 +103,7 @@ function HomeScreen({navigation}) {
           <AddIcon name="plus" size={35} color="#fff" />
         </View>
       </View>
-      <Footer />
+      <Footer navigation={navigation} />
     </View>
   );
 }

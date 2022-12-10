@@ -2,7 +2,14 @@ import * as React from 'react';
 // import AuthNavigation from './routes/authNavigation';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SignInScreen, SignUpScreen, HomeScreen} from './src/screens';
+import {
+  SignInScreen,
+  SignUpScreen,
+  HomeScreen,
+  ProfileScreen,
+  SearchScreen,
+  WishlistScreen,
+} from './src/screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +31,21 @@ function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Wishlist"
+          component={WishlistScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
