@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import MenuIcon from 'react-native-vector-icons/MaterialIcons';
-import AddIcon from 'react-native-vector-icons/Entypo';
+import AddIcon from 'react-native-vector-icons/AntDesign';
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
 import Footer from '../components/Footer';
 import uuid from 'react-uuid';
@@ -99,9 +99,12 @@ function HomeScreen({navigation}) {
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
-        <View style={styles.AddIconStyle}>
-          <AddIcon name="plus" size={35} color="#fff" />
-        </View>
+        <AddIcon
+          name="pluscircle"
+          size={60}
+          color="#35C6ED"
+          style={styles.AddIconStyle}
+        />
       </View>
       <Footer navigation={navigation} />
     </View>
@@ -144,6 +147,7 @@ const styles = StyleSheet.create({
   },
   mainBody: {
     height: 620,
+    // backgroundColor: 'red',
   },
   accountTitleName: {
     fontSize: 18,
@@ -156,12 +160,8 @@ const styles = StyleSheet.create({
   },
   AddIconStyle: {
     position: 'absolute',
-    backgroundColor: '#35C6ED',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 60,
-    width: 60,
-    borderRadius: 30,
+    backgroundColor: '#fff',
+    borderRadius: 50,
     right: 0,
     bottom: 15,
   },
