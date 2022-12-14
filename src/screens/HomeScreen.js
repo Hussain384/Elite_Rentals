@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MenuIcon from 'react-native-vector-icons/MaterialIcons';
 import AddIcon from 'react-native-vector-icons/AntDesign';
+
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
 import Footer from '../components/Footer';
 import uuid from 'react-uuid';
