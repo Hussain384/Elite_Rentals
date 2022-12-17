@@ -101,7 +101,7 @@ function HomeScreen({navigation}) {
           keyExtractor={item => item.id}
         />
         <AddIcon
-          name="pluscircle"
+          name="plus-circle"
           size={60}
           color="#35C6ED"
           style={styles.AddIconStyle}
