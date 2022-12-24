@@ -99,11 +99,13 @@ function HomeScreen({navigation}) {
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
-        <View style={styles.AddIconStyle}>
+        <TouchableOpacity
+          style={styles.AddIconStyle}
+          onPress={() => navigation.navigate('AddListing')}>
           <AddIcon name="plus" size={35} color="#fff" />
-        </View>
+        </TouchableOpacity>
       </View>
-      <Footer />
+      {/* <Footer /> */}
     </View>
   );
 }
