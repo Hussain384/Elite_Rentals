@@ -15,7 +15,12 @@ export default InputFormTitle;
 const styles = StyleSheet.create({
   container: title => {
     return {
-      alignItems: title === 'SignUp' ? 'flex-end' : 'flex-start',
+      alignItems:
+        title === 'SignUp'
+          ? 'flex-end'
+          : title === 'SignIn'
+          ? 'flex-start'
+          : title === 'Listing Form' && 'center',
     };
   },
   formTitle: {
@@ -26,7 +31,12 @@ const styles = StyleSheet.create({
   dashLine: title => {
     return {
       height: 5,
-      width: title === 'SignUp' ? 93 : 90,
+      width:
+        title === 'SignUp'
+          ? 93
+          : title === 'SignIn'
+          ? 90
+          : title === 'Listing Form' && 170,
       backgroundColor: '#54CFEF',
       borderRadius: 5,
       marginVertical: 10,

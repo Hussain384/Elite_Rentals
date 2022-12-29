@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    left: 60,
+    left: '30%',
     bottom: -50,
   },
   submitButtonText: {
