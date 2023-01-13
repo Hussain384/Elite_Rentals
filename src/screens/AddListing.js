@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {SubmitButton} from '../components';
+import SegmentedControl from 'react-native-segmented-control-tab';
 
 export default function AddListingScreen({navigation}) {
   const [selectedForm, setSelectedForm] = useState(true);
@@ -18,23 +19,37 @@ export default function AddListingScreen({navigation}) {
   const [duration, setDuration] = useState('');
   return (
     <View style={styles.container}>
-      <View style={styles.changeFormButton}>
-        <TouchableOpacity
-          style={styles.rentingFormButton(selectedForm)}
-          onPress={() => setSelectedForm(true)}>
-          <Text style={styles.formButtonText}>Rent</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buyingFormButton(selectedForm)}
-          onPress={() => setSelectedForm(false)}>
-          <Text style={styles.formButtonText}>Buy</Text>
-        </TouchableOpacity>
-      </View>
+      <SegmentedControl
+        values={['Rent', 'Buy']}
+        selectedIndex={selectedForm ? 0 : 1}
+        onTabPress={index => setSelectedForm(index === 0)}
+        tabsContainerStyle={styles.changeFormButton}
+        tabTextStyle={styles.changeFormButtonText}
+
+        // tabsContainerStyle={{
+        //   marginVertical: 10,
+        //   alignSelf: 'center',
+        //   width: '90%',
+        //   height: 50,
+        // }}
+        // tabTextStyle={{
+        //   fontSize: 20,
+        //   fontWeight: 'bold',
+        // }}
+      />
       <View style={styles.formContainer}>
         <ScrollView>
-          <View style={{height: 100, width: '100%', backgroundColor: 'red'}}>
-            <Text>Select Property Type</Text>
-          </View>
+          {selectedForm && (
+            <View style={{height: 100, width: '100%', backgroundColor: 'red'}}>
+              <Text>Rent Form</Text>
+            </View>
+          )}
+          {!selectedForm && (
+            <View
+              style={{height: 100, width: '100%', backgroundColor: 'green'}}>
+              <Text>Buy Form</Text>
+            </View>
+          )}
         </ScrollView>
         <SubmitButton
           type="SUBMIT"
@@ -61,35 +76,12 @@ const styles = StyleSheet.create({
   changeFormButton: {
     marginVertical: 10,
     alignSelf: 'center',
-    height: 50,
     width: '90%',
-    borderRadius: 15,
-    flexDirection: 'row',
-    backgroundColor: '#6CDEFF',
+    height: 50,
   },
-  rentingFormButton: selectedForm => {
-    return {
-      width: '50%',
-      borderTopLeftRadius: 15,
-      borderBottomLeftRadius: 15,
-      height: '100%',
-      backgroundColor:
-        selectedForm === true ? '#20ACF2' : selectedForm === false && '#6CDEFF',
-      justifyContent: 'center',
-      alignItems: 'center',
-    };
-  },
-  buyingFormButton: selectedForm => {
-    return {
-      backgroundColor:
-        selectedForm === false ? '#20ACF2' : selectedForm === true && '#6CDEFF',
-      width: '50%',
-      borderTopRightRadius: 15,
-      borderBottomRightRadius: 15,
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    };
+  changeFormButtonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   formButtonText: {
     color: '#fff',
