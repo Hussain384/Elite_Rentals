@@ -52,7 +52,7 @@ function SignIn({navigation}) {
             setState={setPassword}
           />
         </View>
-        <SubmitButton type="SIGN UP" onPress={LogInAccount} />
+        <SubmitButton type="SIGN IN" onPress={LogInAccount} />
       </View>
       <ChangeScreenButton
         name="SIGN UP"

@@ -10,7 +10,6 @@ import {
 import MenuIcon from 'react-native-vector-icons/MaterialIcons';
 import AddIcon from 'react-native-vector-icons/Entypo';
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
-import Footer from '../components/Footer';
 import uuid from 'react-uuid';
 
 const DATA = [
@@ -105,7 +104,6 @@ function HomeScreen({navigation}) {
           <AddIcon name="plus" size={35} color="#fff" />
         </TouchableOpacity>
       </View>
-      {/* <Footer /> */}
     </View>
   );
 }
