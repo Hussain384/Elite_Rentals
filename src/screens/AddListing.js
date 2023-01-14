@@ -3,8 +3,8 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import {SubmitButton} from '../components';
 import SegmentedControl from 'react-native-segmented-control-tab';
@@ -17,6 +17,8 @@ export default function AddListingScreen({navigation}) {
   const [price, setPrice] = useState('');
   const [details, setDetails] = useState('');
   const [duration, setDuration] = useState('');
+  const [isSelected, setSelection] = useState(false);
+  const [propertySelectedValue, setPropertySelectedValue] = useState('');
   return (
     <View style={styles.container}>
       <SegmentedControl
@@ -25,23 +27,43 @@ export default function AddListingScreen({navigation}) {
         onTabPress={index => setSelectedForm(index === 0)}
         tabsContainerStyle={styles.changeFormButton}
         tabTextStyle={styles.changeFormButtonText}
-
-        // tabsContainerStyle={{
-        //   marginVertical: 10,
-        //   alignSelf: 'center',
-        //   width: '90%',
-        //   height: 50,
-        // }}
-        // tabTextStyle={{
-        //   fontSize: 20,
-        //   fontWeight: 'bold',
-        // }}
       />
       <View style={styles.formContainer}>
         <ScrollView>
           {selectedForm && (
-            <View style={{height: 100, width: '100%', backgroundColor: 'red'}}>
-              <Text>Rent Form</Text>
+            <View style={styles.formStyle}>
+              <View>
+                <Text>Type of property</Text>
+                <View style={styles.propertyTypeView}>
+                  <TouchableOpacity
+                    onPress={() => setPropertySelectedValue('house')}
+                    style={
+                      propertySelectedValue === 'house'
+                        ? styles.selectedButton
+                        : styles.unselectedButton
+                    }>
+                    <Text>House</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setPropertySelectedValue('sharedHouse')}
+                    style={
+                      propertySelectedValue === 'sharedHouse'
+                        ? styles.selectedButton
+                        : styles.unselectedButton
+                    }>
+                    <Text>Shared House</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setPropertySelectedValue('farmHouse')}
+                    style={
+                      propertySelectedValue === 'farmHouse'
+                        ? styles.selectedButton
+                        : styles.unselectedButton
+                    }>
+                    <Text>Farm House</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           )}
           {!selectedForm && (
@@ -87,5 +109,27 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 25,
+  },
+  formStyle: {
+    // height: 100,
+    width: '100%',
+    alignItems: 'center',
+  },
+  propertyTypeView: {
+    flexDirection: 'row',
+  },
+  selectedButton: {
+    backgroundColor: 'blue',
+    padding: 5,
+    margin: 5,
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  unselectedButton: {
+    backgroundColor: 'white',
+    padding: 5,
+    margin: 5,
+    borderWidth: 2,
+    borderRadius: 10,
   },
 });
