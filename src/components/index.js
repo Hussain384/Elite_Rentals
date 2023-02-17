@@ -2,7 +2,7 @@ import Greeting from './Greeting';
 import InputFormTitle from './InputFormTitle';
 import SubmitButton from './SubmitButton';
 import ChangeScreenButton from './ChangeScreenButton';
-import InputFieldWithIcon from './InputFieldWIthIcon';
+import InputFieldWithIcon from './InputFieldWithIcon';
 
 export {
   Greeting,
