@@ -5,7 +5,6 @@ function InputFormTitle({title}) {
   return (
     <View style={styles.container(title)}>
       <Text style={styles.formTitle}>{title}</Text>
-      <View style={styles.dashLine(title)} />
     </View>
   );
 }
@@ -27,19 +26,5 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 30,
     fontWeight: '450',
-  },
-  dashLine: title => {
-    return {
-      height: 5,
-      width:
-        title === 'SignUp'
-          ? 93
-          : title === 'SignIn'
-          ? 90
-          : title === 'Listing Form' && 170,
-      backgroundColor: '#54CFEF',
-      borderRadius: 5,
-      marginVertical: 10,
-    };
   },
 });

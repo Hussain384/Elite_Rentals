@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {
   Greeting,
-  InputFieldWithIcon,
+  InputField,
   InputFormTitle,
   SubmitButton,
   ChangeScreenButton,
 } from '../components';
+import BackIcon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import {isEmpty} from 'lodash';
 
@@ -42,6 +43,7 @@ function SignUp({navigation}) {
       auth()
         .createUserWithEmailAndPassword(email, password)
         .then(response => {
+          Alert.alert('User account created Successfully');
           console.log('User account created!', response);
           navigation.goBack();
         })
@@ -59,76 +61,99 @@ function SignUp({navigation}) {
             Alert.alert('Error', 'That email address is invalid!');
           }
         });
+      setName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
     }
   };
 
   return (
     <View style={styles.container}>
-      <Greeting greet="Hello!" discription="Regiter your self " />
-      <View style={styles.signUpForm}>
-        <InputFormTitle title="SignUp" />
-        <View style={styles.inputCont}>
-          <InputFieldWithIcon
-            type="Name"
-            iconType="Foundation"
-            state={name}
-            setState={setName}
-          />
-          <InputFieldWithIcon
-            type="Email"
-            iconType="Foundation"
-            state={email}
-            setState={setEmail}
-          />
-          <InputFieldWithIcon
-            type="Password"
-            iconType="Ionicons"
-            state={password}
-            setState={setPassword}
-          />
-          <InputFieldWithIcon
-            type="Confirm Password"
-            iconType="Ionicons"
-            state={confirmPassword}
-            setState={setConfirmPassword}
-          />
-        </View>
+      <View style={styles.backButtonView}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <BackIcon name="chevron-back" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.title}>
+        <Text style={styles.textSignIn}>Sign up</Text>
+        <Text style={styles.textWelcome}>Welcome</Text>
+      </View>
+      <View style={styles.inputCont}>
+        <InputField type="Name" state={name} setState={setName} />
+        <InputField type="Email" state={email} setState={setEmail} />
+        <InputField type="Password" state={password} setState={setPassword} />
+        <InputField
+          type="Confirm Password"
+          state={confirmPassword}
+          setState={setConfirmPassword}
+        />
+
         <SubmitButton type="SIGN UP" onPress={CreateAccount} />
       </View>
-      <ChangeScreenButton
-        name="SIGN IN"
-        changeTo="SignIn"
-        navigation={navigation}
-      />
+      <View style={styles.changeScreenView}>
+        <Text style={styles.changeScreenText}>
+          Already have an account?
+          <Text
+            style={styles.signUpLink}
+            onPress={() => navigation.navigate('SignIn')}>
+            Sign in
+          </Text>
+        </Text>
+      </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#DFF8FF',
+    backgroundColor: '#FFF',
     flex: 1,
+    padding: 20,
+  },
+  backButtonView: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#D9D9D9',
+    height: 36,
+    width: 36,
     justifyContent: 'center',
-    padding: 40,
+    alignItems: 'center',
+    marginBottom: 35,
   },
-  greeting: {
-    alignSelf: 'center',
-    color: '#20ACF2',
-    fontSize: 40,
+  title: {
+    marginBottom: 35,
+  },
+  textSignIn: {
+    fontFamily: 'Montserrat',
+    color: '#000',
     fontWeight: 'bold',
+    fontSize: 24,
   },
-  info: {
-    alignSelf: 'center',
-    color: '#20ACF2',
-    marginBottom: 20,
-  },
-  signUpForm: {
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    borderTopLeftRadius: 180,
-    padding: 30,
+  textWelcome: {
+    fontFamily: 'Montserrat',
+    fontWeight: 'bold',
+    color: '#808080',
+    fontSize: 13,
   },
   inputCont: {
-    marginVertical: 20,
+    flex: 0.5,
+  },
+  changeScreenView: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  changeScreenText: {
+    fontFamily: 'Montserrat',
+    fontWeight: '500',
+    fontSize: 14,
+  },
+  signUpLink: {
+    color: '#3DA7AE',
+    fontWeight: 'bold',
+    marginLeft: 5,
   },
 });
 export default SignUp;

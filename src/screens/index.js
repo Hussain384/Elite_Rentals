@@ -5,6 +5,7 @@ import SearchScreen from './Search';
 import ProfileScreen from './Profile';
 import WishListScreen from './WishList';
 import AddListingScreen from './AddListing';
+import OnbordingScreen from './OnbordingScreen';
 
 export {
   SignInScreen,
@@ -14,4 +15,5 @@ export {
   ProfileScreen,
   WishListScreen,
   AddListingScreen,
+  OnbordingScreen,
 };

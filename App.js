@@ -10,6 +10,7 @@ import {
   SearchScreen,
   WishListScreen,
   AddListingScreen,
+  OnbordingScreen,
 } from './src/screens';
 import Octicons from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -55,6 +56,28 @@ function TabScreen() {
     </Tab.Navigator>
   );
 }
+const OnbordingStack = createNativeStackNavigator();
+function OnbordingStackScreen() {
+  return (
+    <OnbordingStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <OnbordingStack.Screen
+        name="OnbordingScreen"
+        component={OnbordingScreen}
+      />
+      <OnbordingStack.Screen
+        name="SignUpFromOnbording"
+        component={SignUpStackScreen}
+      />
+      <OnbordingStack.Screen
+        name="SignInFromOnbording"
+        component={SignInStackScreen}
+      />
+    </OnbordingStack.Navigator>
+  );
+}
 const SignInStack = createNativeStackNavigator();
 function SignInStackScreen() {
   return (
@@ -64,6 +87,7 @@ function SignInStackScreen() {
       }}>
       <SignInStack.Screen name="SignInStack" component={SignInScreen} />
       <SignInStack.Screen name="SignUp" component={SignUpStackScreen} />
+      <SignInStack.Screen name="Authenticated" component={TabScreen} />
     </SignInStack.Navigator>
   );
 }
@@ -84,11 +108,17 @@ function App() {
   return (
     <NavigationContainer>
       <HomeStack.Navigator
+        initialRouteName="SignUp"
         screenOptions={{
           headerShown: false,
         }}>
+        <HomeStack.Screen
+          name="OnbordingStack"
+          component={OnbordingStackScreen}
+        />
         <HomeStack.Screen name="HomeStack" component={TabScreen} />
         <HomeStack.Screen name="SignIn" component={SignInStackScreen} />
+        <HomeStack.Screen name="SignUp" component={SignUpStackScreen} />
         <HomeStack.Screen name="AddListing" component={AddListingScreen} />
       </HomeStack.Navigator>
     </NavigationContainer>

@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
-import IconEmail from 'react-native-vector-icons/Foundation';
-import IconPassword from 'react-native-vector-icons/Ionicons';
+// import IconEmail from 'react-native-vector-icons/Foundation';
+// import IconPassword from 'react-native-vector-icons/Ionicons';
 
-function InputFieldWithIcon({iconType, type, state, setState}) {
+function InputField({type, state, setState}) {
   return (
     <View style={styles.inputFieldCont}>
-      {iconType === 'Foundation' ? (
+      {/* {iconType === 'Foundation' ? (
         <IconEmail
           style={styles.iconStyle}
           name={type === 'Name' ? 'mail' : type === 'Email' && 'mail'}
@@ -26,7 +26,7 @@ function InputFieldWithIcon({iconType, type, state, setState}) {
             color="#38C7ED"
           />
         )
-      )}
+      )} */}
       <TextInput
         style={styles.inputField}
         placeholder={
@@ -49,26 +49,25 @@ function InputFieldWithIcon({iconType, type, state, setState}) {
             ? false
             : type === 'Email' && false
         }
-        placeholderTextColor="#CDCDCD"
+        placeholderTextColor="#999999"
       />
     </View>
   );
 }
 
-export default InputFieldWithIcon;
+export default InputField;
 
 const styles = StyleSheet.create({
   inputFieldCont: {
-    flexDirection: 'row',
-    borderBottomWidth: 5,
-    borderBottomColor: '#E6E6E6',
-    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#D9D9D9',
+    marginVertical: 10,
+    borderRadius: 10,
+    paddingLeft: 10,
   },
   inputField: {
-    width: '90%',
-    height: '100%',
-    color: '#000',
-    fontSize: 15,
+    fontSize: 14,
+    fontFamily: 'Montserrat',
   },
   iconStyle: {
     alignSelf: 'center',

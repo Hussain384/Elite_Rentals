@@ -15,19 +15,18 @@ export default SubmitButton;
 
 const styles = StyleSheet.create({
   submitButtonView: {
-    backgroundColor: '#3BC8ED',
-    height: 45,
-    width: 110,
-    borderRadius: 30,
+    backgroundColor: '#3DA7AE',
+    height: 50,
+    width: '100%',
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    left: '30%',
-    bottom: -50,
+    marginVertical: 10,
   },
   submitButtonText: {
     color: '#fff',
-    fontSize: 16,
-    fontWeight: '800',
+    fontSize: 15,
+    fontWeight: 'bold',
+    fontFamily: 'Montserrat',
   },
 });
