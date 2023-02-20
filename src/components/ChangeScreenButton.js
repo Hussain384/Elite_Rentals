@@ -16,13 +16,31 @@ function ChangeButton({name, changeTo, navigation}) {
 export default ChangeButton;
 
 const styles = StyleSheet.create({
-  buttonText: {
-    color: '#57D0EF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
   buttonView: {
-    alignSelf: 'center',
-    marginTop: 45,
+    backgroundColor: '#3DA7AE',
+    height: 50,
+    width: '100%',
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '500',
+    fontFamily: 'Montserrat',
   },
 });
+
+// const styles = StyleSheet.create({
+//   buttonText: {
+//     color: '#57D0EF',
+//     fontSize: 12,
+//     fontWeight: 'bold',
+//   },
+//   buttonView: {
+//     alignSelf: 'center',
+//     marginTop: 45,
+//   },
+// });
