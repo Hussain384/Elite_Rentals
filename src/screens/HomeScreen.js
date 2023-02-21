@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -7,7 +7,7 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import MenuIcon from 'react-native-vector-icons/MaterialIcons';
+import FavouriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddIcon from 'react-native-vector-icons/Entypo';
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
 import uuid from 'react-uuid';
@@ -39,12 +39,26 @@ const DATA = [
   },
 ];
 
-const Item = ({title, image, discription, ratings, timeDuration}) => (
+const Item = ({
+  title,
+  image,
+  discription,
+  ratings,
+  isFavorite,
+  setIsFavorite,
+  timeDuration,
+}) => (
   <View style={styles.item}>
-    <Image
-      source={image}
-      style={{width: '100%', height: 300, borderRadius: 10, marginBottom: 5}}
-    />
+    <TouchableOpacity
+      style={styles.favouriteIconViewStyle}
+      onPress={() => setIsFavorite(!isFavorite)}>
+      {isFavorite ? (
+        <FavouriteIcon name="cards-heart" size={20} color="#3DA7AE" />
+      ) : (
+        <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
+      )}
+    </TouchableOpacity>
+    <Image source={image} style={styles.picturesStyle} />
     <View style={styles.postInfo}>
       <View style={styles.titleAndRatingView}>
         <Text style={styles.postTitleStyle}>{title}</Text>
@@ -60,6 +74,8 @@ const Item = ({title, image, discription, ratings, timeDuration}) => (
 );
 
 function HomeScreen({navigation}) {
+  const [isFavorite, setIsFavorite] = useState([]);
+
   const renderItem = ({item}) => (
     <Item
       title={item.title}
@@ -67,41 +83,27 @@ function HomeScreen({navigation}) {
       discription={item.discription}
       ratings={item.ratings}
       timeDuration={item.timeDuration}
+      isFavorite={isFavorite}
+      setIsFavorite={setIsFavorite}
     />
   );
   return (
     <View style={styles.container}>
       <View style={styles.headerView}>
-        <TouchableOpacity style={styles.navigatorView}>
-          <MenuIcon
-            name="menu"
-            size={30}
-            color="#35C6ED"
-            style={styles.MenuIconStyle}
-          />
-        </TouchableOpacity>
-        <View style={styles.accountTitle}>
-          <Text style={styles.accountTitleName}>Mr. Kiyaani</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.profileImageView}
-          onPress={() => navigation.navigate('SignIn')}>
-          <Image
-            style={styles.profileImageStyle}
-            source={require('../utilz/images/profileImage.png')}
-          />
-        </TouchableOpacity>
+        <Text style={styles.accountTitleName}>
+          Ham Jhompri waly or Tum Bhosri waly
+        </Text>
       </View>
       <View style={styles.mainBody}>
         <FlatList
           data={DATA}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id.toString()}
         />
         <TouchableOpacity
           style={styles.AddIconStyle}
           onPress={() => navigation.navigate('AddListing')}>
-          <AddIcon name="plus" size={35} color="#fff" />
+          <AddIcon name="plus" size={35} color="#3DA7AE" />
         </TouchableOpacity>
       </View>
     </View>
@@ -114,19 +116,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#DFF8FF',
   },
   headerView: {
     height: 50,
-    paddingHorizontal: 5,
-    marginBottom: 20,
-    width: '100%',
-    flexDirection: 'row',
-    borderRadius: 30,
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
   },
   navigatorView: {
     height: 50,
@@ -145,18 +137,35 @@ const styles = StyleSheet.create({
   mainBody: {
     height: 620,
   },
+  favouriteIconViewStyle: {
+    height: 30,
+    width: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 1,
+    right: 5,
+    top: 5,
+  },
+  picturesStyle: {
+    width: '100%',
+    height: 300,
+    borderRadius: 15,
+    marginBottom: 5,
+  },
   accountTitleName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1CAAF1',
+    fontFamily: 'Montserrat',
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#000',
   },
   accountTitleDisc: {
     fontSize: 15,
-    color: '#1CAAF1',
+    color: '#3DA7AE',
   },
   AddIconStyle: {
     position: 'absolute',
-    backgroundColor: '#35C6ED',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: 60,

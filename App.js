@@ -42,7 +42,7 @@ function TabScreen() {
             <Octicons name={iconName} size={25} color={color} />
           );
         },
-        tabBarActiveTintColor: '#35C6ED',
+        tabBarActiveTintColor: '#3DA7AE',
         tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen
@@ -108,7 +108,7 @@ function App() {
   return (
     <NavigationContainer>
       <HomeStack.Navigator
-        initialRouteName="SignUp"
+        initialRouteName="HomeStack"
         screenOptions={{
           headerShown: false,
         }}>

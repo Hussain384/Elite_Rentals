@@ -74,7 +74,6 @@ function SignIn({navigation}) {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
     flex: 1,
     padding: 20,
   },
