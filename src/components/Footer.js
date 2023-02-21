@@ -11,26 +11,26 @@ function Footer() {
       <HomeIcon
         name="home"
         size={25}
-        color="#35C6ED"
+        color="#3DA7AE"
         style={styles.MenuIconStyle}
       />
       <HeartIcon
         name="heart"
         size={25}
-        color="#35C6ED"
+        color="#3DA7AE"
         style={styles.MenuIconStyle}
       />
 
       <SearchIcon
         name="search"
         size={25}
-        color="#35C6ED"
+        color="#3DA7AE"
         style={styles.MenuIconStyle}
       />
       <ProfileIcon
         name="account-circle-outline"
         size={30}
-        color="#35C6ED"
+        color="#3DA7AE"
         style={styles.MenuIconStyle}
       />
     </View>
@@ -51,6 +51,5 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    // borderRadius: 50,
   },
 });
