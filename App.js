@@ -20,6 +20,7 @@ const HomeStack = createNativeStackNavigator();
 function TabScreen() {
   return (
     <Tab.Navigator
+      initialRouteName="Profile"
       tabBarVisible={false}
       screenOptions={({route}) => ({
         showLabel: false,
@@ -52,7 +53,11 @@ function TabScreen() {
       />
       <Tab.Screen name="WishList" component={WishListScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{headerShown: false}}
+      />
     </Tab.Navigator>
   );
 }
