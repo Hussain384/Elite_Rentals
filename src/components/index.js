@@ -4,6 +4,7 @@ import SubmitButton from './SubmitButton';
 import ChangeScreenButton from './ChangeScreenButton';
 import InputField from './InputField';
 import LikeButton from './LikeButton';
+import ProfileInformation from './ProfileInformation';
 
 export {
   Greeting,
@@ -12,4 +13,5 @@ export {
   SubmitButton,
   ChangeScreenButton,
   LikeButton,
+  ProfileInformation,
 };
