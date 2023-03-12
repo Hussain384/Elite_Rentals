@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
-import {PickerDropdown, SelectionOptions} from '../components';
+import {StyleSheet, View, ScrollView, Text} from 'react-native';
+import {
+  InputTabs,
+  PickerDropdown,
+  SelectionOptions,
+  AddPhoto,
+  SubmitButton,
+} from '../components';
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
 
 export default function AddListingScreen({navigation}) {
@@ -39,9 +45,19 @@ export default function AddListingScreen({navigation}) {
         </View>
 
         <SelectionOptions
-          name={'Type Of Property'}
+          name={'What your Place offers'}
           options={FACILITIES_ARRAY}
         />
+
+        <InputTabs name={'Address'} />
+        <InputTabs name={'Name'} />
+        <InputTabs name={'Discription'} />
+
+        <AddPhoto name={'Add Photo'} />
+
+        <InputTabs name={'Price (Rs)'} />
+
+        <SubmitButton type={'APPLY'} onPress={''} />
       </ScrollView>
     </View>
   );
@@ -50,12 +66,10 @@ export default function AddListingScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
   },
   formView: {
     backgroundColor: '#fff',
-    padding: 5,
-    height: 100,
+    padding: 20,
   },
   formTitle: {
     fontSize: 25,

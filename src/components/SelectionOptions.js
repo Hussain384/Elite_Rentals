@@ -1,7 +1,8 @@
-import React from 'react';
+import {React, useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
 export default function SelectionOptions({name, options}) {
+  const [selectedProperty, setSelectedProperty] = useState('House');
   return (
     <View>
       <Text style={styles.inputText}>{name}</Text>
@@ -9,7 +10,9 @@ export default function SelectionOptions({name, options}) {
       <View style={styles.propertyTypeView}>
         {options.map((res, index) => {
           return (
-            <TouchableOpacity style={styles.propertyType}>
+            <TouchableOpacity
+              style={styles.propertyType}
+              onPress={() => setSelectedProperty(res.name)}>
               <Text style={styles.propertyTypeText}>{res.name}</Text>
             </TouchableOpacity>
           );
@@ -36,12 +39,9 @@ const styles = StyleSheet.create({
   },
   propertyType: {
     backgroundColor: '#3DA7AE',
-    // height: 50,
-    // width: 60,
     minWidth: 80,
     paddingHorizontal: 10,
     paddingVertical: 15,
-    // justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
   },

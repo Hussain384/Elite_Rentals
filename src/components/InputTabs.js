@@ -7,17 +7,22 @@ export default function InputTabs({name}) {
       <View style={styles.selectionTextView}>
         <Text style={styles.inputText}>{name}</Text>
       </View>
-      <View style={styles.selectionDropdownView}>{/* <TextInput/> */}</View>
+      <View style={styles.selectionInputView}>
+        <TextInput
+          style={styles.inputField}
+          placeholder={name}
+          numberOfLines={name === 'Name' ? 1 : name === 'Price (Rs)' ? 1 : 4}
+          multiline={name !== 'Name' && name !== 'Price (Rs)'}
+          keyboardType={name === 'Price (Rs)' ? 'numeric' : 'default'}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   selectionView: {
-    flexDirection: 'row',
-    marginTop: 15,
-    justifyContent: 'space-between',
-    width: '100%',
+    marginTop: 10,
   },
   inputText: {
     fontSize: 20,
@@ -26,15 +31,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     color: '#000',
   },
-  selectionTextView: {
-    width: '50%',
-  },
-  selectionDropdownView: {
-    alignItems: 'center',
-    width: '50%',
-  },
-  dropDown: {
-    backgroundColor: '#3DA7AE',
-    width: 100,
+  inputField: {
+    borderWidth: 1,
+    borderBottomColor: '#000',
   },
 });

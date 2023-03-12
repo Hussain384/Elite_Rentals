@@ -7,6 +7,8 @@ import LikeButton from './LikeButton';
 import ProfileInformation from './ProfileInformation';
 import PickerDropdown from './PickerDropdown';
 import SelectionOptions from './SelectionOptions';
+import InputTabs from './InputTabs';
+import AddPhoto from './AddPhoto';
 
 export {
   Greeting,
@@ -18,4 +20,6 @@ export {
   ProfileInformation,
   PickerDropdown,
   SelectionOptions,
+  InputTabs,
+  AddPhoto,
 };
