@@ -90,9 +90,7 @@ function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.headerView}>
-        <Text style={styles.accountTitleName}>
-          Ham Jhompri waly or Tum Bhosri waly
-        </Text>
+        <Text style={styles.accountTitleName}>Title</Text>
       </View>
       <View style={styles.mainBody}>
         <FlatList
@@ -116,6 +114,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#fff',
   },
   headerView: {
     height: 50,
