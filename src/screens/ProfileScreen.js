@@ -1,40 +1,15 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  Modal,
-} from 'react-native';
+import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {ProfileInformation} from '../components';
-import ProfileEditModal from '../components/ProfileEditModal';
 
-export default function ProfileScreen() {
-  const [popupVisible, setPopupVisible] = React.useState(false);
-
-  const handleEditButtonClick = () => {
-    setPopupVisible(true);
-  };
-  const handleModalClose = () => {
-    setPopupVisible(false);
-  };
-
+export default function ProfileScreen({navigation}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.editButton}
-        onPress={handleEditButtonClick}>
+        onPress={() => navigation.navigate('EditProfileScreen')}>
         <Text style={styles.editButtonText}>Edit</Text>
       </TouchableOpacity>
-      <Modal visible={popupVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <ProfileEditModal />
-          <TouchableOpacity onPress={handleModalClose}>
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
       <View style={styles.profilePictureView}>
         <Image
           source={require('../utilz/images/profileImage.png')}

@@ -1,8 +1,21 @@
-import * as React from 'react';
+import {React, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 
 function ProfileEditModal() {
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [about, setAbout] = useState();
+  const [dateOfBirth, setDateOfBirth] = useState();
+  const [address, setAddress] = useState();
+
+  const HandleUpdateButton = () => {
+    setFirstName('');
+    setLastName('');
+    setAbout('');
+    setDateOfBirth('');
+    setAddress('');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.profilePictureView}>
@@ -21,8 +34,8 @@ function ProfileEditModal() {
             <TextInput
               style={styles.input}
               placeholder="First name"
-              onChange={''}
-              value={''}
+              onChange={() => setFirstName}
+              value={firstName}
             />
           </View>
           <View style={styles.nameInnerView}>
@@ -30,24 +43,44 @@ function ProfileEditModal() {
             <TextInput
               style={styles.input}
               placeholder="Last name"
-              onChange={''}
-              value={''}
+              onChange={() => setLastName}
+              value={lastName}
             />
           </View>
         </View>
         <View style={styles.inputView}>
           <Text style={styles.inputText}>About</Text>
-          <TextInput style={styles.input} placeholder="About" />
+          <TextInput
+            style={styles.input}
+            placeholder="About"
+            onChange={() => setAbout}
+            value={about}
+          />
         </View>
         <View style={styles.inputView}>
-          <Text style={styles.inputText}>Date of birth</Text>
-          <TextInput style={styles.input} placeholder="DOB" />
+          <Text style={styles.inputText}>DOB</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Date of birth"
+            onChange={() => setDateOfBirth}
+            value={dateOfBirth}
+          />
         </View>
         <View style={styles.inputView}>
           <Text style={styles.inputText}>Address</Text>
-          <TextInput style={styles.input} placeholder="Address" />
+          <TextInput
+            style={styles.input}
+            placeholder="Address"
+            onChange={() => setAddress}
+            value={address}
+          />
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.updateButtonView}
+        onPress={HandleUpdateButton}>
+        <Text style={styles.updateButtonText}>Update</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -56,8 +89,9 @@ export default ProfileEditModal;
 
 const styles = StyleSheet.create({
   container: {
-    height: '90%',
-    width: '90%',
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#fff',
   },
   profilePictureView: {
     width: 150,
@@ -107,5 +141,22 @@ const styles = StyleSheet.create({
   },
   inputView: {
     marginBottom: 10,
+    backgroundColor: '#fff',
+  },
+  updateButtonView: {
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#3DA7AE',
+    borderRadius: 15,
+    height: 40,
+    width: 100,
+  },
+  updateButtonText: {
+    fontSize: 20,
+    fontFamily: 'Montserrat',
+    fontWeight: '500',
+    color: '#000',
   },
 });
