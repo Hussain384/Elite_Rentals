@@ -7,6 +7,7 @@ import {
   SignUpScreen,
   HomeScreen,
   ProfileScreen,
+  EditProfileScreen,
   SearchScreen,
   WishListScreen,
   AddListingScreen,
@@ -55,10 +56,25 @@ function TabScreen() {
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackScreen}
         options={{headerShown: false}}
       />
     </Tab.Navigator>
+  );
+}
+const ProfileStack = createNativeStackNavigator();
+function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <ProfileStack.Screen
+        name="EditProfileScreen"
+        component={EditProfileScreen}
+      />
+    </ProfileStack.Navigator>
   );
 }
 const OnbordingStack = createNativeStackNavigator();
