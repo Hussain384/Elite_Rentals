@@ -5,6 +5,8 @@ import ChangeScreenButton from './ChangeScreenButton';
 import InputField from './InputField';
 import LikeButton from './LikeButton';
 import ProfileInformation from './ProfileInformation';
+import PickerDropdown from './PickerDropdown';
+import SelectionOptions from './SelectionOptions';
 
 export {
   Greeting,
@@ -14,4 +16,6 @@ export {
   ChangeScreenButton,
   LikeButton,
   ProfileInformation,
+  PickerDropdown,
+  SelectionOptions,
 };

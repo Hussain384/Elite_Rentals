@@ -5,7 +5,7 @@ import SearchScreen from './Search';
 import ProfileScreen from './ProfileScreen';
 import EditProfileScreen from './EditProfileScreen';
 import WishListScreen from './WishList';
-import AddListingScreen from './AddListing';
+import AddListingScreen from './AddListingScreen';
 import OnbordingScreen from './OnbordingScreen';
 
 export {

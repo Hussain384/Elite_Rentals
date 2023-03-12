@@ -129,7 +129,7 @@ function App() {
   return (
     <NavigationContainer>
       <HomeStack.Navigator
-        initialRouteName="OnbordingStack"
+        initialRouteName="AddListing"
         screenOptions={{
           headerShown: false,
         }}>

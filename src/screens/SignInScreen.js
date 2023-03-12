@@ -54,7 +54,7 @@ function SignIn({navigation}) {
         <InputField type="Email" state={email} setState={setEmail} />
         <InputField type="Password" state={password} setState={setPassword} />
         <View style={styles.forgetPassView}>
-          <Text style={styles.forgetPassText}>Forget Password?</Text>
+          <Text style={styles.forgetPassText}>Forget Password? </Text>
         </View>
 
         <SubmitButton type="SIGN IN" onPress={LogInAccount} />

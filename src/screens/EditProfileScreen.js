@@ -1,5 +1,3 @@
-import {firebase} from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import {React, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
@@ -11,35 +9,12 @@ function ProfileEditModal() {
   const [dateOfBirth, setDateOfBirth] = useState();
   const [address, setAddress] = useState();
 
-  const HandleUpdateButton = async () => {
-    const user = firebase.auth().currentUser;
-
-    try {
-      // Update the user's fields in Firebase Auth
-      await user.updateProfile({
-        displayName: `${firstName} ${lastName}`,
-      });
-
-      // Update the user's fields in Firestore
-      await firestore().collection('users').doc(user.uid).update({
-        firstName,
-        lastName,
-        about,
-        dateOfBirth,
-        address,
-      });
-
-      // TODO: Update the user's profile picture in Firebase Storage
-
-      // Reset the form fields
-      setFirstName('');
-      setLastName('');
-      setAbout('');
-      setDateOfBirth('');
-      setAddress('');
-    } catch (error) {
-      console.log(error);
-    }
+  const HandleUpdateButton = () => {
+    setFirstName('');
+    setLastName('');
+    setAbout('');
+    setDateOfBirth('');
+    setAddress('');
   };
   return (
     <View style={styles.container}>
