@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, ScrollView, Text} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import {
   InputTabs,
   PickerDropdown,
   SelectionOptions,
   AddPhoto,
   SubmitButton,
+  MultiSelections,
 } from '../components';
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
 
@@ -13,11 +14,56 @@ export default function AddListingScreen({navigation}) {
   const [bedrooms, setBedrooms] = useState();
   const [beds, setBeds] = useState();
   const [bathrooms, setBathrooms] = useState();
+  const [propertyType, setPropertyType] = useState('');
+  const [facilities, setFacilities] = useState([]);
+  const [address, setAddress] = useState('');
+  const [name, setName] = useState('');
+  const [discription, setDiscription] = useState('');
+  const [price, setPrice] = useState('');
+
+  const handleAddressChange = text => {
+    setAddress(text);
+  };
+
+  const handleNameChange = text => {
+    setName(text);
+  };
+
+  const handleDiscriptionChange = text => {
+    setDiscription(text);
+  };
+
+  const handlePriceChange = text => {
+    setPrice(text);
+  };
+
+  const handleApplyButton = () => {
+    console.log('Your listing in Added!!!!');
+    console.log('Type of Property: ', propertyType);
+    console.log('Your Place Offers: ', facilities);
+    console.log('No. of Bedrooms: ', bedrooms);
+    console.log('No. of Beds: ', beds);
+    console.log('No. of Bathrooms: ', bathrooms);
+    console.log('Address of your Property: ', address);
+    console.log('Title of your Property: ', name);
+    console.log('Discription: ', discription);
+    console.log('Charges per night: ', price);
+  };
+  const handleSelectTypeOfProperty = selectedOption => {
+    setPropertyType(selectedOption);
+  };
+  const handleSelectFacilities = selectedOption => {
+    setFacilities(selectedOption);
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.formView}>
-        <SelectionOptions name={'Type Of Property'} options={PROPERTY_ARRAY} />
+        <SelectionOptions
+          name={'Type Of Property'}
+          options={PROPERTY_ARRAY}
+          onSelect={handleSelectTypeOfProperty}
+        />
 
         <View style={styles.selectionView}>
           <PickerDropdown
@@ -44,20 +90,37 @@ export default function AddListingScreen({navigation}) {
           />
         </View>
 
-        <SelectionOptions
+        <MultiSelections
           name={'What your Place offers'}
           options={FACILITIES_ARRAY}
+          onSelect={handleSelectFacilities}
         />
 
-        <InputTabs name={'Address'} />
-        <InputTabs name={'Name'} />
-        <InputTabs name={'Discription'} />
+        <InputTabs
+          name={'Address'}
+          placeholder={'property address'}
+          onChangeText={handleAddressChange}
+        />
+        <InputTabs
+          name={'Name'}
+          placeholder={'Title for property'}
+          onChangeText={handleNameChange}
+        />
+        <InputTabs
+          name={'Discription'}
+          placeholder={'discription'}
+          onChangeText={handleDiscriptionChange}
+        />
 
         <AddPhoto name={'Add Photo'} />
 
-        <InputTabs name={'Price (Rs)'} />
+        <InputTabs
+          name={'Price (Rs)'}
+          placeholder={'charges per night'}
+          onChangeText={handlePriceChange}
+        />
 
-        <SubmitButton type={'APPLY'} onPress={''} />
+        <SubmitButton type={'APPLY'} onPress={handleApplyButton} />
       </ScrollView>
     </View>
   );
@@ -68,8 +131,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   formView: {
-    backgroundColor: '#fff',
     padding: 20,
+    backgroundColor: '#fff',
   },
   formTitle: {
     fontSize: 25,

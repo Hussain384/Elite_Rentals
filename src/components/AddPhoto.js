@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 export default function AddPhoto({name}) {
@@ -8,13 +8,19 @@ export default function AddPhoto({name}) {
       <View style={styles.selectionTextView}>
         <Text style={styles.inputText}>{name}</Text>
       </View>
+      <View style={styles.selectedPhotoView}>
+        <Image
+          source={require('../utilz/images/three.png')}
+          style={styles.picturesStyle}
+        />
+      </View>
       <View style={styles.selectionPhotoView}>
         <TouchableOpacity style={styles.photoButtonView}>
-          <Icon name={'camera'} size={40} color="#fff" />
+          <Icon name={'camera'} size={30} color="#fff" />
           <Text style={styles.photoButton}>Camera</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.photoButtonView}>
-          <Icon name={'folder'} size={40} color="#fff" />
+          <Icon name={'folder'} size={30} color="#fff" />
           <Text style={styles.photoButton}>Choose</Text>
         </TouchableOpacity>
       </View>
@@ -26,6 +32,19 @@ const styles = StyleSheet.create({
   selectionView: {
     marginTop: 10,
   },
+  selectedPhotoView: {
+    backgroundColor: 'grey',
+    alignSelf: 'center',
+    height: 300,
+    width: '90%',
+    borderRadius: 15,
+    marginBottom: 10,
+  },
+  picturesStyle: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 15,
+  },
   selectionPhotoView: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -35,7 +54,8 @@ const styles = StyleSheet.create({
   },
   photoButtonView: {
     backgroundColor: '#3DA7AE',
-    minWidth: 100,
+    width: 80,
+    height: 70,
     paddingHorizontal: 10,
     paddingVertical: 15,
     alignItems: 'center',
@@ -43,7 +63,7 @@ const styles = StyleSheet.create({
   },
   photoButton: {
     fontFamily: 'serif',
-    fontSize: 16,
+    fontSize: 13,
     color: '#fff',
   },
 
@@ -53,9 +73,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     marginVertical: 10,
     color: '#000',
-  },
-  inputField: {
-    borderWidth: 1,
-    borderBottomColor: '#000',
   },
 });

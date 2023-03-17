@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, TextInput} from 'react-native';
 
-export default function InputTabs({name}) {
+export default function InputTabs({name, placeholder, onChangeText}) {
   return (
     <View style={styles.selectionView}>
       <View style={styles.selectionTextView}>
@@ -10,10 +10,11 @@ export default function InputTabs({name}) {
       <View style={styles.selectionInputView}>
         <TextInput
           style={styles.inputField}
-          placeholder={name}
+          placeholder={placeholder}
           numberOfLines={name === 'Name' ? 1 : name === 'Price (Rs)' ? 1 : 4}
           multiline={name !== 'Name' && name !== 'Price (Rs)'}
           keyboardType={name === 'Price (Rs)' ? 'numeric' : 'default'}
+          onChangeText={onChangeText}
         />
       </View>
     </View>
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   inputField: {
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderBottomColor: '#000',
   },
 });
