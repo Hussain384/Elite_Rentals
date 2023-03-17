@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 function SubmitButton({type, onPress}) {
   return (
-    <View>
+    <View style={styles.container}>
       <TouchableOpacity style={styles.submitButtonView} onPress={onPress}>
         <Text style={styles.submitButtonText}>{type}</Text>
       </TouchableOpacity>
@@ -14,6 +14,10 @@ function SubmitButton({type, onPress}) {
 export default SubmitButton;
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 30,
+    marginTop: 10,
+  },
   submitButtonView: {
     backgroundColor: '#3DA7AE',
     height: 50,

@@ -47,5 +47,7 @@ const styles = StyleSheet.create({
   dropDown: {
     backgroundColor: '#3DA7AE',
     width: 100,
+    color: '#fff',
+    tintColor: '#fff',
   },
 });

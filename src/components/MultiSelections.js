@@ -1,31 +1,36 @@
 import {React, useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-export default function SelectionOptions({name, options, onSelect}) {
-  const [selectedProperty, setSelectedProperty] = useState('House');
+export default function SelectionOptions({name, options}) {
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const handlePress = res => {
-    setSelectedProperty(res.name);
-    onSelect(res);
+  const toggleOption = option => {
+    const index = selectedOptions.indexOf(option);
+    if (index === -1) {
+      setSelectedOptions([...selectedOptions, option]);
+    } else {
+      setSelectedOptions(selectedOptions.filter(item => item !== option));
+    }
   };
+
+  const isOptionSelected = option => selectedOptions.indexOf(option) !== -1;
+
   return (
     <View>
       <Text style={styles.inputText}>{name}</Text>
 
       <View style={styles.propertyTypeView}>
         {options.map((res, index) => {
+          const selected = isOptionSelected(res.name);
           return (
             <TouchableOpacity
-              key={res.id}
-              style={[
-                styles.propertyType,
-                selectedProperty === res.name && styles.selected,
-              ]}
-              onPress={() => handlePress(res)}>
+              key={index}
+              style={[styles.propertyType, selected && styles.selectedOption]}
+              onPress={() => toggleOption(res.name)}>
               <Text
                 style={[
                   styles.propertyTypeText,
-                  selectedProperty === res.name && styles.selectedText,
+                  selected && styles.selectedOptionText,
                 ]}>
                 {res.name}
               </Text>
@@ -60,15 +65,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
   },
+  selectedOption: {
+    backgroundColor: '#3DA7AE',
+  },
   propertyTypeText: {
-    fontFamily: 'serif',
-    fontSize: 16,
     color: '#3DA7AE',
   },
-  selectedText: {
+  selectedOptionText: {
+    fontFamily: 'serif',
+    fontSize: 16,
     color: '#fff',
-  },
-  selected: {
-    backgroundColor: '#3DA7AE',
   },
 });
