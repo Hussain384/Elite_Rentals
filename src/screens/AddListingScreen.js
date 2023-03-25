@@ -16,6 +16,7 @@ export default function AddListingScreen({navigation}) {
   const [bathrooms, setBathrooms] = useState();
   const [propertyType, setPropertyType] = useState('');
   const [facilities, setFacilities] = useState([]);
+  const [photo, setPhoto] = useState('');
   const [address, setAddress] = useState('');
   const [name, setName] = useState('');
   const [discription, setDiscription] = useState('');
