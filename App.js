@@ -21,7 +21,7 @@ const HomeStack = createNativeStackNavigator();
 function TabScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Profile"
+      initialRouteName="Search"
       tabBarVisible={false}
       screenOptions={({route}) => ({
         showLabel: false,
@@ -50,10 +50,24 @@ function TabScreen() {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
+        options={{
+          title: 'Re-Housing',
+          headerTitleStyle: {fontFamily: 'Montserrat', fontWeight: '600'},
+        }}
+      />
+      <Tab.Screen
+        name="WishList"
+        component={WishListScreen}
+        options={{
+          title: 'Wishlist',
+          headerTitleStyle: {fontFamily: 'Montserrat', fontWeight: '600'},
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
         options={{headerShown: false}}
       />
-      <Tab.Screen name="WishList" component={WishListScreen} />
-      <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen
         name="Profile"
         component={ProfileStackScreen}
@@ -129,7 +143,7 @@ function App() {
   return (
     <NavigationContainer>
       <HomeStack.Navigator
-        initialRouteName="AddListing"
+        initialRouteName="HomeStack"
         screenOptions={{
           headerShown: false,
         }}>

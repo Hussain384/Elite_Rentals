@@ -1,10 +1,10 @@
 import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 import HomeScreen from './HomeScreen';
-import SearchScreen from './Search';
+import SearchScreen from './SearchScreen';
 import ProfileScreen from './ProfileScreen';
 import EditProfileScreen from './EditProfileScreen';
-import WishListScreen from './WishList';
+import WishListScreen from './WishListScreen';
 import AddListingScreen from './AddListingScreen';
 import OnbordingScreen from './OnbordingScreen';
 

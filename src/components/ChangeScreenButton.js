@@ -32,15 +32,3 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
 });
-
-// const styles = StyleSheet.create({
-//   buttonText: {
-//     color: '#57D0EF',
-//     fontSize: 12,
-//     fontWeight: 'bold',
-//   },
-//   buttonView: {
-//     alignSelf: 'center',
-//     marginTop: 45,
-//   },
-// });

@@ -1,8 +1,15 @@
 import {React, useState} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {TextInput} from 'react-native-paper';
 
-function ProfileEditModal() {
+function ProfileEditModal({navigation}) {
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [about, setAbout] = useState();
@@ -16,8 +23,16 @@ function ProfileEditModal() {
     setDateOfBirth('');
     setAddress('');
   };
+  const HandleCancelButton = () => {
+    setFirstName('');
+    setLastName('');
+    setAbout('');
+    setDateOfBirth('');
+    setAddress('');
+    navigation.goBack();
+  };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.profilePictureView}>
         <Image
           source={require('../utilz/images/profileImage.png')}
@@ -76,12 +91,15 @@ function ProfileEditModal() {
           />
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.updateButtonView}
-        onPress={HandleUpdateButton}>
-        <Text style={styles.updateButtonText}>Update</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.buttonsView}>
+        <TouchableOpacity style={styles.button} onPress={HandleCancelButton}>
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={HandleUpdateButton}>
+          <Text style={styles.buttonText}>Update</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -143,7 +161,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#fff',
   },
-  updateButtonView: {
+  button: {
     marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -153,10 +171,14 @@ const styles = StyleSheet.create({
     height: 40,
     width: 100,
   },
-  updateButtonText: {
+  buttonText: {
     fontSize: 20,
     fontFamily: 'Montserrat',
     fontWeight: '500',
     color: '#000',
+  },
+  buttonsView: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 });

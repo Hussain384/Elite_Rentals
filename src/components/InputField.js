@@ -1,32 +1,9 @@
 import React from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
-// import IconEmail from 'react-native-vector-icons/Foundation';
-// import IconPassword from 'react-native-vector-icons/Ionicons';
 
 function InputField({type, state, setState}) {
   return (
     <View style={styles.inputFieldCont}>
-      {/* {iconType === 'Foundation' ? (
-        <IconEmail
-          style={styles.iconStyle}
-          name={type === 'Name' ? 'mail' : type === 'Email' && 'mail'}
-          size={22}
-          color="#38C7ED"
-        />
-      ) : (
-        iconType === 'Ionicons' && (
-          <IconPassword
-            style={styles.iconStyle}
-            name={
-              type === 'Password'
-                ? 'eye-off'
-                : type === 'Confirm Password' && 'eye-off'
-            }
-            size={22}
-            color="#38C7ED"
-          />
-        )
-      )} */}
       <TextInput
         style={styles.inputField}
         placeholder={

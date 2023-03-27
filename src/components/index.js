@@ -9,6 +9,7 @@ import SelectionOptions from './SelectionOptions';
 import InputTabs from './InputTabs';
 import AddPhoto from './AddPhoto';
 import MultiSelections from './MultiSelections';
+import SearchTab from './SearchTab';
 
 export {
   InputField,
@@ -22,4 +23,5 @@ export {
   InputTabs,
   AddPhoto,
   MultiSelections,
+  SearchTab,
 };
