@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,13 +12,17 @@ import Icon from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-crop-picker';
 import {androidCameraPermission} from '../../permissions';
 
-export default function AddPhoto({name}) {
+export default function AddPhoto({name, onSelect}) {
   const [Photo, setPhoto] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
+  useEffect(() => {
+    onSelect(Photo);
+  }, [Photo]);
+
   const handleAddPhotoButton = async () => {
     const permissionStatus = await androidCameraPermission();
-    if (!permissionStatus || !Platform.OS == 'ios') {
+    if (permissionStatus || Platform.OS === 'android') {
       setModalVisible(true);
     }
   };
@@ -54,7 +58,7 @@ export default function AddPhoto({name}) {
         style={styles.selectedPhotoView}
         onPress={handleAddPhotoButton}>
         {Photo === '' ? (
-          <Text style={styles.inputText}>Select Image</Text>
+          <Text style={styles.inputText}>Select Photo</Text>
         ) : (
           <Image source={{uri: Photo}} style={styles.picturesStyle} />
         )}

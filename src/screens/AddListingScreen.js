@@ -11,11 +11,12 @@ import {
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
 
 export default function AddListingScreen({navigation}) {
-  const [bedrooms, setBedrooms] = useState();
-  const [beds, setBeds] = useState();
-  const [bathrooms, setBathrooms] = useState();
-  const [propertyType, setPropertyType] = useState('');
+  const [bedrooms, setBedrooms] = useState(1);
+  const [beds, setBeds] = useState(1);
+  const [bathrooms, setBathrooms] = useState(1);
+  const [propertyType, setPropertyType] = useState('House');
   const [facilities, setFacilities] = useState([]);
+  const [photoUrl, setPhotoUrl] = useState('');
   const [address, setAddress] = useState('');
   const [name, setName] = useState('');
   const [discription, setDiscription] = useState('');
@@ -38,7 +39,7 @@ export default function AddListingScreen({navigation}) {
   };
 
   const handleApplyButton = () => {
-    console.log('Your listing in Added!!!!');
+    console.log('Your listing in Added!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log('Type of Property: ', propertyType);
     console.log('Your Place Offers: ', facilities);
     console.log('No. of Bedrooms: ', bedrooms);
@@ -47,13 +48,20 @@ export default function AddListingScreen({navigation}) {
     console.log('Address of your Property: ', address);
     console.log('Title of your Property: ', name);
     console.log('Discription: ', discription);
+    console.log('PhotoURL: ', photoUrl);
     console.log('Charges per night: ', price);
   };
+
   const handleSelectTypeOfProperty = selectedOption => {
     setPropertyType(selectedOption);
   };
+
   const handleSelectFacilities = selectedOption => {
     setFacilities(selectedOption);
+  };
+
+  const handleOnselectPhoto = url => {
+    setPhotoUrl(url);
   };
 
   return (
@@ -112,7 +120,7 @@ export default function AddListingScreen({navigation}) {
           onChangeText={handleDiscriptionChange}
         />
 
-        <AddPhoto name={'Add Photo'} />
+        <AddPhoto name={'Add Photo'} onSelect={handleOnselectPhoto} />
 
         <InputTabs
           name={'Price (Rs)'}

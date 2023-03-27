@@ -1,8 +1,12 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-export default function SelectionOptions({name, options}) {
+export default function SelectionOptions({name, options, onSelect}) {
   const [selectedOptions, setSelectedOptions] = useState([]);
+
+  useEffect(() => {
+    onSelect(selectedOptions);
+  }, [selectedOptions]);
 
   const toggleOption = option => {
     const index = selectedOptions.indexOf(option);
