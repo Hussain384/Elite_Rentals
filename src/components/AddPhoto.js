@@ -24,7 +24,7 @@ export default function AddPhoto({name}) {
   };
 
   const handleCamera = () => {
-    setModalVisible(false);
+    // setModalVisible(false);
     ImagePicker.openCamera({
       width: 300,
       height: 400,
@@ -35,7 +35,7 @@ export default function AddPhoto({name}) {
     });
   };
   const handleLibrary = () => {
-    setModalVisible(false);
+    // setModalVisible(false);
     ImagePicker.openPicker({
       width: 300,
       height: 400,
