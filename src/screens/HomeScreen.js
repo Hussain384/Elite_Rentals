@@ -11,41 +11,28 @@ import FavouriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddIcon from 'react-native-vector-icons/Entypo';
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
 import uuid from 'react-uuid';
+import firestore from '@react-native-firebase/firestore';
 
 const DATA = [
   {
     id: uuid(),
-    title: 'Swat, Pakistan',
+    title: 'my house',
     image: require('../utilz/images/one.png'),
-    discription: 'more information about post',
-    ratings: '5.2',
-    timeDuration: '$25 per night',
-  },
-  {
-    id: uuid(),
-    title: 'Kashmir Pakistan',
-    image: require('../utilz/images/two.png'),
-    discription: 'more information about post',
-    ratings: '3.5',
-    timeDuration: '$26 per night',
-  },
-  {
-    id: uuid(),
-    title: 'Kurram, KPK',
-    image: require('../utilz/images/three.png'),
-    discription: 'more information about post',
-    ratings: '2.4',
-    timeDuration: '$28 per night',
+    description: 'more information about post',
+    address: 'hayatabad pehswaer',
+    ratings: '5.3',
+    timeDuration: '$344 per night',
   },
 ];
 
 const Item = ({
   title,
   image,
-  discription,
-  ratings,
+  description,
   isFavorite,
   setIsFavorite,
+  ratings,
+  address,
   timeDuration,
 }) => (
   <View style={styles.item}>
@@ -67,8 +54,9 @@ const Item = ({
           <Text style={styles.postTitleStyle}>{ratings}</Text>
         </View>
       </View>
-      <Text style={styles.postTextStyle}>{discription}</Text>
+      <Text style={styles.postTextStyle}>{description}</Text>
       <Text style={styles.postTextStyle}>{timeDuration}</Text>
+      <Text style={styles.postTextStyle}>{address}</Text>
     </View>
   </View>
 );
@@ -80,8 +68,9 @@ function HomeScreen({navigation}) {
     <Item
       title={item.title}
       image={item.image}
-      discription={item.discription}
+      description={item.description}
       ratings={item.ratings}
+      address={item.address}
       timeDuration={item.timeDuration}
       isFavorite={isFavorite}
       setIsFavorite={setIsFavorite}
