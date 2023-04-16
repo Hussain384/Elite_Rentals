@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+  Text,
+} from 'react-native';
 import {
   InputTabs,
   PickerDropdown,
@@ -9,6 +16,8 @@ import {
   MultiSelections,
 } from '../components';
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
 
 export default function AddListingScreen({navigation}) {
   const [bedrooms, setBedrooms] = useState(1);
@@ -19,8 +28,11 @@ export default function AddListingScreen({navigation}) {
   const [photoUrl, setPhotoUrl] = useState('');
   const [address, setAddress] = useState('');
   const [name, setName] = useState('');
-  const [discription, setDiscription] = useState('');
+  const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
 
   const handleAddressChange = text => {
     setAddress(text);
@@ -30,26 +42,76 @@ export default function AddListingScreen({navigation}) {
     setName(text);
   };
 
-  const handleDiscriptionChange = text => {
-    setDiscription(text);
+  const handleDescriptionChange = text => {
+    setDescription(text);
   };
 
   const handlePriceChange = text => {
     setPrice(text);
   };
 
-  const handleApplyButton = () => {
-    console.log('Your listing in Added!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log('Type of Property: ', propertyType);
-    console.log('Your Place Offers: ', facilities);
-    console.log('No. of Bedrooms: ', bedrooms);
-    console.log('No. of Beds: ', beds);
-    console.log('No. of Bathrooms: ', bathrooms);
-    console.log('Address of your Property: ', address);
-    console.log('Title of your Property: ', name);
-    console.log('Discription: ', discription);
-    console.log('PhotoURL: ', photoUrl);
-    console.log('Charges per night: ', price);
+  const handleApplyButton = async () => {
+    // const uploadUri = photoUrl;
+    // let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+    // //filename withTimeStamp
+    // const extensionIndex = filename.lastIndexOf('.');
+    // const extension = filename.slice(extensionIndex);
+    // filename = `${Date.now()}${extension}`;
+
+    // setUploading(true);
+    // setTransferred(0);
+
+    // const task = storage()
+    //   .ref('/house_photos/' + filename)
+    //   .putFile(uploadUri);
+
+    // try {
+    //   await task;
+    //   task.on('state_changed', taskSnapshot => {
+    //     console.log(
+    //       `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+    //     );
+    //     setTransferred(
+    //       Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+    //         100,
+    //     );
+    //   });
+    //   setUploading(false);
+    //   Alert.alert(
+    //     'Successfully!',
+    //     'Your Hosuse is now listed and uploaded successfully',
+    //   );
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    firestore()
+      .collection('listing')
+      .add({
+        name: {name},
+        address: {address},
+        bedrooms: {bedrooms},
+        beds: {beds},
+        bathrooms: {bathrooms},
+        propertyType: {propertyType},
+        facilities: {facilities},
+        description: {description},
+        price: {price},
+        photoUrl: {photoUrl},
+      })
+      .then(() => {
+        console.log('User added!');
+      });
+    setBedrooms(1);
+    setBeds(1);
+    setBathrooms(1);
+    setPropertyType('House');
+    setFacilities([]);
+    setPhotoUrl('');
+    setAddress('');
+    setName('');
+    setDescription('');
+    setPrice('');
+    navigation.goBack();
   };
 
   const handleSelectTypeOfProperty = selectedOption => {
@@ -115,9 +177,9 @@ export default function AddListingScreen({navigation}) {
           onChangeText={handleNameChange}
         />
         <InputTabs
-          name={'Discription'}
-          placeholder={'discription'}
-          onChangeText={handleDiscriptionChange}
+          name={'Description'}
+          placeholder={'description'}
+          onChangeText={handleDescriptionChange}
         />
 
         <AddPhoto name={'Add Photo'} onSelect={handleOnselectPhoto} />
@@ -128,7 +190,14 @@ export default function AddListingScreen({navigation}) {
           onChangeText={handlePriceChange}
         />
 
-        <SubmitButton type={'APPLY'} onPress={handleApplyButton} />
+        {uploading ? (
+          <View style={styles.activityIndicatorView}>
+            <Text>{transferred} is Completed!</Text>
+            <ActivityIndicator size="large" color="#000" />
+          </View>
+        ) : (
+          <SubmitButton type={'APPLY'} onPress={handleApplyButton} />
+        )}
       </ScrollView>
     </View>
   );
@@ -189,5 +258,10 @@ const styles = StyleSheet.create({
   dropDown: {
     backgroundColor: '#3DA7AE',
     width: 100,
+  },
+  activityIndicatorView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 100,
   },
 });
