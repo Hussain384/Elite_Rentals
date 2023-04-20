@@ -25,7 +25,7 @@ export default function AddListingScreen({navigation}) {
   const [bathrooms, setBathrooms] = useState(1);
   const [propertyType, setPropertyType] = useState('House');
   const [facilities, setFacilities] = useState([]);
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [address, setAddress] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -49,41 +49,20 @@ export default function AddListingScreen({navigation}) {
   const handlePriceChange = text => {
     setPrice(text);
   };
+  const handleSelectTypeOfProperty = selectedOption => {
+    setPropertyType(selectedOption);
+  };
+
+  const handleSelectFacilities = selectedOption => {
+    setFacilities(selectedOption);
+  };
+
+  const handleOnselectPhoto = url => {
+    setImageUrl(url);
+  };
 
   const handleApplyButton = async () => {
-    // const uploadUri = photoUrl;
-    // let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-    // //filename withTimeStamp
-    // const extensionIndex = filename.lastIndexOf('.');
-    // const extension = filename.slice(extensionIndex);
-    // filename = `${Date.now()}${extension}`;
-
-    // setUploading(true);
-    // setTransferred(0);
-
-    // const task = storage()
-    //   .ref('/house_photos/' + filename)
-    //   .putFile(uploadUri);
-
-    // try {
-    //   await task;
-    //   task.on('state_changed', taskSnapshot => {
-    //     console.log(
-    //       `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-    //     );
-    //     setTransferred(
-    //       Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-    //         100,
-    //     );
-    //   });
-    //   setUploading(false);
-    //   Alert.alert(
-    //     'Successfully!',
-    //     'Your Hosuse is now listed and uploaded successfully',
-    //   );
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    const url = await uploadImage();
     firestore()
       .collection('listing')
       .add({
@@ -96,34 +75,62 @@ export default function AddListingScreen({navigation}) {
         facilities: {facilities},
         description: {description},
         price: {price},
-        photoUrl: {photoUrl},
+        imageUrl: {url},
       })
       .then(() => {
-        console.log('User added!');
+        console.log('Listing added!');
       });
     setBedrooms(1);
     setBeds(1);
     setBathrooms(1);
     setPropertyType('House');
     setFacilities([]);
-    setPhotoUrl('');
+    setImageUrl('');
     setAddress('');
     setName('');
     setDescription('');
     setPrice('');
+    setUploading(false);
+    Alert.alert(
+      'Successfully!',
+      'Your House is now listed and uploaded successfully',
+    );
     navigation.goBack();
   };
+  const uploadImage = async () => {
+    const uploadUrl = imageUrl;
+    let filename = uploadUrl.substring(uploadUrl.lastIndexOf('/') + 1);
+    //filename withTimeStamp
+    const extensionIndex = filename.lastIndexOf('.');
+    const extension = filename.slice(extensionIndex);
+    filename = `${Date.now()}${extension}`;
 
-  const handleSelectTypeOfProperty = selectedOption => {
-    setPropertyType(selectedOption);
-  };
+    setUploading(true);
+    setTransferred(0);
 
-  const handleSelectFacilities = selectedOption => {
-    setFacilities(selectedOption);
-  };
+    const storageRef = storage().ref('/house_photos/' + filename);
+    const task = storageRef.putFile(uploadUrl);
+    //set transfer state
+    task.on('state_changed', taskSnapshot => {
+      console.log(
+        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+      );
+      setTransferred(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+          100,
+      );
+    });
 
-  const handleOnselectPhoto = url => {
-    setPhotoUrl(url);
+    try {
+      await task;
+      const url = await storageRef.getDownloadURL();
+      setUploading(false);
+      setTransferred(null);
+      return url;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   };
 
   return (

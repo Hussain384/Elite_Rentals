@@ -8,7 +8,7 @@ const DATA = [
   {
     id: uuid(),
     title: 'Swat, Pakistan',
-    image: require('../utilz/images/one.png'),
+    image: require('../utilz/images/OnbordingPicture.png'),
     discription: 'more information about post',
     ratings: '5.2',
     timeDuration: '$25 per night',
@@ -16,7 +16,7 @@ const DATA = [
   {
     id: uuid(),
     title: 'Kashmir Pakistan',
-    image: require('../utilz/images/two.png'),
+    image: require('../utilz/images/OnbordingPicture.png'),
     discription: 'more information about post',
     ratings: '3.5',
     timeDuration: '$26 per night',
@@ -24,7 +24,7 @@ const DATA = [
   {
     id: uuid(),
     title: 'Kurram, KPK',
-    image: require('../utilz/images/three.png'),
+    image: require('../utilz/images/OnbordingPicture.png'),
     discription: 'more information about post',
     ratings: '2.4',
     timeDuration: '$28 per night',

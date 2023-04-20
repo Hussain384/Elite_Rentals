@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -12,28 +12,17 @@ import AddIcon from 'react-native-vector-icons/Entypo';
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
 import uuid from 'react-uuid';
 import firestore from '@react-native-firebase/firestore';
-
-const DATA = [
-  {
-    id: uuid(),
-    title: 'my house',
-    image: require('../utilz/images/one.png'),
-    description: 'more information about post',
-    address: 'hayatabad pehswaer',
-    ratings: '5.3',
-    timeDuration: '$344 per night',
-  },
-];
+import storage from '@react-native-firebase/storage';
 
 const Item = ({
-  title,
+  name,
   image,
   description,
   isFavorite,
   setIsFavorite,
   ratings,
   address,
-  timeDuration,
+  price,
 }) => (
   <View style={styles.item}>
     <TouchableOpacity
@@ -45,33 +34,79 @@ const Item = ({
         <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
       )}
     </TouchableOpacity>
-    <Image source={image} style={styles.picturesStyle} />
+    <Image source={image.imageUrl} style={styles.picturesStyle} />
     <View style={styles.postInfoView}>
       <View style={styles.titleAndRatingView}>
-        <Text style={styles.postTitleStyle}>{title}</Text>
+        <Text style={styles.postTitleStyle}>{name.name}</Text>
         <View style={styles.iconAndRatingsView}>
           <RatingIcon name="star" size={14} color="#000" />
-          <Text style={styles.postTitleStyle}>{ratings}</Text>
+          <Text style={styles.postTitleStyle}>{ratings.ratings}</Text>
         </View>
       </View>
-      <Text style={styles.postTextStyle}>{description}</Text>
-      <Text style={styles.postTextStyle}>{timeDuration}</Text>
-      <Text style={styles.postTextStyle}>{address}</Text>
+      <Text style={styles.postTextStyle}>{description.description}</Text>
+      <Text style={styles.postTextStyle}>{price.price}</Text>
+      <Text style={styles.postTextStyle}>{address.address}</Text>
     </View>
   </View>
 );
 
 function HomeScreen({navigation}) {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [listing, setListing] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tempListing = [];
+
+        await firestore()
+          .collection('listing')
+          .onSnapshot(querySnapshot => {
+            querySnapshot.forEach(async documentSnapshot => {
+              const {
+                name,
+                address,
+                imageUrl,
+                propertyType,
+                beds,
+                bathrooms,
+                price,
+              } = documentSnapshot.data();
+              tempListing.push({
+                id: documentSnapshot.id,
+                name: name,
+                ratings: '5.5',
+                description: 'description.description',
+                address: address,
+                image: imageUrl,
+                propertyType: propertyType,
+                beds: beds,
+                bathrooms: bathrooms,
+                price: price,
+              });
+            });
+            console.log(
+              '>>>>>>>>>>>>>>>',
+              tempListing,
+              '<<<<<<<<<<<<<<<<<<<<<<<',
+            );
+            setListing(tempListing);
+          });
+      } catch (error) {
+        error('error');
+      }
+    };
+    fetchData();
+  }, []);
 
   const renderItem = ({item}) => (
     <Item
-      title={item.title}
-      image={item.image}
+      name={item.name}
+      image={{uri: item.image}}
       description={item.description}
       ratings={item.ratings}
       address={item.address}
-      timeDuration={item.timeDuration}
+      price={item.price}
       isFavorite={isFavorite}
       setIsFavorite={setIsFavorite}
     />
@@ -79,7 +114,7 @@ function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={DATA}
+        data={listing}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
       />
