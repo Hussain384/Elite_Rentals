@@ -79,22 +79,22 @@ export default function AddListingScreen({navigation}) {
       })
       .then(() => {
         console.log('Listing added!');
+        setBedrooms(1);
+        setBeds(1);
+        setBathrooms(1);
+        setPropertyType('House');
+        setFacilities([]);
+        setImageUrl('');
+        setAddress('');
+        setName('');
+        setDescription('');
+        setPrice('');
+        setUploading(false);
+        Alert.alert(
+          'Successfully!',
+          'Your House is now listed and uploaded successfully',
+        );
       });
-    setBedrooms(1);
-    setBeds(1);
-    setBathrooms(1);
-    setPropertyType('House');
-    setFacilities([]);
-    setImageUrl('');
-    setAddress('');
-    setName('');
-    setDescription('');
-    setPrice('');
-    setUploading(false);
-    Alert.alert(
-      'Successfully!',
-      'Your House is now listed and uploaded successfully',
-    );
     navigation.goBack();
   };
   const uploadImage = async () => {
@@ -121,11 +121,11 @@ export default function AddListingScreen({navigation}) {
       );
     });
 
+    setUploading(false);
+    setTransferred(null);
     try {
       await task;
       const url = await storageRef.getDownloadURL();
-      setUploading(false);
-      setTransferred(null);
       return url;
     } catch (e) {
       console.log(e);

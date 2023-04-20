@@ -34,7 +34,12 @@ const Item = ({
         <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
       )}
     </TouchableOpacity>
-    <Image source={image.imageUrl} style={styles.picturesStyle} />
+    <Image
+      source={image.imageUrl}
+      style={styles.picturesStyle}
+      resizeMode="contain"
+    />
+
     <View style={styles.postInfoView}>
       <View style={styles.titleAndRatingView}>
         <Text style={styles.postTitleStyle}>{name.name}</Text>
@@ -74,22 +79,17 @@ function HomeScreen({navigation}) {
               } = documentSnapshot.data();
               tempListing.push({
                 id: documentSnapshot.id,
-                name: name,
+                name,
                 ratings: '5.5',
                 description: 'description.description',
-                address: address,
-                image: imageUrl,
-                propertyType: propertyType,
-                beds: beds,
-                bathrooms: bathrooms,
-                price: price,
+                address,
+                imageUrl,
+                propertyType,
+                beds,
+                bathrooms,
+                price,
               });
             });
-            console.log(
-              '>>>>>>>>>>>>>>>',
-              tempListing,
-              '<<<<<<<<<<<<<<<<<<<<<<<',
-            );
             setListing(tempListing);
           });
       } catch (error) {
@@ -102,7 +102,7 @@ function HomeScreen({navigation}) {
   const renderItem = ({item}) => (
     <Item
       name={item.name}
-      image={{uri: item.image}}
+      imageUrl={{uri: item.imageUrl}}
       description={item.description}
       ratings={item.ratings}
       address={item.address}
