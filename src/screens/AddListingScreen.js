@@ -18,6 +18,7 @@ import {
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
+import uuid from 'react-uuid';
 
 export default function AddListingScreen({navigation}) {
   const [bedrooms, setBedrooms] = useState(1);
@@ -66,6 +67,7 @@ export default function AddListingScreen({navigation}) {
     firestore()
       .collection('listing')
       .add({
+        id: {uuid},
         name: {name},
         address: {address},
         bedrooms: {bedrooms},

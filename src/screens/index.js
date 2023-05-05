@@ -7,6 +7,7 @@ import EditProfileScreen from './EditProfileScreen';
 import WishListScreen from './WishListScreen';
 import AddListingScreen from './AddListingScreen';
 import OnbordingScreen from './OnbordingScreen';
+import DetailsScreen from './DetailsScreen';
 
 export {
   SignInScreen,
@@ -18,4 +19,5 @@ export {
   WishListScreen,
   AddListingScreen,
   OnbordingScreen,
+  DetailsScreen,
 };
