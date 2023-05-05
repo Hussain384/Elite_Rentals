@@ -60,13 +60,11 @@ function SignIn({navigation}) {
         <SubmitButton type="SIGN IN" onPress={LogInAccount} />
       </View>
       <View style={styles.changeScreenView}>
-        <Text style={styles.changeScreenText}>
-          Don't have an account?
-          <Text
-            style={styles.signUpLink}
-            onPress={() => navigation.navigate('SignUp')}>
-            Sign up
-          </Text>
+        <Text style={styles.changeScreenText}>Don't have an account?</Text>
+        <Text
+          style={styles.signUpLink}
+          onPress={() => navigation.navigate('SignUp')}>
+          Sign up
         </Text>
       </View>
     </View>
@@ -117,11 +115,12 @@ const styles = StyleSheet.create({
     color: '#77C2C6',
   },
   changeScreenView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     position: 'absolute',
     bottom: 20,
     left: 0,
     right: 0,
-    alignItems: 'center',
   },
   changeScreenText: {
     fontFamily: 'Montserrat',

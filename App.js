@@ -91,28 +91,28 @@ function ProfileStackScreen() {
     </ProfileStack.Navigator>
   );
 }
-const OnbordingStack = createNativeStackNavigator();
-function OnbordingStackScreen() {
-  return (
-    <OnbordingStack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <OnbordingStack.Screen
-        name="OnbordingScreen"
-        component={OnbordingScreen}
-      />
-      <OnbordingStack.Screen
-        name="SignUpFromOnbording"
-        component={SignUpStackScreen}
-      />
-      <OnbordingStack.Screen
-        name="SignInFromOnbording"
-        component={SignInStackScreen}
-      />
-    </OnbordingStack.Navigator>
-  );
-}
+// const OnbordingStack = createNativeStackNavigator();
+// function OnbordingStackScreen() {
+//   return (
+//     <OnbordingStack.Navigator
+//       screenOptions={{
+//         headerShown: false,
+//       }}>
+//       <OnbordingStack.Screen
+//         name="OnbordingScreen"
+//         component={OnbordingScreen}
+//       />
+//       <OnbordingStack.Screen
+//         name="SignUpFromOnbording"
+//         component={SignUpStackScreen}
+//       />
+//       <OnbordingStack.Screen
+//         name="SignInFromOnbording"
+//         component={SignInStackScreen}
+//       />
+//     </OnbordingStack.Navigator>
+//   );
+// }
 const SignInStack = createNativeStackNavigator();
 function SignInStackScreen() {
   return (
@@ -143,14 +143,11 @@ function App() {
   return (
     <NavigationContainer>
       <HomeStack.Navigator
-        initialRouteName="HomeStack"
+        initialRouteName="SignInStack"
         screenOptions={{
           headerShown: false,
         }}>
-        <HomeStack.Screen
-          name="OnbordingStack"
-          component={OnbordingStackScreen}
-        />
+        <HomeStack.Screen name="SignIn" component={SignInStackScreen} />
         <HomeStack.Screen name="HomeStack" component={TabScreen} />
         <HomeStack.Screen name="AddListing" component={AddListingScreen} />
         <HomeStack.Screen name="Details" component={DetailsScreen} />
