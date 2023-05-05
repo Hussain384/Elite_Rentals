@@ -12,6 +12,7 @@ import {
   WishListScreen,
   AddListingScreen,
   OnbordingScreen,
+  DetailsScreen,
 } from './src/screens';
 import Octicons from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -21,7 +22,7 @@ const HomeStack = createNativeStackNavigator();
 function TabScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Search"
+      initialRouteName="Home"
       tabBarVisible={false}
       screenOptions={({route}) => ({
         showLabel: false,
@@ -152,9 +153,8 @@ function App() {
           component={OnbordingStackScreen}
         />
         <HomeStack.Screen name="HomeStack" component={TabScreen} />
-        <HomeStack.Screen name="SignIn" component={SignInStackScreen} />
-        <HomeStack.Screen name="SignUp" component={SignUpStackScreen} />
         <HomeStack.Screen name="AddListing" component={AddListingScreen} />
+        <HomeStack.Screen name="Details" component={DetailsScreen} />
       </HomeStack.Navigator>
     </NavigationContainer>
   );

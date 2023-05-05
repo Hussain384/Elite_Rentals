@@ -10,36 +10,24 @@ import {
 import FavouriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddIcon from 'react-native-vector-icons/Entypo';
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
-import uuid from 'react-uuid';
 import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
 
 const Item = ({
   name,
   image,
   description,
-  isFavorite,
-  setIsFavorite,
   ratings,
   address,
   price,
+  navigation,
 }) => (
-  <View style={styles.item}>
-    <TouchableOpacity
-      style={styles.favouriteIconViewStyle}
-      onPress={() => setIsFavorite(!isFavorite)}>
-      {isFavorite ? (
-        <FavouriteIcon name="cards-heart" size={20} color="#3DA7AE" />
-      ) : (
-        <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
-      )}
+  <TouchableOpacity
+    onPress={() => navigation.navigate('Details')}
+    style={styles.item}>
+    <TouchableOpacity style={styles.favouriteIconViewStyle}>
+      <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
     </TouchableOpacity>
-    <Image
-      source={image.imageUrl}
-      style={styles.picturesStyle}
-      resizeMode="contain"
-    />
-
+    <Image source={image} style={styles.picturesStyle} resizeMode="contain" />
     <View style={styles.postInfoView}>
       <View style={styles.titleAndRatingView}>
         <Text style={styles.postTitleStyle}>{name.name}</Text>
@@ -52,11 +40,10 @@ const Item = ({
       <Text style={styles.postTextStyle}>{price.price}</Text>
       <Text style={styles.postTextStyle}>{address.address}</Text>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 function HomeScreen({navigation}) {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [listing, setListing] = useState([]);
 
   useEffect(() => {
@@ -107,8 +94,7 @@ function HomeScreen({navigation}) {
       ratings={item.ratings}
       address={item.address}
       price={item.price}
-      isFavorite={isFavorite}
-      setIsFavorite={setIsFavorite}
+      navigation={navigation}
     />
   );
   return (
