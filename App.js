@@ -52,7 +52,6 @@ function TabScreen() {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Re-Housing',
           headerTitleStyle: {fontFamily: 'Montserrat', fontWeight: '600'},
         }}
       />
