@@ -1,85 +1,26 @@
 import {React, useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Image,
-} from 'react-native';
-import FavouriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import AddIcon from 'react-native-vector-icons/Entypo';
-import RatingIcon from 'react-native-vector-icons/FontAwesome';
-import firestore from '@react-native-firebase/firestore';
+import {fetchCollection} from '../firebase/firebase';
+import Item from '../components/HomeScreenFlatlistItem';
 
 function HomeScreen({navigation}) {
   const [listing, setListing] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const tempListing = [];
+  const fetchData = async () => {
+    try {
+      let response = await fetchCollection('listing');
+      setListing(response);
+    } catch (error) {
+      error('error');
+    }
+  };
 
-        await firestore()
-          .collection('listing')
-          .onSnapshot(querySnapshot => {
-            querySnapshot.forEach(async documentSnapshot => {
-              const {name, address, imageUrl, price} = documentSnapshot.data();
-              tempListing.push({
-                id: documentSnapshot.id,
-                name,
-                ratings: '5.5',
-                description: 'this is example description',
-                address,
-                imageUrl,
-                price,
-              });
-            });
-            setListing(tempListing);
-          });
-      } catch (error) {
-        error('error');
-      }
-    };
+  useEffect(() => {
     fetchData();
   }, []);
 
-  const Item = ({name, imageUrl, description, ratings, address, price}) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Details')}
-      style={styles.item}>
-      <TouchableOpacity style={styles.favouriteIconViewStyle}>
-        <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
-      </TouchableOpacity>
-      <Image
-        source={imageUrl.imageUrl}
-        style={styles.picturesStyle}
-        resizeMode="contain"
-      />
-      <View style={styles.postInfoView}>
-        <View style={styles.titleAndRatingView}>
-          <Text style={styles.postTitleStyle}>{name.name}</Text>
-          <View style={styles.iconAndRatingsView}>
-            <RatingIcon name="star" size={14} color="#000" />
-            <Text style={styles.postTitleStyle}>{ratings}</Text>
-          </View>
-        </View>
-        <Text style={styles.postTextStyle}>{description}</Text>
-        <Text style={styles.postTextStyle}>{price.price}</Text>
-        <Text style={styles.postTextStyle}>{address.address}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-  const renderItem = ({item}) => (
-    <Item
-      name={item.name}
-      imageUrl={{uri: item.imageUrl}}
-      description={item.description}
-      ratings={item.ratings}
-      address={item.address}
-      price={item.price}
-    />
-  );
+  const renderItem = ({item}) => <Item item={item} navigation={navigation} />;
   return (
     <View style={styles.container}>
       <FlatList
@@ -115,10 +56,8 @@ const styles = StyleSheet.create({
     top: 5,
   },
   picturesStyle: {
-    width: '100%',
-    height: 300,
+    flex: 1,
     borderRadius: 15,
-    marginBottom: 5,
   },
   AddIconStyle: {
     position: 'absolute',
@@ -132,16 +71,19 @@ const styles = StyleSheet.create({
     bottom: 10,
   },
   item: {
-    backgroundColor: '#F5FBFB',
+    height: 400,
+    backgroundColor: '#fff',
+    borderRadius: 10,
     marginVertical: 10,
     marginHorizontal: 8,
   },
   postInfoView: {
     paddingHorizontal: 10,
+    height: '20%',
   },
   postTitleStyle: {
     color: '#000',
-    fontSize: 15,
+    fontSize: 17,
   },
   postTextStyle: {
     color: 'grey',

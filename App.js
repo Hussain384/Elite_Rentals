@@ -123,7 +123,7 @@ function App() {
   return (
     <NavigationContainer>
       <HomeStack.Navigator
-        initialRouteName="HomeStack"
+        initialRouteName="SignIn"
         screenOptions={{
           headerShown: false,
         }}>

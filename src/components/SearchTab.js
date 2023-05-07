@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   inputTab: {
     width: '80%',
     paddingHorizontal: 20,
+    fontSize: 17,
   },
   iconStyle: {
     justifyContent: 'center',
