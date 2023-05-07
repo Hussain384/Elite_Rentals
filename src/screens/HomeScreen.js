@@ -12,37 +12,6 @@ import AddIcon from 'react-native-vector-icons/Entypo';
 import RatingIcon from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
 
-const Item = ({
-  name,
-  image,
-  description,
-  ratings,
-  address,
-  price,
-  navigation,
-}) => (
-  <TouchableOpacity
-    onPress={() => navigation.navigate('Details')}
-    style={styles.item}>
-    <TouchableOpacity style={styles.favouriteIconViewStyle}>
-      <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
-    </TouchableOpacity>
-    <Image source={image} style={styles.picturesStyle} resizeMode="contain" />
-    <View style={styles.postInfoView}>
-      <View style={styles.titleAndRatingView}>
-        <Text style={styles.postTitleStyle}>{name.name}</Text>
-        <View style={styles.iconAndRatingsView}>
-          <RatingIcon name="star" size={14} color="#000" />
-          <Text style={styles.postTitleStyle}>{ratings.ratings}</Text>
-        </View>
-      </View>
-      <Text style={styles.postTextStyle}>{description.description}</Text>
-      <Text style={styles.postTextStyle}>{price.price}</Text>
-      <Text style={styles.postTextStyle}>{address.address}</Text>
-    </View>
-  </TouchableOpacity>
-);
-
 function HomeScreen({navigation}) {
   const [listing, setListing] = useState([]);
 
@@ -55,25 +24,14 @@ function HomeScreen({navigation}) {
           .collection('listing')
           .onSnapshot(querySnapshot => {
             querySnapshot.forEach(async documentSnapshot => {
-              const {
-                name,
-                address,
-                imageUrl,
-                propertyType,
-                beds,
-                bathrooms,
-                price,
-              } = documentSnapshot.data();
+              const {name, address, imageUrl, price} = documentSnapshot.data();
               tempListing.push({
                 id: documentSnapshot.id,
                 name,
                 ratings: '5.5',
-                description: 'description.description',
+                description: 'this is example description',
                 address,
                 imageUrl,
-                propertyType,
-                beds,
-                bathrooms,
                 price,
               });
             });
@@ -86,6 +44,32 @@ function HomeScreen({navigation}) {
     fetchData();
   }, []);
 
+  const Item = ({name, imageUrl, description, ratings, address, price}) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Details')}
+      style={styles.item}>
+      <TouchableOpacity style={styles.favouriteIconViewStyle}>
+        <FavouriteIcon name="cards-heart-outline" size={20} color={'#fff'} />
+      </TouchableOpacity>
+      <Image
+        source={imageUrl.imageUrl}
+        style={styles.picturesStyle}
+        resizeMode="contain"
+      />
+      <View style={styles.postInfoView}>
+        <View style={styles.titleAndRatingView}>
+          <Text style={styles.postTitleStyle}>{name.name}</Text>
+          <View style={styles.iconAndRatingsView}>
+            <RatingIcon name="star" size={14} color="#000" />
+            <Text style={styles.postTitleStyle}>{ratings}</Text>
+          </View>
+        </View>
+        <Text style={styles.postTextStyle}>{description}</Text>
+        <Text style={styles.postTextStyle}>{price.price}</Text>
+        <Text style={styles.postTextStyle}>{address.address}</Text>
+      </View>
+    </TouchableOpacity>
+  );
   const renderItem = ({item}) => (
     <Item
       name={item.name}
@@ -94,7 +78,6 @@ function HomeScreen({navigation}) {
       ratings={item.ratings}
       address={item.address}
       price={item.price}
-      navigation={navigation}
     />
   );
   return (
