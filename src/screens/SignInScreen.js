@@ -1,12 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
-import {
-  Greeting,
-  InputField,
-  InputFormTitle,
-  SubmitButton,
-  ChangeScreenButton,
-} from '../components';
+import {InputField, SubmitButton} from '../components';
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 
@@ -15,28 +9,21 @@ function SignIn({navigation}) {
   const [password, setPassword] = useState('');
 
   const LogInAccount = async () => {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        navigation.navigate('Authenticated');
-        console.log('User account signed in!');
-        Alert.alert('You are Successfully Login to your account');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-          Alert.alert('Error! That email address is already in use!');
-        }
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      navigation.navigate('Authenticated');
+      console.log('User account signed in!');
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+        Alert.alert('Error! That email address is already in use!');
+      }
 
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-          Alert.alert('Error! That email address is invalid!');
-        }
-
-        console.error(error);
-      });
-    setEmail('');
-    setPassword('');
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+        Alert.alert('Error! That email address is invalid!');
+      }
+    }
   };
 
   return (

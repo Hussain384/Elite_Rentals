@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-crop-picker';
 import {androidCameraPermission} from '../../permissions';
+import moment from 'moment';
 
 export default function AddPhoto({name, onSelect}) {
   const [Photo, setPhoto] = useState('');
@@ -18,7 +19,7 @@ export default function AddPhoto({name, onSelect}) {
 
   useEffect(() => {
     onSelect(Photo);
-  }, [Photo]);
+  }, [Photo, onSelect]);
 
   const handleAddPhotoButton = async () => {
     const permissionStatus = await androidCameraPermission();
@@ -26,6 +27,10 @@ export default function AddPhoto({name, onSelect}) {
       setModalVisible(true);
     }
   };
+
+  // moment(item.created_at* 1000).format('DD/MM/YYYY')
+
+  // fetchCollectionByCondition('listing', ['user_id', '==', userId])
 
   const handleCamera = () => {
     setModalVisible(false);

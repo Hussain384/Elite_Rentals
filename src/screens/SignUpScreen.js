@@ -4,6 +4,7 @@ import {InputField, SubmitButton} from '../components';
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import {isEmpty} from 'lodash';
+import {createNewUser} from '../firebase/firebase';
 
 function SignUp({navigation}) {
   const [name, setName] = useState('');
@@ -11,54 +12,52 @@ function SignUp({navigation}) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  function CheckValidity(valid) {
+  function CheckValidity() {
+    let validate = true;
     if (isEmpty(name)) {
       Alert.alert('Error', 'Name cannot be empty');
-      return false;
+      validate = false;
     } else if (isEmpty(email)) {
       Alert.alert('Error', 'Email cannot be empty');
-      return false;
+      validate = false;
     } else if (isEmpty(password)) {
       Alert.alert('Error', 'password cannot be empty');
-      return false;
+      validate = false;
     } else if (isEmpty(confirmPassword)) {
       Alert.alert('Error', 'confirm password cannot be empty');
-      return false;
+      validate = false;
     } else if (password !== confirmPassword) {
       Alert.alert('Error', 'password and confirmPassword should be same');
-      return false;
-    } else {
-      return true;
+      validate = false;
     }
+    return validate;
   }
 
-  const CreateAccount = () => {
-    if (CheckValidity) {
-      auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(response => {
-          Alert.alert('User account created Successfully');
-          console.log('User account created!', response);
-          navigation.goBack();
-        })
-        .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            Alert.alert('Error', 'That email address is already in use!');
-          }
-          if (error.code === 'auth/weak-password') {
-            Alert.alert(
-              'Error',
-              'The password should be atleast 6 charachters',
-            );
-          }
-          if (error.code === 'auth/invalid-email') {
-            Alert.alert('Error', 'That email address is invalid!');
-          }
-        });
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
+  const CreateAccount = async () => {
+    try {
+      if (CheckValidity()) {
+        let response = await auth().createUserWithEmailAndPassword(
+          email,
+          password,
+        );
+        let data = {
+          email,
+          name,
+        };
+        await createNewUser(response.user, data);
+        Alert.alert('User account created Successfully');
+        navigation.goBack();
+      }
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert('Error', 'That email address is already in use!');
+      }
+      if (error.code === 'auth/weak-password') {
+        Alert.alert('Error', 'The password should be atleast 6 charachters');
+      }
+      if (error.code === 'auth/invalid-email') {
+        Alert.alert('Error', 'That email address is invalid!');
+      }
     }
   };
 

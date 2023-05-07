@@ -9,7 +9,7 @@ const DATA = [
     id: uuid(),
     title: 'Swat, Pakistan',
     image: require('../utilz/images/OnbordingPicture.png'),
-    discription: 'more information about post',
+    description: 'more information about post',
     ratings: '5.2',
     timeDuration: '$25 per night',
   },
@@ -17,7 +17,7 @@ const DATA = [
     id: uuid(),
     title: 'Kashmir Pakistan',
     image: require('../utilz/images/OnbordingPicture.png'),
-    discription: 'more information about post',
+    description: 'more information about post',
     ratings: '3.5',
     timeDuration: '$26 per night',
   },
@@ -25,13 +25,13 @@ const DATA = [
     id: uuid(),
     title: 'Kurram, KPK',
     image: require('../utilz/images/OnbordingPicture.png'),
-    discription: 'more information about post',
+    description: 'more information about post',
     ratings: '2.4',
     timeDuration: '$28 per night',
   },
 ];
 
-const Item = ({title, image, discription, ratings, timeDuration}) => (
+const Item = ({title, image, description, ratings, timeDuration}) => (
   <View style={styles.item}>
     <Image source={image} style={styles.picturesStyle} />
     <View style={styles.postInfoView}>
@@ -42,7 +42,7 @@ const Item = ({title, image, discription, ratings, timeDuration}) => (
           <Text style={styles.postTitleStyle}>{ratings}</Text>
         </View>
       </View>
-      <Text style={styles.postTextStyle}>{discription}</Text>
+      <Text style={styles.postTextStyle}>{description}</Text>
       <Text style={styles.postTextStyle}>{timeDuration}</Text>
     </View>
   </View>
@@ -53,7 +53,7 @@ export default function SearchScreen({navigation}) {
     <Item
       title={item.title}
       image={item.image}
-      discription={item.discription}
+      description={item.description}
       ratings={item.ratings}
       timeDuration={item.timeDuration}
     />

@@ -6,6 +6,7 @@ import {
   Alert,
   ActivityIndicator,
   Text,
+  TouchableOpacity,
 } from 'react-native';
 import {
   InputTabs,
@@ -15,10 +16,11 @@ import {
   SubmitButton,
   MultiSelections,
 } from '../components';
+import BackIcon from 'react-native-vector-icons/Ionicons';
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
 import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
-import uuid from 'react-uuid';
+import {insertIntoDocument} from '../firebase/firebase';
+// import uuid from 'react-uuid';
 
 export default function AddListingScreen({navigation}) {
   const [bedrooms, setBedrooms] = useState(1);
@@ -64,39 +66,37 @@ export default function AddListingScreen({navigation}) {
 
   const handleApplyButton = async () => {
     const url = await uploadImage();
-    firestore()
-      .collection('listing')
-      .add({
-        id: {uuid},
-        name: {name},
-        address: {address},
-        bedrooms: {bedrooms},
-        beds: {beds},
-        bathrooms: {bathrooms},
-        propertyType: {propertyType},
-        facilities: {facilities},
-        description: {description},
-        price: {price},
-        imageUrl: {url},
-      })
-      .then(() => {
-        console.log('Listing added!');
-        setBedrooms(1);
-        setBeds(1);
-        setBathrooms(1);
-        setPropertyType('House');
-        setFacilities([]);
-        setImageUrl('');
-        setAddress('');
-        setName('');
-        setDescription('');
-        setPrice('');
-        setUploading(false);
-        Alert.alert(
-          'Successfully!',
-          'Your House is now listed and uploaded successfully',
-        );
-      });
+    let data = {
+      name,
+      address,
+      bedrooms,
+      beds,
+      bathrooms,
+      propertyType,
+      facilities,
+      description,
+      price,
+      imageUrl: url,
+    };
+
+    console.log(data);
+    await insertIntoDocument('listing', data);
+
+    setBedrooms(1);
+    setBeds(1);
+    setBathrooms(1);
+    setPropertyType('House');
+    setFacilities([]);
+    setImageUrl('');
+    setAddress('');
+    setName('');
+    setDescription('');
+    setPrice('');
+    setUploading(false);
+    Alert.alert(
+      'Successfully!',
+      'Your House is now listed and uploaded successfully',
+    );
     navigation.goBack();
   };
   const uploadImage = async () => {
@@ -128,6 +128,7 @@ export default function AddListingScreen({navigation}) {
     try {
       await task;
       const url = await storageRef.getDownloadURL();
+
       return url;
     } catch (e) {
       console.log(e);
@@ -138,6 +139,11 @@ export default function AddListingScreen({navigation}) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.formView}>
+        <View style={styles.backButtonView}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <BackIcon name="chevron-back" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
         <SelectionOptions
           name={'Type Of Property'}
           options={PROPERTY_ARRAY}
@@ -215,6 +221,16 @@ export default function AddListingScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  backButtonView: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#D9D9D9',
+    height: 36,
+    width: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
   },
   formView: {
     padding: 20,

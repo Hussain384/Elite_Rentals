@@ -11,13 +11,15 @@ import {
   SearchScreen,
   WishListScreen,
   AddListingScreen,
-  OnbordingScreen,
   DetailsScreen,
 } from './src/screens';
 import Octicons from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
+const ProfileStack = createNativeStackNavigator();
+const SignInStack = createNativeStackNavigator();
+const SignUpStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 function TabScreen() {
   return (
@@ -76,7 +78,7 @@ function TabScreen() {
     </Tab.Navigator>
   );
 }
-const ProfileStack = createNativeStackNavigator();
+
 function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator
@@ -91,29 +93,7 @@ function ProfileStackScreen() {
     </ProfileStack.Navigator>
   );
 }
-// const OnbordingStack = createNativeStackNavigator();
-// function OnbordingStackScreen() {
-//   return (
-//     <OnbordingStack.Navigator
-//       screenOptions={{
-//         headerShown: false,
-//       }}>
-//       <OnbordingStack.Screen
-//         name="OnbordingScreen"
-//         component={OnbordingScreen}
-//       />
-//       <OnbordingStack.Screen
-//         name="SignUpFromOnbording"
-//         component={SignUpStackScreen}
-//       />
-//       <OnbordingStack.Screen
-//         name="SignInFromOnbording"
-//         component={SignInStackScreen}
-//       />
-//     </OnbordingStack.Navigator>
-//   );
-// }
-const SignInStack = createNativeStackNavigator();
+
 function SignInStackScreen() {
   return (
     <SignInStack.Navigator
@@ -126,7 +106,7 @@ function SignInStackScreen() {
     </SignInStack.Navigator>
   );
 }
-const SignUpStack = createNativeStackNavigator();
+
 function SignUpStackScreen() {
   return (
     <SignUpStack.Navigator
@@ -143,7 +123,7 @@ function App() {
   return (
     <NavigationContainer>
       <HomeStack.Navigator
-        initialRouteName="SignInStack"
+        initialRouteName="SignIn"
         screenOptions={{
           headerShown: false,
         }}>

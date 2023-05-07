@@ -1,8 +1,36 @@
-import * as React from 'react';
+import {React, useState, useEffect} from 'react';
 import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {ProfileInformation} from '../components';
+import {
+  fetchCollectionByCondition,
+  fetchDocument,
+  getCurrentUserId,
+} from '../firebase/firebase';
 
+// Get the currently logged in user
 export default function ProfileScreen({navigation}) {
+  const [user, setUser] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      debugger;
+      const user_id = getCurrentUserId();
+      let response = await fetchCollectionByCondition('users', [
+        'id',
+        '==',
+        user_id,
+      ]);
+      setUser(response);
+      console.log(response);
+    } catch (error) {
+      error('error');
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -18,8 +46,8 @@ export default function ProfileScreen({navigation}) {
       </View>
       <View style={styles.userInfoView}>
         <Text style={styles.userNameStyle}>
-          <Text style={styles.firstName}>Mr </Text>
-          <Text style={styles.lastName}>Professor</Text>
+          <Text style={styles.firstName}>{user.firstName}</Text>
+          <Text style={styles.lastName}>{user.lastName}</Text>
         </Text>
         <ProfileInformation
           title={'About'}

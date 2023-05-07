@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
+import {AddPhoto} from '../components';
 
 function ProfileEditModal({navigation}) {
   const [firstName, setFirstName] = useState();
@@ -15,6 +16,7 @@ function ProfileEditModal({navigation}) {
   const [about, setAbout] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
   const [address, setAddress] = useState();
+  const [photoUrl, setPhotoUrl] = useState('');
 
   const HandleUpdateButton = () => {
     setFirstName('');
@@ -31,6 +33,9 @@ function ProfileEditModal({navigation}) {
     setAddress('');
     navigation.goBack();
   };
+  const handleOnselectPhoto = url => {
+    setPhotoUrl(url);
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profilePictureView}>
@@ -40,6 +45,7 @@ function ProfileEditModal({navigation}) {
         />
         <TouchableOpacity style={styles.editPhotoButton}>
           <Text style={styles.editPhotoButtonText}>Edit Profile Photo</Text>
+          {/* <AddPhoto name={'Add Photo'} onSelect={handleOnselectPhoto} /> */}
         </TouchableOpacity>
       </View>
       <View style={styles.userInfoView}>
