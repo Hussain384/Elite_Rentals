@@ -10,20 +10,22 @@ import {
 import {TextInput} from 'react-native-paper';
 import {AddPhoto} from '../components';
 
-function ProfileEditModal({navigation}) {
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [about, setAbout] = useState();
-  const [dateOfBirth, setDateOfBirth] = useState();
-  const [address, setAddress] = useState();
-  const [photoUrl, setPhotoUrl] = useState('');
+function ProfileEditModal({route, navigation}) {
+  const user = route.params.user;
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [about, setAbout] = useState(user.about);
+  const [dateOfBirth, setDateOfBirth] = useState(user.dob);
+  const [address, setAddress] = useState(user.address);
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const HandleEditPhotoModal = () => {
+    setModalVisible(true);
+  };
 
   const HandleUpdateButton = () => {
-    setFirstName('');
-    setLastName('');
-    setAbout('');
-    setDateOfBirth('');
-    setAddress('');
+    navigation.goBack();
   };
   const HandleCancelButton = () => {
     setFirstName('');
@@ -43,9 +45,10 @@ function ProfileEditModal({navigation}) {
           source={require('../utilz/images/profileImage.png')}
           style={styles.profilePictureStyle}
         />
-        <TouchableOpacity style={styles.editPhotoButton}>
+        <TouchableOpacity
+          style={styles.editPhotoButton}
+          onPress={HandleEditPhotoModal}>
           <Text style={styles.editPhotoButtonText}>Edit Profile Photo</Text>
-          {/* <AddPhoto name={'Add Photo'} onSelect={handleOnselectPhoto} /> */}
         </TouchableOpacity>
       </View>
       <View style={styles.userInfoView}>

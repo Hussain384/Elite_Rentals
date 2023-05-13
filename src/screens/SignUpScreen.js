@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {InputField, SubmitButton} from '../components';
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
@@ -7,18 +15,26 @@ import {isEmpty} from 'lodash';
 import {createNewUser} from '../firebase/firebase';
 
 function SignUp({navigation}) {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [dob, setDob] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   function CheckValidity() {
     let validate = true;
-    if (isEmpty(name)) {
-      Alert.alert('Error', 'Name cannot be empty');
+    if (isEmpty(firstName)) {
+      Alert.alert('Error', 'First Name cannot be empty');
+      validate = false;
+    } else if (isEmpty(lastName)) {
+      Alert.alert('Error', 'Last Name cannot be empty');
       validate = false;
     } else if (isEmpty(email)) {
       Alert.alert('Error', 'Email cannot be empty');
+      validate = false;
+    } else if (isEmpty(dob)) {
+      Alert.alert('Error', 'Date of birth cannot be empty');
       validate = false;
     } else if (isEmpty(password)) {
       Alert.alert('Error', 'password cannot be empty');
@@ -42,7 +58,9 @@ function SignUp({navigation}) {
         );
         let data = {
           email,
-          name,
+          firstName,
+          lastName,
+          dob,
         };
         await createNewUser(response.user, data);
         Alert.alert('User account created Successfully');
@@ -62,40 +80,59 @@ function SignUp({navigation}) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.backButtonView}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <BackIcon name="chevron-back" size={30} color="black" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.title}>
-        <Text style={styles.textSignIn}>Sign up</Text>
-        <Text style={styles.textWelcome}>Welcome</Text>
-      </View>
-      <View style={styles.inputCont}>
-        <InputField type="Name" state={name} setState={setName} />
-        <InputField type="Email" state={email} setState={setEmail} />
-        <InputField type="Password" state={password} setState={setPassword} />
-        <InputField
-          type="Confirm Password"
-          state={confirmPassword}
-          setState={setConfirmPassword}
-        />
+    <KeyboardAvoidingView
+      style={styles.keyboardAvoidingView}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View style={styles.container}>
+        <View style={styles.backButtonView}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <BackIcon name="chevron-back" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.title}>
+          <Text style={styles.textSignIn}>Sign up</Text>
+          <Text style={styles.textWelcome}>Welcome</Text>
+        </View>
+        <View style={styles.inputCont}>
+          <View style={styles.nameViewStyle}>
+            <InputField
+              type="firstName"
+              state={firstName}
+              setState={setFirstName}
+            />
+            <InputField
+              type="lastName"
+              state={lastName}
+              setState={setLastName}
+            />
+          </View>
+          <InputField type="Email" state={email} setState={setEmail} />
+          <InputField type="DOB" state={dob} setState={setDob} />
+          <InputField type="Password" state={password} setState={setPassword} />
+          <InputField
+            type="Confirm Password"
+            state={confirmPassword}
+            setState={setConfirmPassword}
+          />
 
-        <SubmitButton type="SIGN UP" onPress={CreateAccount} />
+          <SubmitButton type="SIGN UP" onPress={CreateAccount} />
+        </View>
+        <View style={styles.changeScreenView}>
+          <Text style={styles.changeScreenText}>Already have an account?</Text>
+          <Text
+            style={styles.signUpLink}
+            onPress={() => navigation.navigate('SignIn')}>
+            Sign in
+          </Text>
+        </View>
       </View>
-      <View style={styles.changeScreenView}>
-        <Text style={styles.changeScreenText}>Already have an account?</Text>
-        <Text
-          style={styles.signUpLink}
-          onPress={() => navigation.navigate('SignIn')}>
-          Sign in
-        </Text>
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -108,10 +145,10 @@ const styles = StyleSheet.create({
     width: 36,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 35,
   },
   title: {
-    marginBottom: 35,
+    height: '15%',
+    justifyContent: 'center',
   },
   textSignIn: {
     fontFamily: 'Montserrat',
@@ -126,15 +163,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   inputCont: {
-    flex: 0.5,
+    height: '70%',
   },
   changeScreenView: {
+    height: '10%',
+    alignItems: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'center',
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
   },
   changeScreenText: {
     fontFamily: 'Montserrat',
@@ -145,6 +180,10 @@ const styles = StyleSheet.create({
     color: '#3DA7AE',
     fontWeight: 'bold',
     marginLeft: 5,
+  },
+  nameViewStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 export default SignUp;

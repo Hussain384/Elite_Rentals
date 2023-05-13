@@ -1,11 +1,24 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
-function SubmitButton({type, onPress}) {
+function SubmitButton({type, onPress, uploading, transferred}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.submitButtonView} onPress={onPress}>
-        <Text style={styles.submitButtonText}>{type}</Text>
+        {uploading ? (
+          <View>
+            <Text style={styles.text}>{transferred} is Completed!</Text>
+            <ActivityIndicator size="large" color="#fff" />
+          </View>
+        ) : (
+          <Text style={styles.text}>{type}</Text>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -15,8 +28,9 @@ export default SubmitButton;
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 30,
-    marginTop: 10,
+    // backgroundColor: 'red',
+    height: 150,
+    justifyContent: 'center',
   },
   submitButtonView: {
     backgroundColor: '#3DA7AE',
@@ -27,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
   },
-  submitButtonText: {
+  text: {
     color: '#fff',
     fontSize: 15,
     fontWeight: 'bold',

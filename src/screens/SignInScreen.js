@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
     width: 36,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 35,
   },
   title: {
-    marginBottom: 35,
+    height: '15%',
+    justifyContent: 'center',
   },
   textSignIn: {
     fontFamily: 'Montserrat',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   inputCont: {
-    flex: 0.5,
+    height: '70%',
   },
   forgetPassView: {
     flexDirection: 'row',
@@ -97,17 +97,16 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   forgetPassText: {
+    height: '10%',
     fontFamily: 'Montserrat',
     fontWeight: '500',
     color: '#77C2C6',
   },
   changeScreenView: {
+    height: '10%',
+    alignItems: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'center',
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
   },
   changeScreenText: {
     fontFamily: 'Montserrat',

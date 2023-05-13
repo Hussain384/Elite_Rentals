@@ -9,7 +9,7 @@ export default function SelectionOptions({name, options, onSelect}) {
     onSelect(res);
   };
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.inputText}>{name}</Text>
 
       <View style={styles.propertyTypeView}>
@@ -38,6 +38,11 @@ export default function SelectionOptions({name, options, onSelect}) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    // backgroundColor: 'red',
+    // height: '10%',
+    // justifyContent: 'center',
+  },
   inputText: {
     fontSize: 20,
     fontWeight: '500',
