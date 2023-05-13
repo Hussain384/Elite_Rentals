@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
-import {isNil, isNull} from 'lodash';
+import {isNil} from 'lodash';
 
 export const insertIntoDocument = (
   collection,
@@ -66,15 +66,29 @@ export const findExistingUser = async userId => {
 };
 
 export const createNewUser = async (user, data) => {
-  debugger;
   const firebaseUser = await findExistingUser(user.uid);
   if (isNil(firebaseUser._data)) {
     await firestore().collection('users').doc(user.uid).set({
       id: user.uid,
-      name: data.name,
-      created_at: moment().unix(),
+      firstName: data.firstName,
+      lastName: data.lastName,
       email: data.email,
+      dob: data.dob,
+      created_at: moment().unix(),
     });
   }
   return user;
+};
+
+export const fetchDocumentById = async (collectionName, documentId) => {
+  try {
+    const document = await firestore()
+      .collection(collectionName)
+      .doc(documentId)
+      .get();
+    return {id: document.id, ...document.data()};
+  } catch (error) {
+    console.log('Error fetching document: ', error);
+    return null;
+  }
 };

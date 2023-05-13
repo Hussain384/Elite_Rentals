@@ -30,8 +30,6 @@ export default function AddPhoto({name, onSelect}) {
 
   // moment(item.created_at* 1000).format('DD/MM/YYYY')
 
-  // fetchCollectionByCondition('listing', ['user_id', '==', userId])
-
   const handleCamera = () => {
     setModalVisible(false);
     ImagePicker.openCamera({
@@ -98,9 +96,7 @@ export default function AddPhoto({name, onSelect}) {
 }
 
 const styles = StyleSheet.create({
-  selectionView: {
-    marginTop: 10,
-  },
+  selectionView: {},
   selectedPhotoView: {
     backgroundColor: '#ABD0BC',
     justifyContent: 'center',

@@ -23,7 +23,7 @@ export default function InputTabs({name, placeholder, onChangeText}) {
 
 const styles = StyleSheet.create({
   selectionView: {
-    marginTop: 10,
+    // height: '15%',
   },
   inputText: {
     fontSize: 20,

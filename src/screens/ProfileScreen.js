@@ -1,25 +1,22 @@
 import {React, useState, useEffect} from 'react';
-import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
-import {ProfileInformation} from '../components';
 import {
-  fetchCollectionByCondition,
-  fetchDocument,
-  getCurrentUserId,
-} from '../firebase/firebase';
+  TouchableOpacity,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
+import {ProfileInformation} from '../components';
+import {fetchDocumentById, getCurrentUserId} from '../firebase/firebase';
 
-// Get the currently logged in user
 export default function ProfileScreen({navigation}) {
   const [user, setUser] = useState([]);
 
   const fetchData = async () => {
     try {
-      debugger;
       const user_id = getCurrentUserId();
-      let response = await fetchCollectionByCondition('users', [
-        'id',
-        '==',
-        user_id,
-      ]);
+      let response = await fetchDocumentById('users', user_id);
       setUser(response);
       console.log(response);
     } catch (error) {
@@ -33,35 +30,38 @@ export default function ProfileScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.editButton}
-        onPress={() => navigation.navigate('EditProfileScreen')}>
-        <Text style={styles.editButtonText}>Edit</Text>
-      </TouchableOpacity>
-      <View style={styles.profilePictureView}>
-        <Image
-          source={require('../utilz/images/profileImage.png')}
-          style={styles.profilePictureStyle}
-        />
-      </View>
-      <View style={styles.userInfoView}>
-        <Text style={styles.userNameStyle}>
-          <Text style={styles.firstName}>{user.firstName}</Text>
-          <Text style={styles.lastName}>{user.lastName}</Text>
-        </Text>
-        <ProfileInformation
-          title={'About'}
-          information={'This is more information about me'}
-        />
-        <ProfileInformation
-          title={'Date of birth'}
-          information={'2nd March, 2000'}
-        />
-        <ProfileInformation
-          title={'Address'}
-          information={'Hayatabad, Peshawar'}
-        />
-      </View>
+      {user.length === 0 ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() =>
+              navigation.navigate('EditProfileScreen', {user: user})
+            }>
+            <Text style={styles.editButtonText}>Edit</Text>
+          </TouchableOpacity>
+          <View style={styles.profilePictureView}>
+            <Image
+              source={require('../utilz/images/profileImage.png')}
+              style={styles.profilePictureStyle}
+            />
+          </View>
+          <View style={styles.userInfoView}>
+            <View style={styles.userNameView}>
+              <Text style={styles.userName}>{user.firstName}</Text>
+              <Text style={styles.userName}>{user.lastName}</Text>
+            </View>
+            <ProfileInformation title={'Email'} information={user.email} />
+            <ProfileInformation title={'About'} information={user.about} />
+            <ProfileInformation
+              title={'Date of birth'}
+              information={user.dob}
+            />
+            <ProfileInformation title={'Address'} information={user.address} />
+          </View>
+        </>
+      )}
     </View>
   );
 }
@@ -100,12 +100,16 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 100,
   },
-  userNameStyle: {
+  userName: {
     fontFamily: 'Montserrat',
     fontWeight: '500',
     fontSize: 32,
     color: '#000',
     marginBottom: 20,
+    marginRight: 10,
+  },
+  userNameView: {
+    flexDirection: 'row',
   },
   modalContainer: {
     flex: 1,

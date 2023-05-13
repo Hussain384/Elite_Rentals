@@ -7,6 +7,8 @@ import {
   ActivityIndicator,
   Text,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {
   InputTabs,
@@ -20,7 +22,6 @@ import BackIcon from 'react-native-vector-icons/Ionicons';
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
 import storage from '@react-native-firebase/storage';
 import {insertIntoDocument} from '../firebase/firebase';
-// import uuid from 'react-uuid';
 
 export default function AddListingScreen({navigation}) {
   const [bedrooms, setBedrooms] = useState(1);
@@ -137,7 +138,9 @@ export default function AddListingScreen({navigation}) {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView style={styles.formView}>
         <View style={styles.backButtonView}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -149,8 +152,7 @@ export default function AddListingScreen({navigation}) {
           options={PROPERTY_ARRAY}
           onSelect={handleSelectTypeOfProperty}
         />
-
-        <View style={styles.selectionView}>
+        <View style={styles.selectionInnerView}>
           <PickerDropdown
             name={'Bedrooms'}
             type={bedrooms}
@@ -158,7 +160,7 @@ export default function AddListingScreen({navigation}) {
             options={NUMBERS_ARRAY}
           />
         </View>
-        <View style={styles.selectionView}>
+        <View style={styles.selectionInnerView}>
           <PickerDropdown
             name={'Beds'}
             type={beds}
@@ -166,7 +168,7 @@ export default function AddListingScreen({navigation}) {
             options={NUMBERS_ARRAY}
           />
         </View>
-        <View style={styles.selectionView}>
+        <View style={styles.selectionInnerView}>
           <PickerDropdown
             name={'Bathrooms'}
             type={bathrooms}
@@ -174,13 +176,11 @@ export default function AddListingScreen({navigation}) {
             options={NUMBERS_ARRAY}
           />
         </View>
-
         <MultiSelections
           name={'What your Place offers'}
           options={FACILITIES_ARRAY}
           onSelect={handleSelectFacilities}
         />
-
         <InputTabs
           name={'Address'}
           placeholder={'property address'}
@@ -205,16 +205,14 @@ export default function AddListingScreen({navigation}) {
           onChangeText={handlePriceChange}
         />
 
-        {uploading ? (
-          <View style={styles.activityIndicatorView}>
-            <Text>{transferred} is Completed!</Text>
-            <ActivityIndicator size="large" color="#000" />
-          </View>
-        ) : (
-          <SubmitButton type={'APPLY'} onPress={handleApplyButton} />
-        )}
+        <SubmitButton
+          type={'APPLY'}
+          onPress={handleApplyButton}
+          uploading={uploading}
+          transferred={transferred}
+        />
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -230,9 +228,9 @@ const styles = StyleSheet.create({
     width: 36,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 15,
   },
   formView: {
+    flex: 1,
     padding: 20,
     backgroundColor: '#fff',
   },
@@ -240,13 +238,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     alignSelf: 'center',
-    marginBottom: 10,
   },
   inputText: {
     fontSize: 20,
     fontWeight: '500',
     fontFamily: 'Montserrat',
-    marginVertical: 10,
     color: '#000',
   },
   propertyTypeView: {
@@ -255,23 +251,16 @@ const styles = StyleSheet.create({
     width: '70%',
     alignSelf: 'center',
   },
-  propertyType: {
-    backgroundColor: '#3DA7AE',
-    height: 50,
-    width: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
+  // selectionInnerView: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   width: '100%',
+  // },
+  multiSelectionsView: {
+    backgroundColor: 'green',
   },
-  propertyTypeText: {
-    fontFamily: 'Montserrat',
-    fontSize: 15,
-    color: '#000',
-  },
-  selectionView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+  inputsView: {
+    backgroundColor: 'red',
   },
   selectionTextView: {
     width: '50%',
@@ -283,10 +272,5 @@ const styles = StyleSheet.create({
   dropDown: {
     backgroundColor: '#3DA7AE',
     width: 100,
-  },
-  activityIndicatorView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 100,
   },
 });

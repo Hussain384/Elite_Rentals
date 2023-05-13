@@ -1,6 +1,5 @@
 import InputFormTitle from './InputFormTitle';
 import SubmitButton from './SubmitButton';
-import ChangeScreenButton from './ChangeScreenButton';
 import InputField from './InputField';
 import LikeButton from './LikeButton';
 import ProfileInformation from './ProfileInformation';
@@ -15,7 +14,6 @@ export {
   InputField,
   InputFormTitle,
   SubmitButton,
-  ChangeScreenButton,
   LikeButton,
   ProfileInformation,
   PickerDropdown,
