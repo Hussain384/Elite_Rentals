@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState, useCallback} from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -8,26 +8,34 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {ProfileInformation} from '../components';
-import {fetchDocumentById, getCurrentUserId} from '../firebase/firebase';
+import {
+  fetchDocumentById,
+  getCurrentUserId,
+  signOut,
+} from '../firebase/firebase';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function ProfileScreen({navigation}) {
   const [user, setUser] = useState([]);
 
-  const fetchData = async () => {
-    try {
+  useFocusEffect(
+    useCallback(() => {
       const user_id = getCurrentUserId();
-      let response = await fetchDocumentById('users', user_id);
-      setUser(response);
-      console.log(response);
-    } catch (error) {
-      error('error');
-    }
+      const fetchData = async () => {
+        try {
+          let response = await fetchDocumentById('users', user_id);
+          setUser(response);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData();
+    }, []),
+  );
+
+  const HandleSignOutButton = () => {
+    signOut(navigation);
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <View style={styles.container}>
       {user.length === 0 ? (
@@ -37,13 +45,15 @@ export default function ProfileScreen({navigation}) {
           <TouchableOpacity
             style={styles.editButton}
             onPress={() =>
-              navigation.navigate('EditProfileScreen', {user: user})
+              navigation.navigate('EditProfileScreen', {
+                user: user,
+              })
             }>
             <Text style={styles.editButtonText}>Edit</Text>
           </TouchableOpacity>
           <View style={styles.profilePictureView}>
             <Image
-              source={require('../utilz/images/profileImage.png')}
+              source={{uri: user.photoUrl}}
               style={styles.profilePictureStyle}
             />
           </View>
@@ -59,6 +69,18 @@ export default function ProfileScreen({navigation}) {
               information={user.dob}
             />
             <ProfileInformation title={'Address'} information={user.address} />
+          </View>
+          <View style={styles.buttonsView}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('UserListingScreen')}>
+              <Text style={styles.buttonText}>Listings</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={HandleSignOutButton}>
+              <Text style={styles.buttonText}>SignOut</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
@@ -91,14 +113,18 @@ const styles = StyleSheet.create({
   profilePictureView: {
     height: 150,
     width: 150,
+    borderWidth: 1,
+    backgroundColor: 'grey',
+    borderColor: 'grey',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
+    borderRadius: 100,
   },
   profilePictureStyle: {
+    borderRadius: 100,
     height: 150,
     width: 150,
-    borderRadius: 100,
   },
   userName: {
     fontFamily: 'Montserrat',
@@ -110,6 +136,24 @@ const styles = StyleSheet.create({
   },
   userNameView: {
     flexDirection: 'row',
+  },
+  button: {
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    backgroundColor: 'grey',
+    height: 40,
+    width: 140,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontFamily: 'Montserrat',
+    fontWeight: '500',
+    color: '#000',
+  },
+  buttonsView: {
+    marginTop: 20,
   },
   modalContainer: {
     flex: 1,

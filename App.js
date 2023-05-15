@@ -12,6 +12,7 @@ import {
   WishListScreen,
   AddListingScreen,
   DetailsScreen,
+  UserListingScreen,
 } from './src/screens';
 import Octicons from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -89,6 +90,13 @@ function ProfileStackScreen() {
       <ProfileStack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
+      />
+      <ProfileStack.Screen
+        screenOptions={{
+          headerShown: true,
+        }}
+        name="UserListingScreen"
+        component={UserListingScreen}
       />
     </ProfileStack.Navigator>
   );

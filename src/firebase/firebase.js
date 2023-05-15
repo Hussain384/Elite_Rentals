@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import {isNil} from 'lodash';
+import {StackActions} from '@react-navigation/native';
 
 export const insertIntoDocument = (
   collection,
@@ -74,6 +75,9 @@ export const createNewUser = async (user, data) => {
       lastName: data.lastName,
       email: data.email,
       dob: data.dob,
+      about: data.about,
+      address: data.address,
+      photoUrl: data.photoUrl,
       created_at: moment().unix(),
     });
   }
@@ -90,5 +94,14 @@ export const fetchDocumentById = async (collectionName, documentId) => {
   } catch (error) {
     console.log('Error fetching document: ', error);
     return null;
+  }
+};
+
+export const signOut = async navigation => {
+  try {
+    await auth().signOut();
+    navigation.dispatch(StackActions.replace('SignIn')); // navigate to SignIn screen
+  } catch (error) {
+    console.error(error);
   }
 };

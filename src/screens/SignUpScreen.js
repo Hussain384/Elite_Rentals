@@ -19,6 +19,9 @@ function SignUp({navigation}) {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [dob, setDob] = useState('');
+  const [about, setAbout] = useState('');
+  const [address, setAddress] = useState('');
+  const [photoUrl, setPhotoUrl] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -61,6 +64,9 @@ function SignUp({navigation}) {
           firstName,
           lastName,
           dob,
+          about,
+          address,
+          photoUrl,
         };
         await createNewUser(response.user, data);
         Alert.alert('User account created Successfully');
