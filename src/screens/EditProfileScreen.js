@@ -4,11 +4,12 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
-import {AddPhoto} from '../components';
+import {updateDocument} from '../firebase/firebase';
+import {AddProfilePhoto} from '../components';
+import storage from '@react-native-firebase/storage';
 
 function ProfileEditModal({route, navigation}) {
   const user = route.params.user;
@@ -18,39 +19,61 @@ function ProfileEditModal({route, navigation}) {
   const [dateOfBirth, setDateOfBirth] = useState(user.dob);
   const [address, setAddress] = useState(user.address);
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [transferred, setTransferred] = useState(0);
 
-  const HandleEditPhotoModal = () => {
-    setModalVisible(true);
-  };
-
-  const HandleUpdateButton = () => {
+  const HandleUpdateButton = async () => {
+    const url = await uploadImage();
+    const values = {
+      firstName,
+      lastName,
+      about,
+      dob: dateOfBirth,
+      address,
+      photoUrl: url,
+    };
+    await updateDocument('users', user.id, values);
     navigation.goBack();
   };
   const HandleCancelButton = () => {
-    setFirstName('');
-    setLastName('');
-    setAbout('');
-    setDateOfBirth('');
-    setAddress('');
     navigation.goBack();
   };
   const handleOnselectPhoto = url => {
     setPhotoUrl(url);
+    console.log(photoUrl);
+  };
+
+  const uploadImage = async () => {
+    const uploadUrl = photoUrl;
+    let filename = uploadUrl.substring(uploadUrl.lastIndexOf('/') + 1);
+    //filename withTimeStamp
+    const extensionIndex = filename.lastIndexOf('.');
+    const extension = filename.slice(extensionIndex);
+    filename = `${Date.now()}${extension}`;
+
+    const storageRef = storage().ref('/profile_pictures/' + filename);
+    const task = storageRef.putFile(uploadUrl);
+    //set transfer state
+    task.on('state_changed', taskSnapshot => {
+      console.log(
+        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+      );
+      setTransferred(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+          100,
+      );
+    });
+    try {
+      await task;
+      const url = await storageRef.getDownloadURL();
+      return url;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   };
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.profilePictureView}>
-        <Image
-          source={require('../utilz/images/profileImage.png')}
-          style={styles.profilePictureStyle}
-        />
-        <TouchableOpacity
-          style={styles.editPhotoButton}
-          onPress={HandleEditPhotoModal}>
-          <Text style={styles.editPhotoButtonText}>Edit Profile Photo</Text>
-        </TouchableOpacity>
-      </View>
+      <AddProfilePhoto name={'Edit'} onSelect={handleOnselectPhoto} />
       <View style={styles.userInfoView}>
         <View style={styles.fullNameView}>
           <View style={styles.nameInnerView}>
@@ -58,7 +81,7 @@ function ProfileEditModal({route, navigation}) {
             <TextInput
               style={styles.input}
               placeholder="First name"
-              onChange={() => setFirstName}
+              onChangeText={text => setFirstName(text)}
               value={firstName}
             />
           </View>
@@ -67,7 +90,7 @@ function ProfileEditModal({route, navigation}) {
             <TextInput
               style={styles.input}
               placeholder="Last name"
-              onChange={() => setLastName}
+              onChangeText={text => setLastName(text)}
               value={lastName}
             />
           </View>
@@ -77,7 +100,7 @@ function ProfileEditModal({route, navigation}) {
           <TextInput
             style={styles.input}
             placeholder="About"
-            onChange={() => setAbout}
+            onChangeText={text => setAbout(text)}
             value={about}
           />
         </View>
@@ -86,7 +109,7 @@ function ProfileEditModal({route, navigation}) {
           <TextInput
             style={styles.input}
             placeholder="Date of birth"
-            onChange={() => setDateOfBirth}
+            onChangeText={text => setDateOfBirth(text)}
             value={dateOfBirth}
           />
         </View>
@@ -95,7 +118,7 @@ function ProfileEditModal({route, navigation}) {
           <TextInput
             style={styles.input}
             placeholder="Address"
-            onChange={() => setAddress}
+            onChangeText={text => setAddress(text)}
             value={address}
           />
         </View>
@@ -119,26 +142,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#fff',
-  },
-  profilePictureView: {
-    width: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-  profilePictureStyle: {
-    height: 150,
-    width: 150,
-    borderRadius: 100,
-  },
-  editPhotoButton: {
-    marginVertical: 10,
-  },
-  editPhotoButtonText: {
-    fontSize: 15,
-    fontFamily: 'Montserrat',
-    fontWeight: '500',
   },
   userNameStyle: {
     fontFamily: 'Montserrat',
@@ -178,7 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3DA7AE',
     borderRadius: 15,
     height: 40,
-    width: 100,
+    width: 130,
   },
   buttonText: {
     fontSize: 20,

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, View, Text, Alert} from 'react-native';
 import {InputField, SubmitButton} from '../components';
-import BackIcon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 
 function SignIn({navigation}) {
@@ -15,24 +14,17 @@ function SignIn({navigation}) {
       console.log('User account signed in!');
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
         Alert.alert('Error! That email address is already in use!');
-      }
-
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
+      } else if (error.code === 'auth/invalid-email') {
         Alert.alert('Error! That email address is invalid!');
+      } else {
+        Alert.alert('Connection Error');
       }
     }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.backButtonView}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <BackIcon name="chevron-back" size={30} color="black" />
-        </TouchableOpacity>
-      </View>
       <View style={styles.title}>
         <Text style={styles.textSignIn}>Sign in</Text>
         <Text style={styles.textWelcome}>Welcome back</Text>
@@ -62,17 +54,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  backButtonView: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#D9D9D9',
-    height: 36,
-    width: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   title: {
-    height: '15%',
+    height: '20%',
     justifyContent: 'center',
   },
   textSignIn: {
@@ -94,10 +77,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginBottom: 15,
   },
   forgetPassText: {
-    height: '10%',
     fontFamily: 'Montserrat',
     fontWeight: '500',
     color: '#77C2C6',

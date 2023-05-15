@@ -66,6 +66,8 @@ export default function AddListingScreen({navigation}) {
   };
 
   const handleApplyButton = async () => {
+    setUploading(true);
+    setTransferred(0);
     const url = await uploadImage();
     let data = {
       name,
@@ -79,10 +81,7 @@ export default function AddListingScreen({navigation}) {
       price,
       imageUrl: url,
     };
-
-    console.log(data);
     await insertIntoDocument('listing', data);
-
     setBedrooms(1);
     setBeds(1);
     setBathrooms(1);
@@ -108,9 +107,6 @@ export default function AddListingScreen({navigation}) {
     const extension = filename.slice(extensionIndex);
     filename = `${Date.now()}${extension}`;
 
-    setUploading(true);
-    setTransferred(0);
-
     const storageRef = storage().ref('/house_photos/' + filename);
     const task = storageRef.putFile(uploadUrl);
     //set transfer state
@@ -124,23 +120,29 @@ export default function AddListingScreen({navigation}) {
       );
     });
 
-    setUploading(false);
-    setTransferred(null);
     try {
       await task;
       const url = await storageRef.getDownloadURL();
-
       return url;
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
       return null;
     }
   };
+  setUploading(false);
+  setTransferred(null);
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      {/* {uploading ? (
+        <View style={styles.loadingView}>
+          <Text style={styles.text}>{transferred} is Completed!</Text>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      ) : (
+        <> */}
       <ScrollView style={styles.formView}>
         <View style={styles.backButtonView}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -205,13 +207,10 @@ export default function AddListingScreen({navigation}) {
           onChangeText={handlePriceChange}
         />
 
-        <SubmitButton
-          type={'APPLY'}
-          onPress={handleApplyButton}
-          uploading={uploading}
-          transferred={transferred}
-        />
+        <SubmitButton type={'APPLY'} onPress={handleApplyButton} />
       </ScrollView>
+      {/* </>
+      )} */}
     </KeyboardAvoidingView>
   );
 }
@@ -251,11 +250,10 @@ const styles = StyleSheet.create({
     width: '70%',
     alignSelf: 'center',
   },
-  // selectionInnerView: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   width: '100%',
-  // },
+  loadingView: {
+    width: '100%',
+    height: 500,
+  },
   multiSelectionsView: {
     backgroundColor: 'green',
   },
