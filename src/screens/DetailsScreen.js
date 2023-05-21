@@ -1,51 +1,147 @@
-import {React} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import Picture from '../utilz/images/OnbordingPicture.png';
-import BackIcon from 'react-native-vector-icons/Ionicons';
-import FavouriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {React, useCallback, useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
+import FavoriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {GoBackButton, ProfileInformation} from '../components';
+import {useFocusEffect} from '@react-navigation/native';
+import {fetchDocumentById} from '../firebase/firebase';
 
 export default function DetailsScreen({route, navigation}) {
   const item = route.params.item;
+  const [uploader, setUploader] = useState('');
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          let response = await fetchDocumentById('users', item.user_id);
+          setUploader(response);
+        } catch (error) {
+          console.log('Error fetching listing uploader:', error);
+        }
+      };
+      fetchData();
+    }, [item.user_id]),
+  );
+
   return (
     <View style={Styles.container}>
-      <View style={Styles.pictureView}>
-        <View style={Styles.topView}>
-          <View style={Styles.topButtonView}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <BackIcon name="chevron-back" size={25} color="black" />
-            </TouchableOpacity>
+      <ScrollView style={Styles.scrollViewContent}>
+        <SafeAreaView>
+          <View style={Styles.pictureView}>
+            <View style={Styles.topView}>
+              <GoBackButton navigation={navigation} />
+              <View style={Styles.topButtonView}>
+                <TouchableOpacity style={Styles.favoriteIconViewStyle}>
+                  <FavoriteIcon
+                    name="cards-heart-outline"
+                    size={20}
+                    color={'black'}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Image
+              style={Styles.pictureStyle}
+              source={{uri: item.imageUrl}}
+              resizeMode="cover"
+            />
+            <View style={Styles.details}>
+              <Text style={Styles.title}>{item.name}</Text>
+              <Text style={Styles.informationText}>
+                Property Type:{'\n'}
+                <Text style={Styles.innerText}>{item.propertyType}</Text>
+              </Text>
+              <Text style={Styles.informationText}>
+                Address:{'\n'}
+                <Text style={Styles.innerText}>{item.address}</Text>
+              </Text>
+              <Text style={Styles.informationText}>
+                Amenities:{'\n'}
+                <Text style={Styles.innerText}>
+                  {item.facilities[0]}
+                  {'\n'}
+                  {item.facilities[1]}
+                  {'\n'}
+                  {item.facilities[2]}
+                  {'\n'}
+                  {item.facilities[3]}
+                </Text>
+              </Text>
+              <Text style={Styles.informationText}>
+                Details:{'\n'}
+                <Text style={Styles.innerText}>{item.description}</Text>
+              </Text>
+              <Text style={Styles.informationText}>
+                Bathrooms:
+                <Text style={Styles.innerText}>{item.bathrooms}</Text>
+              </Text>
+              <Text style={Styles.informationText}>
+                Bedrooms:
+                <Text style={Styles.innerText}>{item.bedrooms}</Text>
+              </Text>
+              <Text style={Styles.informationText}>
+                Beds:
+                <Text style={Styles.innerText}>{item.beds}</Text>
+              </Text>
+            </View>
           </View>
-          <View style={Styles.topButtonView}>
-            <TouchableOpacity style={Styles.favouriteIconViewStyle}>
-              <FavouriteIcon
-                name="cards-heart-outline"
-                size={20}
-                color={'black'}
+          <View style={Styles.hostView}>
+            <Text style={Styles.title}>Meet Your Host</Text>
+            <View style={Styles.hostInnerView}>
+              <View style={Styles.hostImageView}>
+                <Image
+                  style={Styles.hostImage}
+                  source={{uri: uploader.photoUrl}}
+                  resizeMode="cover"
+                />
+              </View>
+              <View style={Styles.userNameView}>
+                <Text style={Styles.title}>{uploader.firstName}</Text>
+                <Text style={Styles.title}>{uploader.lastName}</Text>
+              </View>
+            </View>
+            <View style={Styles.uploaderInfo}>
+              <ProfileInformation
+                title={'Email'}
+                information={uploader.email}
               />
-            </TouchableOpacity>
+              <ProfileInformation
+                title={'About'}
+                information={uploader.about}
+              />
+              <ProfileInformation
+                title={'Date of birth'}
+                information={uploader.dob}
+              />
+              <ProfileInformation
+                title={'Contact'}
+                information={uploader.contact}
+              />
+              <ProfileInformation
+                title={'Address'}
+                information={uploader.address}
+              />
+            </View>
           </View>
-        </View>
-        <Image style={Styles.pictureStyle} source={{uri: item.imageUrl}} />
-
-        <View style={Styles.details}>
-          <Text style={{}}>{item.name}</Text>
-          <Text style={{}}>{item.address}</Text>
-          <Text style={{}}>{item.description}</Text>
-          {/* <Text style={{}}>{item.facilities}</Text> */}
-          <Text style={{}}>{item.price}</Text>
-          <Text style={{}}>{item.bathrooms}</Text>
-          <Text style={{}}>{item.bedrooms}</Text>
-          <Text style={{}}>{item.beds}</Text>
-          {/* <Text style={{}}>{item.propertyType}</Text> */}
-        </View>
-      </View>
+        </SafeAreaView>
+      </ScrollView>
       <View style={Styles.rentButtonView}>
         <Text style={Styles.priceText}>
           ${item.price}
           <Text style={Styles.priceTextPerDay}> /day</Text>
         </Text>
-        <TouchableOpacity style={Styles.rentButton}>
-          <Text style={Styles.rentButtonText}>Rent Now</Text>
+        <TouchableOpacity
+          style={Styles.rentButton}
+          onPress={() => navigation.navigate('Booking', {item: item})}>
+          <Text style={Styles.rentButtonText}>Reserve Now</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -58,15 +154,17 @@ const Styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingBottom: 90,
+  },
   pictureView: {
-    flex: 0.56,
-    justifyContent: 'center',
+    height: 700,
     alignItems: 'center',
   },
   pictureStyle: {
     borderRadius: 20,
-    position: 'absolute',
-    height: '100%',
+    height: 400,
     width: '100%',
   },
   topView: {
@@ -93,26 +191,48 @@ const Styles = StyleSheet.create({
     padding: 20,
     alignSelf: 'center',
     width: '90%',
-    height: 450,
+    height: 530,
     borderRadius: 20,
-    flex: 0.46,
-    position: 'absolute',
-    bottom: -315,
-    zIndex: 1,
+    bottom: 230,
+  },
+  title: {
+    fontFamily: 'Montserrat',
+    fontWeight: '600',
+    fontSize: 23,
+    color: '#000',
+    marginLeft: 10,
+  },
+  informationText: {
+    fontFamily: 'Montserrat',
+    fontWeight: '500',
+    fontSize: 17,
+    marginBottom: 10,
+    color: '#000',
+  },
+  innerTextView: {
+    marginLeft: 10,
+  },
+  innerText: {
+    fontSize: 15,
+    right: 0,
+    color: '#707373',
   },
   rentButtonView: {
-    height: 100,
-    width: '100%',
-    bottom: -315,
-    justifyContent: 'space-between',
-    alignItems: 'center',
     flexDirection: 'row',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#F5FBFB',
   },
   rentButton: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
-    width: 130,
+    width: 150,
     backgroundColor: '#3DA7AE',
     borderRadius: 20,
   },
@@ -133,5 +253,37 @@ const Styles = StyleSheet.create({
     fontWeight: '300',
     fontSize: 13,
     color: '#000',
+  },
+  hostView: {
+    width: '100%',
+    backgroundColor: '#F5FBFB',
+    borderColor: '#3DA7AE',
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 20,
+    marginBottom: 80,
+    alignSelf: 'center',
+  },
+  hostInnerView: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  hostImageView: {
+    height: 250,
+    width: 250,
+    borderRadius: 150,
+    marginBottom: 10,
+  },
+  hostImage: {
+    height: 250,
+    width: 250,
+    borderRadius: 150,
+  },
+  userNameView: {
+    flexDirection: 'row',
+  },
+  uploaderInfo: {
+    width: '100%',
   },
 });

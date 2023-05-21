@@ -10,6 +10,8 @@ import AddPhoto from './AddPhoto';
 import MultiSelections from './MultiSelections';
 import SearchTab from './SearchTab';
 import AddProfilePhoto from './AddProfilePhoto';
+import GoBackButton from './GoBackButton';
+import UserListingItem from './UserListingItem';
 
 export {
   InputField,
@@ -24,4 +26,6 @@ export {
   MultiSelections,
   SearchTab,
   AddProfilePhoto,
+  GoBackButton,
+  UserListingItem,
 };

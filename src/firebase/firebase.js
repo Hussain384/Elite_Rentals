@@ -41,7 +41,7 @@ export const fetchDocument = (collection, query) => {
 export const fetchCollectionByCondition = async (collection, query) => {
   let response = await firestore()
     .collection(collection)
-    .where(...query)
+    .where(query.field, query.operator, query.value)
     .get();
   return response.docs.map(doc => doc.data());
 };
@@ -75,9 +75,10 @@ export const createNewUser = async (user, data) => {
       lastName: data.lastName,
       email: data.email,
       dob: data.dob,
-      about: data.about,
-      address: data.address,
-      photoUrl: data.photoUrl,
+      about: '',
+      address: '',
+      photoUrl: '',
+      wishlist: [],
       created_at: moment().unix(),
     });
   }
@@ -103,5 +104,58 @@ export const signOut = async navigation => {
     navigation.dispatch(StackActions.replace('SignIn')); // navigate to SignIn screen
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const deleteDocument = async (collection, documentId) => {
+  try {
+    const documentRef = firestore().collection(collection).doc(documentId);
+    await documentRef.delete();
+    console.log('Document deleted successfully.');
+  } catch (error) {
+    console.error('Error deleting document:', error);
+  }
+};
+
+export const addToWishlist = async listingId => {
+  const userId = getCurrentUserId();
+  const userRef = firestore().collection('users').doc(userId);
+
+  try {
+    const userDoc = await userRef.get();
+    let wishlist = userDoc.data().wishlist || [];
+    if (wishlist.includes(listingId)) {
+      wishlist = wishlist.filter(id => id !== listingId);
+    } else {
+      wishlist.push(listingId);
+    }
+    await userRef.update('wishlist', wishlist);
+    console.log('Wishlist updated successfully.');
+  } catch (error) {
+    console.error('Error updating wishlist:', error);
+  }
+};
+
+export const fetchWishlistItems = async () => {
+  const userId = getCurrentUserId();
+  const userRef = firestore().collection('users').doc(userId);
+
+  try {
+    const userDoc = await userRef.get();
+    const wishlist = userDoc.data().wishlist || [];
+    const wishlistItems = await Promise.all(
+      wishlist.map(async id => {
+        const listingDoc = await firestore()
+          .collection('listing')
+          .doc(id)
+          .get();
+        return listingDoc.data();
+      }),
+    );
+
+    return wishlistItems;
+  } catch (error) {
+    console.error('Error fetching wishlist items:', error);
+    return [];
   }
 };

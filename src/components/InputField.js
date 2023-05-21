@@ -2,6 +2,13 @@ import React from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
 
 function InputField({type, state, setState}) {
+  let keyboardType = 'default';
+
+  if (type === 'Email') {
+    keyboardType = 'email-address';
+  } else if (type === 'DOB' || type === 'Contact') {
+    keyboardType = 'numeric';
+  }
   return (
     <View style={styles.inputFieldCont(type)}>
       <TextInput
@@ -14,11 +21,14 @@ function InputField({type, state, setState}) {
             : type === 'Email'
             ? 'Email'
             : type === 'DOB'
-            ? 'Date of birth'
+            ? 'Date of birth (DD/MM/YYYY)'
+            : type === 'Contact'
+            ? 'Contact Number'
             : type === 'Password'
             ? 'Password'
             : type === 'Confirm Password' && 'Confirm Password'
         }
+        keyboardType={keyboardType}
         value={state}
         onChangeText={setState}
         secureTextEntry={

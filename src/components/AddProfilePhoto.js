@@ -12,10 +12,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-crop-picker';
 import {androidCameraPermission} from '../../permissions';
 import AddIcon from 'react-native-vector-icons/Entypo';
-import moment from 'moment';
 
-export default function AddProfilePhoto({onSelect}) {
-  const [Photo, setPhoto] = useState('');
+export default function AddProfilePhoto({onSelect, user}) {
+  const [Photo, setPhoto] = useState(user.photoUrl);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -28,8 +27,6 @@ export default function AddProfilePhoto({onSelect}) {
       setModalVisible(true);
     }
   };
-
-  // moment(item.created_at* 1000).format('DD/MM/YYYY')
 
   const handleCamera = () => {
     setModalVisible(false);

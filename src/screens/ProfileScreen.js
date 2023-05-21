@@ -68,12 +68,15 @@ export default function ProfileScreen({navigation}) {
               title={'Date of birth'}
               information={user.dob}
             />
+            <ProfileInformation title={'Contact'} information={user.contact} />
             <ProfileInformation title={'Address'} information={user.address} />
           </View>
           <View style={styles.buttonsView}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('UserListingScreen')}>
+              onPress={() =>
+                navigation.navigate('UserListingScreen', {user: user})
+              }>
               <Text style={styles.buttonText}>Listings</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -114,8 +117,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderWidth: 1,
-    backgroundColor: 'grey',
-    borderColor: 'grey',
+    backgroundColor: '#ABD0BC',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
-    backgroundColor: 'grey',
+    backgroundColor: '#ABD0BC',
     height: 40,
     width: 140,
   },

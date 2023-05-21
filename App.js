@@ -13,6 +13,7 @@ import {
   AddListingScreen,
   DetailsScreen,
   UserListingScreen,
+  BookingScreen,
 } from './src/screens';
 import Octicons from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,6 +23,7 @@ const ProfileStack = createNativeStackNavigator();
 const SignInStack = createNativeStackNavigator();
 const SignUpStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
+// const BookingStack = createNativeStackNavigator();
 function TabScreen() {
   return (
     <Tab.Navigator
@@ -138,6 +140,7 @@ function App() {
         <HomeStack.Screen name="SignIn" component={SignInStackScreen} />
         <HomeStack.Screen name="HomeStack" component={TabScreen} />
         <HomeStack.Screen name="AddListing" component={AddListingScreen} />
+        <HomeStack.Screen name="Booking" component={BookingScreen} />
         <HomeStack.Screen name="Details" component={DetailsScreen} />
       </HomeStack.Navigator>
     </NavigationContainer>

@@ -6,7 +6,7 @@ export default function SelectionOptions({name, options, onSelect}) {
 
   const handlePress = res => {
     setSelectedProperty(res.name);
-    onSelect(res);
+    onSelect(res.name);
   };
   return (
     <View style={styles.container}>

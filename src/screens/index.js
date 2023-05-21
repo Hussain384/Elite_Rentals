@@ -8,6 +8,7 @@ import WishListScreen from './WishListScreen';
 import AddListingScreen from './AddListingScreen';
 import DetailsScreen from './DetailsScreen';
 import UserListingScreen from './UserListingScreen';
+import BookingScreen from './BookingScreen';
 
 export {
   SignInScreen,
@@ -20,4 +21,5 @@ export {
   AddListingScreen,
   DetailsScreen,
   UserListingScreen,
+  BookingScreen,
 };
