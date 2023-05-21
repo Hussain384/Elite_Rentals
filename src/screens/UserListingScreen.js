@@ -1,15 +1,24 @@
 import {React, useState, useEffect} from 'react';
 import {View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
-import {fetchCollection} from '../firebase/firebase';
+import {
+  fetchCollection,
+  fetchCollectionByCondition,
+  getCurrentUserId,
+} from '../firebase/firebase';
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import Item from '../components/HomeScreenFlatlistItem';
+import {UserListingItem} from '../components';
 
-function UserListingScreen({navigation}) {
+function UserListingScreen({route, navigation}) {
   const [listing, setListing] = useState([]);
-
+  const user = route.params.user;
   const fetchData = async () => {
     try {
-      let response = await fetchCollection('listing');
+      let response = await fetchCollectionByCondition('listing', {
+        field: 'user_id',
+        operator: '==',
+        value: user.id,
+      });
       setListing(response);
     } catch (error) {
       error('error');
@@ -20,7 +29,9 @@ function UserListingScreen({navigation}) {
     fetchData();
   }, []);
 
-  const renderItem = ({item}) => <Item item={item} navigation={navigation} />;
+  const renderItem = ({item}) => (
+    <UserListingItem item={item} navigation={navigation} />
+  );
   return (
     <View style={styles.container}>
       <View style={styles.backButtonView}>

@@ -3,13 +3,11 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   Alert,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import {InputField, SubmitButton} from '../components';
-import BackIcon from 'react-native-vector-icons/Ionicons';
+import {GoBackButton, InputField, SubmitButton} from '../components';
 import auth from '@react-native-firebase/auth';
 import {isEmpty} from 'lodash';
 import {createNewUser} from '../firebase/firebase';
@@ -19,9 +17,6 @@ function SignUp({navigation}) {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [dob, setDob] = useState('');
-  const [about, setAbout] = useState('');
-  const [address, setAddress] = useState('');
-  const [photoUrl, setPhotoUrl] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -55,6 +50,9 @@ function SignUp({navigation}) {
   const CreateAccount = async () => {
     try {
       if (CheckValidity()) {
+        //         auth().onAuthStateChanged((user) => {
+        // user.
+        //         })
         let response = await auth().createUserWithEmailAndPassword(
           email,
           password,
@@ -64,9 +62,6 @@ function SignUp({navigation}) {
           firstName,
           lastName,
           dob,
-          about,
-          address,
-          photoUrl,
         };
         await createNewUser(response.user, data);
         Alert.alert('User account created Successfully');
@@ -90,11 +85,7 @@ function SignUp({navigation}) {
       style={styles.keyboardAvoidingView}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.container}>
-        <View style={styles.backButtonView}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <BackIcon name="chevron-back" size={30} color="black" />
-          </TouchableOpacity>
-        </View>
+        <GoBackButton navigation={navigation} />
         <View style={styles.title}>
           <Text style={styles.textSignIn}>Sign up</Text>
           <Text style={styles.textWelcome}>Welcome</Text>
@@ -142,15 +133,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-  },
-  backButtonView: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#D9D9D9',
-    height: 36,
-    width: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   title: {
     height: '15%',

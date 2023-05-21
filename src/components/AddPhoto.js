@@ -98,7 +98,7 @@ export default function AddPhoto({name, onSelect}) {
 const styles = StyleSheet.create({
   selectionView: {},
   selectedPhotoView: {
-    backgroundColor: '#ABD0BC',
+    backgroundColor: '#3DA7AE',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',

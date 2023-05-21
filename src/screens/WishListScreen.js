@@ -1,55 +1,55 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, FlatList, Image} from 'react-native';
 import uuid from 'react-uuid';
-
-const DATA = [
-  {
-    id: uuid(),
-    title: 'Swat, Pakistan',
-    image: require('../utilz/images/OnbordingPicture.png'),
-    discription: 'more information about post',
-    timeDuration: '$25 per night',
-  },
-  {
-    id: uuid(),
-    title: 'Kashmir Pakistan',
-    image: require('../utilz/images/OnbordingPicture.png'),
-    discription: 'more information about post',
-    timeDuration: '$26 per night',
-  },
-  {
-    id: uuid(),
-    title: 'Kurram, KPK',
-    image: require('../utilz/images/OnbordingPicture.png'),
-    discription: 'more information about post',
-    timeDuration: '$28 per night',
-  },
-];
-
-const Item = ({title, image, discription, timeDuration}) => (
-  <View style={styles.item}>
-    <Image source={image} style={styles.picturesStyle} />
-    <View style={styles.postInfoView}>
-      <Text style={styles.postTitleStyle}>{title}</Text>
-      <Text style={styles.postTextStyle}>{discription}</Text>
-      <Text style={styles.postTextStyle}>{timeDuration}</Text>
-    </View>
-  </View>
-);
+import {fetchWishlistItems} from '../firebase/firebase';
 
 function WishListScreen({navigation}) {
+  const [wishlistItems, setWishlistItems] = useState([]);
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const items = await fetchWishlistItems();
+      setWishlistItems(items);
+    };
+
+    fetchWishlist();
+  }, []);
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const items = await fetchWishlistItems();
+      setWishlistItems(items);
+    };
+
+    const unsubscribe = navigation.addListener('focus', fetchWishlist);
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const Item = ({name, imageUrl, price, address}) => (
+    <View style={styles.item}>
+      <Image source={{uri: imageUrl}} style={styles.picturesStyle} />
+      <View style={styles.postInfoView}>
+        <Text style={styles.postTitleStyle}>{name}</Text>
+        <Text style={styles.postTextStyle}>{price}</Text>
+        <Text style={styles.postTextStyle}>{address}</Text>
+      </View>
+    </View>
+  );
+
   const renderItem = ({item}) => (
     <Item
-      title={item.title}
-      image={item.image}
-      discription={item.discription}
-      timeDuration={item.timeDuration}
+      name={item.name}
+      imageUrl={item.imageUrl}
+      price={item.price}
+      address={item.address}
     />
   );
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={DATA}
+        data={wishlistItems}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
       />

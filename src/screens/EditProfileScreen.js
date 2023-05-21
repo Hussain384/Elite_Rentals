@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {updateDocument} from '../firebase/firebase';
@@ -19,10 +20,17 @@ function ProfileEditModal({route, navigation}) {
   const [dateOfBirth, setDateOfBirth] = useState(user.dob);
   const [address, setAddress] = useState(user.address);
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
+  const [contact, setContact] = useState(user.contact);
   const [transferred, setTransferred] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  // const [changePhotoUrl, setChangePhotoUrl] = useState(false);
 
   const HandleUpdateButton = async () => {
+    setUploading(true);
+    // if (changePhotoUrl) {
     const url = await uploadImage();
+    // setChangePhotoUrl(false);
+    // }
     const values = {
       firstName,
       lastName,
@@ -30,16 +38,19 @@ function ProfileEditModal({route, navigation}) {
       dob: dateOfBirth,
       address,
       photoUrl: url,
+      contact,
     };
     await updateDocument('users', user.id, values);
+    setUploading(false);
+    setTransferred(0);
     navigation.goBack();
   };
   const HandleCancelButton = () => {
     navigation.goBack();
   };
   const handleOnselectPhoto = url => {
+    // setChangePhotoUrl(true);
     setPhotoUrl(url);
-    console.log(photoUrl);
   };
 
   const uploadImage = async () => {
@@ -73,64 +84,99 @@ function ProfileEditModal({route, navigation}) {
   };
   return (
     <ScrollView style={styles.container}>
-      <AddProfilePhoto name={'Edit'} onSelect={handleOnselectPhoto} />
-      <View style={styles.userInfoView}>
-        <View style={styles.fullNameView}>
-          <View style={styles.nameInnerView}>
-            <Text style={styles.inputText}>First Name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="First name"
-              onChangeText={text => setFirstName(text)}
-              value={firstName}
-            />
+      {uploading ? (
+        <View style={styles.activityContainer}>
+          <ActivityIndicator
+            size="large"
+            color="#3DA7AE"
+            style={styles.activityIndicator}
+          />
+          <Text style={styles.progressText}>Uploading: {transferred}%</Text>
+        </View>
+      ) : (
+        <>
+          <AddProfilePhoto
+            name={'Edit'}
+            onSelect={handleOnselectPhoto}
+            user={user}
+          />
+          <View style={styles.userInfoView}>
+            <View style={styles.fullNameView}>
+              <View style={styles.nameInnerView}>
+                <Text style={styles.inputText}>First Name</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="First name"
+                  onChangeText={text => setFirstName(text)}
+                  value={firstName}
+                />
+              </View>
+              <View style={styles.nameInnerView}>
+                <Text style={styles.inputText}>Last Name</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Last name"
+                  onChangeText={text => setLastName(text)}
+                  value={lastName}
+                />
+              </View>
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.inputText}>About</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="About"
+                onChangeText={text => setAbout(text)}
+                value={about}
+              />
+            </View>
+            <View style={styles.fullNameView}>
+              <View style={styles.nameInnerView}>
+                <Text style={styles.inputText}>DOB</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Date of birth"
+                  keyboardType="numeric"
+                  onChangeText={text => setDateOfBirth(text)}
+                  value={dateOfBirth}
+                />
+              </View>
+              <View style={styles.nameInnerView}>
+                <Text style={styles.inputText}>Contact</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Contact"
+                  keyboardType="numeric"
+                  onChangeText={text => setContact(text)}
+                  value={contact}
+                />
+              </View>
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.inputText}>Address</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Address"
+                keyboardType="email-address"
+                onChangeText={text => setAddress(text)}
+                value={address}
+              />
+            </View>
           </View>
-          <View style={styles.nameInnerView}>
-            <Text style={styles.inputText}>Last Name</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Last name"
-              onChangeText={text => setLastName(text)}
-              value={lastName}
-            />
+          <View style={styles.buttonsView}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={HandleCancelButton}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={HandleUpdateButton}>
+              <Text style={styles.buttonText}>Update</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.inputView}>
-          <Text style={styles.inputText}>About</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="About"
-            onChangeText={text => setAbout(text)}
-            value={about}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Text style={styles.inputText}>DOB</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Date of birth"
-            onChangeText={text => setDateOfBirth(text)}
-            value={dateOfBirth}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Text style={styles.inputText}>Address</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Address"
-            onChangeText={text => setAddress(text)}
-            value={address}
-          />
-        </View>
-      </View>
-      <View style={styles.buttonsView}>
-        <TouchableOpacity style={styles.button} onPress={HandleCancelButton}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={HandleUpdateButton}>
-          <Text style={styles.buttonText}>Update</Text>
-        </TouchableOpacity>
-      </View>
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -192,5 +238,20 @@ const styles = StyleSheet.create({
   buttonsView: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  activityIndicator: {
+    marginBottom: 10,
+  },
+  progressText: {
+    fontSize: 18,
+    fontFamily: 'Montserrat',
+    fontWeight: '500',
+    color: '#000',
   },
 });

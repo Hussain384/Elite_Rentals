@@ -21,12 +21,12 @@ import {
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import {NUMBERS_ARRAY, PROPERTY_ARRAY, FACILITIES_ARRAY} from '../Constants';
 import storage from '@react-native-firebase/storage';
-import {insertIntoDocument} from '../firebase/firebase';
+import {getCurrentUserId, insertIntoDocument} from '../firebase/firebase';
 
 export default function AddListingScreen({navigation}) {
-  const [bedrooms, setBedrooms] = useState(1);
-  const [beds, setBeds] = useState(1);
-  const [bathrooms, setBathrooms] = useState(1);
+  const [bedrooms, setBedrooms] = useState('1');
+  const [beds, setBeds] = useState('1');
+  const [bathrooms, setBathrooms] = useState('1');
   const [propertyType, setPropertyType] = useState('House');
   const [facilities, setFacilities] = useState([]);
   const [imageUrl, setImageUrl] = useState('');
@@ -68,6 +68,7 @@ export default function AddListingScreen({navigation}) {
   const handleApplyButton = async () => {
     setUploading(true);
     setTransferred(0);
+    const user_id = getCurrentUserId();
     const url = await uploadImage();
     let data = {
       name,
@@ -80,11 +81,12 @@ export default function AddListingScreen({navigation}) {
       description,
       price,
       imageUrl: url,
+      user_id,
     };
     await insertIntoDocument('listing', data);
-    setBedrooms(1);
-    setBeds(1);
-    setBathrooms(1);
+    setBedrooms('1');
+    setBeds('1');
+    setBathrooms('1');
     setPropertyType('House');
     setFacilities([]);
     setImageUrl('');
@@ -92,11 +94,11 @@ export default function AddListingScreen({navigation}) {
     setName('');
     setDescription('');
     setPrice('');
-    setUploading(false);
     Alert.alert(
       'Successfully!',
       'Your House is now listed and uploaded successfully',
     );
+    setUploading(false);
     navigation.goBack();
   };
   const uploadImage = async () => {
@@ -109,7 +111,7 @@ export default function AddListingScreen({navigation}) {
 
     const storageRef = storage().ref('/house_photos/' + filename);
     const task = storageRef.putFile(uploadUrl);
-    //set transfer state
+    // //set transfer state
     task.on('state_changed', taskSnapshot => {
       console.log(
         `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
@@ -129,88 +131,90 @@ export default function AddListingScreen({navigation}) {
       return null;
     }
   };
-  setUploading(false);
-  setTransferred(null);
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      {/* {uploading ? (
-        <View style={styles.loadingView}>
-          <Text style={styles.text}>{transferred} is Completed!</Text>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      ) : (
-        <> */}
       <ScrollView style={styles.formView}>
-        <View style={styles.backButtonView}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <BackIcon name="chevron-back" size={30} color="black" />
-          </TouchableOpacity>
-        </View>
-        <SelectionOptions
-          name={'Type Of Property'}
-          options={PROPERTY_ARRAY}
-          onSelect={handleSelectTypeOfProperty}
-        />
-        <View style={styles.selectionInnerView}>
-          <PickerDropdown
-            name={'Bedrooms'}
-            type={bedrooms}
-            setState={setBedrooms}
-            options={NUMBERS_ARRAY}
-          />
-        </View>
-        <View style={styles.selectionInnerView}>
-          <PickerDropdown
-            name={'Beds'}
-            type={beds}
-            setState={setBeds}
-            options={NUMBERS_ARRAY}
-          />
-        </View>
-        <View style={styles.selectionInnerView}>
-          <PickerDropdown
-            name={'Bathrooms'}
-            type={bathrooms}
-            setState={setBathrooms}
-            options={NUMBERS_ARRAY}
-          />
-        </View>
-        <MultiSelections
-          name={'What your Place offers'}
-          options={FACILITIES_ARRAY}
-          onSelect={handleSelectFacilities}
-        />
-        <InputTabs
-          name={'Address'}
-          placeholder={'property address'}
-          onChangeText={handleAddressChange}
-        />
-        <InputTabs
-          name={'Name'}
-          placeholder={'Title for property'}
-          onChangeText={handleNameChange}
-        />
-        <InputTabs
-          name={'Description'}
-          placeholder={'description'}
-          onChangeText={handleDescriptionChange}
-        />
+        {uploading ? (
+          <View style={styles.activityContainer}>
+            <ActivityIndicator
+              size="large"
+              color="#3DA7AE"
+              style={styles.activityIndicator}
+            />
+            <Text style={styles.progressText}>Uploading: {transferred}%</Text>
+          </View>
+        ) : (
+          <>
+            <View style={styles.backButtonView}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <BackIcon name="chevron-back" size={30} color="black" />
+              </TouchableOpacity>
+            </View>
+            <SelectionOptions
+              name={'Type Of Property'}
+              options={PROPERTY_ARRAY}
+              onSelect={handleSelectTypeOfProperty}
+            />
+            <View style={styles.selectionInnerView}>
+              <PickerDropdown
+                name={'Bedrooms'}
+                type={bedrooms}
+                setState={setBedrooms}
+                options={NUMBERS_ARRAY}
+              />
+            </View>
+            <View style={styles.selectionInnerView}>
+              <PickerDropdown
+                name={'Beds'}
+                type={beds}
+                setState={setBeds}
+                options={NUMBERS_ARRAY}
+              />
+            </View>
+            <View style={styles.selectionInnerView}>
+              <PickerDropdown
+                name={'Bathrooms'}
+                type={bathrooms}
+                setState={setBathrooms}
+                options={NUMBERS_ARRAY}
+              />
+            </View>
+            <MultiSelections
+              name={'What your Place offers'}
+              options={FACILITIES_ARRAY}
+              onSelect={handleSelectFacilities}
+            />
+            <InputTabs
+              name={'Address'}
+              placeholder={'property address'}
+              onChangeText={handleAddressChange}
+            />
+            <InputTabs
+              name={'Name'}
+              placeholder={'Title for property'}
+              onChangeText={handleNameChange}
+            />
+            <InputTabs
+              name={'Description'}
+              placeholder={'description'}
+              onChangeText={handleDescriptionChange}
+            />
 
-        <AddPhoto name={'Add Photo'} onSelect={handleOnselectPhoto} />
+            <AddPhoto name={'Add Photo'} onSelect={handleOnselectPhoto} />
 
-        <InputTabs
-          name={'Price (Rs)'}
-          placeholder={'charges per night'}
-          onChangeText={handlePriceChange}
-        />
+            <InputTabs
+              name={'Price (Rs)'}
+              placeholder={'charges per night'}
+              onChangeText={handlePriceChange}
+            />
 
-        <SubmitButton type={'APPLY'} onPress={handleApplyButton} />
+            <SubmitButton type={'APPLY'} onPress={handleApplyButton} />
+          </>
+        )}
       </ScrollView>
-      {/* </>
-      )} */}
     </KeyboardAvoidingView>
   );
 }
@@ -270,5 +274,19 @@ const styles = StyleSheet.create({
   dropDown: {
     backgroundColor: '#3DA7AE',
     width: 100,
+  },
+  activityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityIndicator: {
+    marginBottom: 10,
+  },
+  progressText: {
+    fontSize: 18,
+    fontFamily: 'Montserrat',
+    fontWeight: '500',
+    color: '#000',
   },
 });

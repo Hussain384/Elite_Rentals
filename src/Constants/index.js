@@ -11,10 +11,7 @@ export const NUMBERS_ARRAY = [
   '10',
 ];
 export const PROPERTY_ARRAY = [
-  {
-    name: 'House',
-    id: '1',
-  },
+  {name: 'House', id: '1'},
   {name: 'Farm House', id: '2'},
   {name: 'Shared House', id: '3'},
 ];

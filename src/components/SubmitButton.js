@@ -1,24 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 function SubmitButton({type, onPress}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.submitButtonView} onPress={onPress}>
-        {/* {uploading ? (
-          <View>
-            <Text style={styles.text}>{transferred} is Completed!</Text>
-            <ActivityIndicator size="large" color="#fff" />
-          </View>
-        ) : ( */}
         <Text style={styles.text}>{type}</Text>
-        {/* )} */}
       </TouchableOpacity>
     </View>
   );
@@ -42,7 +29,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Montserrat',
   },
