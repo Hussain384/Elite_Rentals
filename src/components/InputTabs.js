@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   inputField: {
+    color: '#000',
     borderBottomWidth: 1,
     borderBottomColor: '#000',
   },

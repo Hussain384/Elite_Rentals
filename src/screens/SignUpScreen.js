@@ -50,9 +50,6 @@ function SignUp({navigation}) {
   const CreateAccount = async () => {
     try {
       if (CheckValidity()) {
-        //         auth().onAuthStateChanged((user) => {
-        // user.
-        //         })
         let response = await auth().createUserWithEmailAndPassword(
           email,
           password,
@@ -72,7 +69,7 @@ function SignUp({navigation}) {
         Alert.alert('Error', 'That email address is already in use!');
       }
       if (error.code === 'auth/weak-password') {
-        Alert.alert('Error', 'The password should be atleast 6 charachters');
+        Alert.alert('Error', 'The password should be at least 6 characters');
       }
       if (error.code === 'auth/invalid-email') {
         Alert.alert('Error', 'That email address is invalid!');
@@ -156,10 +153,12 @@ const styles = StyleSheet.create({
   changeScreenView: {
     height: '10%',
     alignItems: 'flex-end',
+    alignContent: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'center',
   },
   changeScreenText: {
+    color: '#000',
     fontFamily: 'Montserrat',
     fontWeight: '500',
     fontSize: 14,

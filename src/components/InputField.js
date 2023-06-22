@@ -66,11 +66,8 @@ const styles = StyleSheet.create({
     };
   },
   inputField: {
+    color: '#000',
     fontSize: 14,
     fontFamily: 'Montserrat',
-  },
-  iconStyle: {
-    alignSelf: 'center',
-    width: '10%',
   },
 });

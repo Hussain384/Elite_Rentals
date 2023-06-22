@@ -33,7 +33,7 @@ export default function AddListingScreen({navigation}) {
   const [address, setAddress] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState(0);
 
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
@@ -83,21 +83,31 @@ export default function AddListingScreen({navigation}) {
       imageUrl: url,
       user_id,
     };
-    await insertIntoDocument('listing', data);
-    setBedrooms('1');
-    setBeds('1');
-    setBathrooms('1');
-    setPropertyType('House');
-    setFacilities([]);
-    setImageUrl('');
-    setAddress('');
-    setName('');
-    setDescription('');
-    setPrice('');
-    Alert.alert(
-      'Successfully!',
-      'Your House is now listed and uploaded successfully',
-    );
+    if (name === '') {
+      Alert.alert('Please enter Name');
+    } else if (address === '') {
+      Alert.alert('Please enter address');
+    } else if (imageUrl === '') {
+      Alert.alert('Please add Photo');
+    } else if (price === 0) {
+      Alert.alert('Please enter Price');
+    } else {
+      await insertIntoDocument('listing', data);
+      setBedrooms('1');
+      setBeds('1');
+      setBathrooms('1');
+      setPropertyType('House');
+      setFacilities([]);
+      setImageUrl('');
+      setAddress('');
+      setName('');
+      setDescription('');
+      setPrice(0);
+      Alert.alert(
+        'Successfully!',
+        'Your House is now listed and uploaded successfully',
+      );
+    }
     setUploading(false);
     navigation.goBack();
   };

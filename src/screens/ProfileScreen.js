@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import {ProfileInformation} from '../components';
 import {
@@ -37,7 +38,7 @@ export default function ProfileScreen({navigation}) {
     signOut(navigation);
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {user.length === 0 ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
@@ -45,7 +46,7 @@ export default function ProfileScreen({navigation}) {
           <TouchableOpacity
             style={styles.editButton}
             onPress={() =>
-              navigation.navigate('EditProfileScreen', {
+              navigation.navigate('EditProfile', {
                 user: user,
               })
             }>
@@ -74,20 +75,25 @@ export default function ProfileScreen({navigation}) {
           <View style={styles.buttonsView}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() =>
-                navigation.navigate('UserListingScreen', {user: user})
-              }>
+              onPress={() => navigation.navigate('UserListing', {user: user})}>
               <Text style={styles.buttonText}>Listings</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
+              onPress={() =>
+                navigation.navigate('BookingRequest', {user: user})
+              }>
+              <Text style={styles.buttonText}>Requests</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
               onPress={HandleSignOutButton}>
-              <Text style={styles.buttonText}>SignOut</Text>
+              <Text style={styles.buttonText}>Sign out</Text>
             </TouchableOpacity>
           </View>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
-    backgroundColor: '#ABD0BC',
+    backgroundColor: '#3DA7AE',
     height: 40,
     width: 140,
   },
@@ -156,6 +162,7 @@ const styles = StyleSheet.create({
   },
   buttonsView: {
     marginTop: 20,
+    marginBottom: 30,
   },
   modalContainer: {
     flex: 1,

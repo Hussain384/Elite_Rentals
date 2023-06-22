@@ -1,12 +1,7 @@
 import {React, useState, useEffect} from 'react';
 import {View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
-import {
-  fetchCollection,
-  fetchCollectionByCondition,
-  getCurrentUserId,
-} from '../firebase/firebase';
+import {fetchCollectionByCondition} from '../firebase/firebase';
 import BackIcon from 'react-native-vector-icons/Ionicons';
-import Item from '../components/HomeScreenFlatlistItem';
 import {UserListingItem} from '../components';
 
 function UserListingScreen({route, navigation}) {

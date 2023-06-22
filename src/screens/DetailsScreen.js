@@ -140,7 +140,9 @@ export default function DetailsScreen({route, navigation}) {
         </Text>
         <TouchableOpacity
           style={Styles.rentButton}
-          onPress={() => navigation.navigate('Booking', {item: item})}>
+          onPress={() =>
+            navigation.navigate('Booking', {item: item, uploader: uploader})
+          }>
           <Text style={Styles.rentButtonText}>Reserve Now</Text>
         </TouchableOpacity>
       </View>

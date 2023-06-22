@@ -23,21 +23,20 @@ function ProfileEditModal({route, navigation}) {
   const [contact, setContact] = useState(user.contact);
   const [transferred, setTransferred] = useState(0);
   const [uploading, setUploading] = useState(false);
-  // const [changePhotoUrl, setChangePhotoUrl] = useState(false);
 
   const HandleUpdateButton = async () => {
     setUploading(true);
-    // if (changePhotoUrl) {
-    const url = await uploadImage();
-    // setChangePhotoUrl(false);
-    // }
+    let url;
+    if (user.photoUrl !== photoUrl) {
+      url = await uploadImage();
+    }
     const values = {
       firstName,
       lastName,
       about,
       dob: dateOfBirth,
       address,
-      photoUrl: url,
+      photoUrl: user.photoUrl !== photoUrl ? url : user.photoUrl,
       contact,
     };
     await updateDocument('users', user.id, values);
@@ -49,7 +48,6 @@ function ProfileEditModal({route, navigation}) {
     navigation.goBack();
   };
   const handleOnselectPhoto = url => {
-    // setChangePhotoUrl(true);
     setPhotoUrl(url);
   };
 
@@ -68,10 +66,10 @@ function ProfileEditModal({route, navigation}) {
       console.log(
         `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
       );
-      setTransferred(
-        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
+      const progress = Math.round(
+        (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
       );
+      setTransferred(progress);
     });
     try {
       await task;
