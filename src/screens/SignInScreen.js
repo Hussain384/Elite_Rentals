@@ -1,51 +1,88 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, Alert} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import {InputField, SubmitButton} from '../components';
 import auth from '@react-native-firebase/auth';
+import {
+  getCurrentUserId,
+  getFCMToken,
+  updateDocument,
+} from '../firebase/firebase';
+import ForgetPassScreen from './ForgetPassScreen';
 
 function SignIn({navigation}) {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const LogInAccount = async () => {
-    try {
-      await auth().signInWithEmailAndPassword(email, password);
-      navigation.navigate('Authenticated');
-      console.log('User account signed in!');
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        Alert.alert('Error! That email address is already in use!');
-      } else if (error.code === 'auth/invalid-email') {
-        Alert.alert('Error! That email address is invalid!');
-      } else {
-        Alert.alert('Connection Error');
+    if (email === '') {
+      Alert.alert('Please Enter Email');
+    } else if (password === '') {
+      Alert.alert('Please Enter Password');
+    } else {
+      setLoading(true);
+      try {
+        await auth().signInWithEmailAndPassword(email, password);
+        const token = await getFCMToken();
+        const user_id = getCurrentUserId();
+        const value = {fcm_token: token};
+        await updateDocument('users', user_id, value);
+        navigation.navigate('Authenticated');
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          Alert.alert('Error! That email address is already in use!');
+        } else if (error.code === 'auth/invalid-email') {
+          Alert.alert('Error! That email address is invalid!');
+        } else {
+          Alert.alert('This email is not registered.');
+        }
       }
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.title}>
-        <Text style={styles.textSignIn}>Sign in</Text>
-        <Text style={styles.textWelcome}>Welcome back</Text>
-      </View>
-      <View style={styles.inputCont}>
-        <InputField type="Email" state={email} setState={setEmail} />
-        <InputField type="Password" state={password} setState={setPassword} />
-        <View style={styles.forgetPassView}>
-          <Text style={styles.forgetPassText}>Forget Password? </Text>
-        </View>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <>
+          <View style={styles.title}>
+            <Text style={styles.textSignIn}>Sign in</Text>
+            <Text style={styles.textWelcome}>Welcome back</Text>
+          </View>
+          <View style={styles.inputCont}>
+            <InputField type="Email" state={email} setState={setEmail} />
+            <InputField
+              type="Password"
+              state={password}
+              setState={setPassword}
+            />
+            <TouchableOpacity
+              style={styles.forgetPassView}
+              onPress={() => navigation.navigate(ForgetPassScreen)}>
+              <Text style={styles.forgetPassText}>Forget Password? </Text>
+            </TouchableOpacity>
 
-        <SubmitButton type="SIGN IN" onPress={LogInAccount} />
-      </View>
-      <View style={styles.changeScreenView}>
-        <Text style={styles.changeScreenText}>Don't have an account?</Text>
-        <Text
-          style={styles.signUpLink}
-          onPress={() => navigation.navigate('SignUp')}>
-          Sign up
-        </Text>
-      </View>
+            <SubmitButton type="SIGN IN" onPress={LogInAccount} />
+          </View>
+          <View style={styles.changeScreenView}>
+            <Text style={styles.changeScreenText}>Don't have an account?</Text>
+            <Text
+              style={styles.signUpLink}
+              onPress={() => navigation.navigate('SignUp')}>
+              Sign up
+            </Text>
+          </View>
+        </>
+      )}
     </View>
   );
 }
@@ -90,6 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   changeScreenText: {
+    color: '#000',
     fontFamily: 'Montserrat',
     fontWeight: '500',
     fontSize: 14,

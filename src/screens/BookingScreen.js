@@ -10,11 +10,25 @@ import {
 import {GoBackButton, PickerDropdown, SubmitButton} from '../components';
 import {Calendar} from 'react-native-calendars';
 import {NUMBERS_ARRAY} from '../Constants';
+import {createBookingRequest, getCurrentUserId} from '../firebase/firebase';
+import {sendRemoteNotification} from '../../NotificationController';
 
 function BookingScreen({route, navigation}) {
+  const uploader = route.params.uploader;
+  const fcm_token = uploader.fcm_token;
+  const item = route.params.item;
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [guests, setGuests] = useState('1');
+  const user_id = getCurrentUserId();
+  const newBookingRequest = {
+    guest_id: user_id,
+    host_id: uploader.id,
+    property_id: item.id,
+    checkInDate: selectedStartDate,
+    checkOutDate: selectedEndDate,
+    number_of_guests: guests,
+  };
 
   useEffect(() => {
     const currentDate = new Date().toISOString().split('T')[0];
@@ -32,13 +46,30 @@ function BookingScreen({route, navigation}) {
       setSelectedEndDate(null);
     }
   };
-  const handleConfirmButton = () => {
-    console.log('Selected Start Date:', selectedStartDate);
-    console.log('Selected End Date:', selectedEndDate);
-    console.log('No. of Guests:', guests);
+
+  const handleConfirmButton = async () => {
+    try {
+      createBookingRequest(newBookingRequest);
+    } catch (error) {
+      console.error('Error creating booking request:', error);
+    }
+    if (fcm_token) {
+      try {
+        sendRemoteNotification(
+          fcm_token,
+          'Booking Request',
+          'Hi, some one is willing to be your guest. Kindly visit to Application.',
+          {
+            additionalData: item.name,
+          },
+        );
+      } catch (error) {
+        console.log('Error sending notification:', error);
+      }
+    }
+    navigation.navigate('HomeStack');
   };
 
-  const item = route.params.item;
   return (
     <ScrollView style={styles.container}>
       <GoBackButton navigation={navigation} />

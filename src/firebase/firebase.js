@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import {isNil} from 'lodash';
@@ -46,6 +47,25 @@ export const fetchCollectionByCondition = async (collection, query) => {
   return response.docs.map(doc => doc.data());
 };
 
+export const fetchCollectionByConditionWithMultiQuery = async (
+  collection,
+  queries,
+) => {
+  let query = firestore().collection(collection);
+
+  queries.forEach(({field, operator, value}) => {
+    query = query.where(field, operator, value);
+  });
+
+  const snapshot = await query.get();
+  const response = [];
+  snapshot.forEach(doc => {
+    response.push(doc.data());
+  });
+
+  return response;
+};
+
 export const getNewUniqueId = collection =>
   firestore().collection(collection).doc().id;
 
@@ -67,6 +87,7 @@ export const findExistingUser = async userId => {
 };
 
 export const createNewUser = async (user, data) => {
+  const token = getFCMToken();
   const firebaseUser = await findExistingUser(user.uid);
   if (isNil(firebaseUser._data)) {
     await firestore().collection('users').doc(user.uid).set({
@@ -78,7 +99,7 @@ export const createNewUser = async (user, data) => {
       about: '',
       address: '',
       photoUrl: '',
-      wishlist: [],
+      fcm_token: token,
       created_at: moment().unix(),
     });
   }
@@ -117,45 +138,37 @@ export const deleteDocument = async (collection, documentId) => {
   }
 };
 
-export const addToWishlist = async listingId => {
-  const userId = getCurrentUserId();
-  const userRef = firestore().collection('users').doc(userId);
-
+// Function to get the FCM token
+export const getFCMToken = async () => {
   try {
-    const userDoc = await userRef.get();
-    let wishlist = userDoc.data().wishlist || [];
-    if (wishlist.includes(listingId)) {
-      wishlist = wishlist.filter(id => id !== listingId);
-    } else {
-      wishlist.push(listingId);
-    }
-    await userRef.update('wishlist', wishlist);
-    console.log('Wishlist updated successfully.');
+    const token = await messaging().getToken();
+    return token;
   } catch (error) {
-    console.error('Error updating wishlist:', error);
+    console.log('Error retrieving FCM token:', error);
   }
 };
 
-export const fetchWishlistItems = async () => {
-  const userId = getCurrentUserId();
-  const userRef = firestore().collection('users').doc(userId);
+export const createBookingRequest = async bookingData => {
+  const bookingRequestCollection = firestore().collection('booking_request');
 
   try {
-    const userDoc = await userRef.get();
-    const wishlist = userDoc.data().wishlist || [];
-    const wishlistItems = await Promise.all(
-      wishlist.map(async id => {
-        const listingDoc = await firestore()
-          .collection('listing')
-          .doc(id)
-          .get();
-        return listingDoc.data();
-      }),
-    );
+    const bookingRef = await bookingRequestCollection.add(bookingData);
+    const bookingId = bookingRef.id;
 
-    return wishlistItems;
+    await bookingRef.update({id: bookingId});
+
+    console.log('Booking request created with ID:', bookingId);
   } catch (error) {
-    console.error('Error fetching wishlist items:', error);
-    return [];
+    console.error('Error creating booking request:', error);
+  }
+};
+
+export const sendResetLink = async email => {
+  try {
+    await auth().sendPasswordResetEmail(email);
+    console.log('Reset Link sent successfully');
+  } catch (error) {
+    console.error('Error sending reset link:', error);
+    throw error;
   }
 };

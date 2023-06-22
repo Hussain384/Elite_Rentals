@@ -21,3 +21,6 @@ export const FACILITIES_ARRAY = [
   {name: 'Parking', id: '3'},
   {name: 'Kitchen', id: '4'},
 ];
+
+export const FIRE_BASE_SERVICE_KEY =
+  'AAAA9bwboYw:APA91bE20-xlu4e2HbBbNoUnYtZqMGuMJCZ2NNCvxWxiL72RQIUUui3J2gxHSWSDeDXbRuoQwdCoz42nR_8e1E63Kz-XPOWUX_trG_M16FfhqhYN93ZLC6BdFIWztqfvmXA8GJ-EKjGO';

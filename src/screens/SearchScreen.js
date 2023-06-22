@@ -1,68 +1,104 @@
-import React from 'react';
-import {Text, View, StyleSheet, FlatList, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {SearchTab} from '../components';
-import RatingIcon from 'react-native-vector-icons/FontAwesome';
-import uuid from 'react-uuid';
+import {fetchCollectionByConditionWithMultiQuery} from '../firebase/firebase';
 
-const DATA = [
-  {
-    id: uuid(),
-    title: 'Swat, Pakistan',
-    image: require('../utilz/images/OnbordingPicture.png'),
-    description: 'more information about post',
-    ratings: '5.2',
-    timeDuration: '$25 per night',
-  },
-  {
-    id: uuid(),
-    title: 'Kashmir Pakistan',
-    image: require('../utilz/images/OnbordingPicture.png'),
-    description: 'more information about post',
-    ratings: '3.5',
-    timeDuration: '$26 per night',
-  },
-  {
-    id: uuid(),
-    title: 'Kurram, KPK',
-    image: require('../utilz/images/OnbordingPicture.png'),
-    description: 'more information about post',
-    ratings: '2.4',
-    timeDuration: '$28 per night',
-  },
-];
-
-const Item = ({title, image, description, ratings, timeDuration}) => (
-  <View style={styles.item}>
-    <Image source={image} style={styles.picturesStyle} />
+const Item = ({name, imageUrl, price, navigation, address, item}) => (
+  <TouchableOpacity
+    onPress={() => navigation.navigate('Details', {item})}
+    style={styles.item}>
+    <Image
+      source={{uri: imageUrl}}
+      style={styles.picturesStyle}
+      resizeMode="contain"
+    />
     <View style={styles.postInfoView}>
-      <View style={styles.titleAndRatingView}>
-        <Text style={styles.postTitleStyle}>{title}</Text>
-        <View style={styles.iconAndRatingsView}>
-          <RatingIcon name="star" size={14} color="#000" />
-          <Text style={styles.postTitleStyle}>{ratings}</Text>
-        </View>
-      </View>
-      <Text style={styles.postTextStyle}>{description}</Text>
-      <Text style={styles.postTextStyle}>{timeDuration}</Text>
+      <Text style={styles.postTitleStyle}>{name}</Text>
+      <Text style={styles.postTextStyle}>${price}</Text>
+      <Text style={styles.postTextStyle}>{address}</Text>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 export default function SearchScreen({navigation}) {
+  const [activeButton, setActiveButton] = useState('House');
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [price, setPrice] = useState('');
+
+  const handleSearch = searchResponse => {
+    setPrice(searchResponse);
+    console.log('Price:', searchResponse);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let queries = [
+        {
+          field: 'propertyType',
+          operator: '==',
+          value: activeButton,
+        },
+      ];
+
+      if (price !== '') {
+        queries.push({
+          field: 'price',
+          operator: '<=',
+          value: parseInt(price),
+        });
+      }
+
+      let response = await fetchCollectionByConditionWithMultiQuery(
+        'listing',
+        queries,
+      );
+      setFilteredItems(response);
+    };
+
+    fetchData();
+  }, [activeButton, price]);
+
   const renderItem = ({item}) => (
     <Item
-      title={item.title}
-      image={item.image}
-      description={item.description}
-      ratings={item.ratings}
-      timeDuration={item.timeDuration}
+      name={item.name}
+      imageUrl={item.imageUrl}
+      price={item.price}
+      address={item.address}
+      navigation={navigation}
     />
   );
+
+  const renderButton = (label, widthValue) => (
+    <TouchableOpacity
+      style={[
+        styles.filterButton,
+        activeButton === label ? styles.activeButton : styles.inactiveButton,
+        {width: widthValue},
+      ]}
+      onPress={() => setActiveButton(label)}>
+      <Text style={styles.filterButtonText}>{label}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
-      <SearchTab />
+      <View style={styles.searchView}>
+        <SearchTab onSearch={handleSearch} />
+        <View style={styles.filterButtonView}>
+          {renderButton('House', '25%')}
+          {renderButton('Farm House', '35%')}
+          {renderButton('Shared House', '40%')}
+        </View>
+      </View>
       <FlatList
-        data={DATA}
+        data={filteredItems}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
       />
@@ -73,8 +109,37 @@ export default function SearchScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffff',
     padding: 20,
+  },
+  searchView: {
+    height: 120,
+    marginBottom: 10,
+  },
+  filterButtonView: {
+    marginTop: 5,
+    flexDirection: 'row',
+    height: 70,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filterButton: {
+    height: 60,
+    backgroundColor: 'blue',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activeButton: {
+    backgroundColor: '#337572',
+  },
+  inactiveButton: {
+    backgroundColor: '#3DA7AE',
+  },
+  filterButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '500',
   },
   picturesStyle: {
     width: '100%',
@@ -83,8 +148,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   item: {
-    marginVertical: 8,
-    marginHorizontal: 10,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 10,
+    marginVertical: 10,
   },
   postInfoView: {
     paddingHorizontal: 10,

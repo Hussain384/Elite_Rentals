@@ -1,15 +1,56 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import RatingIcon from 'react-native-vector-icons/FontAwesome';
 import FavoriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {addToWishlist} from '../firebase/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Item = ({item, navigation}) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const handleWishlistToggle = listingId => {
-    addToWishlist(listingId);
-    setIsFavorite(!isFavorite);
+  useEffect(() => {
+    checkIsFavorite();
+  }, []);
+
+  const checkIsFavorite = async () => {
+    try {
+      const wishlistItems = await AsyncStorage.getItem('wishlist');
+      const parsedWishlistItems = wishlistItems
+        ? JSON.parse(wishlistItems)
+        : [];
+
+      const filteredWishlistItems = parsedWishlistItems.filter(
+        wishlistItem => wishlistItem !== null,
+      );
+
+      const isInWishlist = filteredWishlistItems.some(
+        wishlistItem => wishlistItem === item.id,
+      );
+      setIsFavorite(isInWishlist);
+    } catch (error) {
+      console.log('Error checking wishlist:', error);
+    }
+  };
+
+  const handleWishlistToggle = async () => {
+    try {
+      const wishlistItems = await AsyncStorage.getItem('wishlist');
+      const parsedWishlistItems = JSON.parse(wishlistItems) || [];
+
+      if (isFavorite) {
+        // Remove item from wishlist
+        const updatedWishlist = parsedWishlistItems.filter(
+          wishlistItem => wishlistItem !== item.id,
+        );
+        await AsyncStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+      } else {
+        // Add item to wishlist
+        const updatedWishlist = [...parsedWishlistItems, item.id];
+        await AsyncStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+      }
+
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.log('Error toggling wishlist:', error);
+    }
   };
 
   return (
@@ -18,7 +59,7 @@ const Item = ({item, navigation}) => {
       style={styles.item}>
       <TouchableOpacity
         style={styles.favoriteIconViewStyle}
-        onPress={() => handleWishlistToggle(item.id)}>
+        onPress={handleWishlistToggle}>
         <FavoriteIcon
           name={isFavorite ? 'cards-heart' : 'cards-heart-outline'}
           size={20}
@@ -31,13 +72,7 @@ const Item = ({item, navigation}) => {
         resizeMode="contain"
       />
       <View style={styles.postInfoView}>
-        <View style={styles.titleAndRatingView}>
-          <Text style={styles.postTitleStyle}>{item.name}</Text>
-          <View style={styles.iconAndRatingsView}>
-            {/* <RatingIcon name="star" size={14} color="#000" />
-            <Text style={styles.postTitleStyle}>{item.ratings}</Text> */}
-          </View>
-        </View>
+        <Text style={styles.postTitleStyle}>{item.name}</Text>
         <Text style={styles.postTextStyle}>${item.price}</Text>
         <Text style={styles.postTextStyle}>{item.address}</Text>
       </View>
@@ -63,6 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   item: {
+    backgroundColor: '#F6F6F6',
     borderRadius: 10,
     marginVertical: 10,
     marginHorizontal: 10,
@@ -78,13 +114,5 @@ const styles = StyleSheet.create({
   postTextStyle: {
     color: 'grey',
     fontSize: 13,
-  },
-  titleAndRatingView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  iconAndRatingsView: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });

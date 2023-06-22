@@ -14,71 +14,79 @@ import {
   DetailsScreen,
   UserListingScreen,
   BookingScreen,
+  BookingRequestScreen,
+  ForgetPassScreen,
+  PassResetScreen,
+  ResetPassScreen,
 } from './src/screens';
 import Octicons from 'react-native-vector-icons/Octicons';
 import ProfileIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Platform} from 'react-native';
+import NotificationController from './NotificationController';
 
 const Tab = createBottomTabNavigator();
 const ProfileStack = createNativeStackNavigator();
 const SignInStack = createNativeStackNavigator();
 const SignUpStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
-// const BookingStack = createNativeStackNavigator();
 function TabScreen() {
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      tabBarVisible={false}
-      screenOptions={({route}) => ({
-        showLabel: false,
-        tabBarIcon: ({focused, color, size}) => {
-          let iconName;
+    <>
+      {Platform.OS === 'android' ? <NotificationController /> : null}
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBarVisible={false}
+        screenOptions={({route}) => ({
+          showLabel: false,
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName;
 
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Search') {
-            iconName = 'search';
-          } else if (route.name === 'Profile') {
-            iconName = 'account-circle-outline';
-          } else if (route.name === 'WishList') {
-            iconName = 'heart';
-          }
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Search') {
+              iconName = 'search';
+            } else if (route.name === 'Profile') {
+              iconName = 'account-circle-outline';
+            } else if (route.name === 'WishList') {
+              iconName = 'heart';
+            }
 
-          return iconName === 'account-circle-outline' ? (
-            <ProfileIcon name={iconName} size={28} color={color} />
-          ) : (
-            <Octicons name={iconName} size={25} color={color} />
-          );
-        },
-        tabBarActiveTintColor: '#3DA7AE',
-        tabBarInactiveTintColor: 'gray',
-      })}>
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerTitleStyle: {fontFamily: 'Montserrat', fontWeight: '600'},
-        }}
-      />
-      <Tab.Screen
-        name="WishList"
-        component={WishListScreen}
-        options={{
-          title: 'Wishlist',
-          headerTitleStyle: {fontFamily: 'Montserrat', fontWeight: '600'},
-        }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileStackScreen}
-        options={{headerShown: false}}
-      />
-    </Tab.Navigator>
+            return iconName === 'account-circle-outline' ? (
+              <ProfileIcon name={iconName} size={28} color={color} />
+            ) : (
+              <Octicons name={iconName} size={25} color={color} />
+            );
+          },
+          tabBarActiveTintColor: '#3DA7AE',
+          tabBarInactiveTintColor: 'gray',
+        })}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerTitleStyle: {fontFamily: 'Montserrat', fontWeight: '600'},
+          }}
+        />
+        <Tab.Screen
+          name="WishList"
+          component={WishListScreen}
+          options={{
+            title: 'Wishlist',
+            headerTitleStyle: {fontFamily: 'Montserrat', fontWeight: '600'},
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileStackScreen}
+          options={{headerShown: false}}
+        />
+      </Tab.Navigator>
+    </>
   );
 }
 
@@ -89,16 +97,20 @@ function ProfileStackScreen() {
         headerShown: false,
       }}>
       <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
       <ProfileStack.Screen
-        name="EditProfileScreen"
-        component={EditProfileScreen}
+        screenOptions={{
+          headerShown: true,
+        }}
+        name="UserListing"
+        component={UserListingScreen}
       />
       <ProfileStack.Screen
         screenOptions={{
           headerShown: true,
         }}
-        name="UserListingScreen"
-        component={UserListingScreen}
+        name="BookingRequest"
+        component={BookingRequestScreen}
       />
     </ProfileStack.Navigator>
   );
@@ -113,6 +125,12 @@ function SignInStackScreen() {
       <SignInStack.Screen name="SignInStack" component={SignInScreen} />
       <SignInStack.Screen name="SignUp" component={SignUpStackScreen} />
       <SignInStack.Screen name="Authenticated" component={TabScreen} />
+      <SignInStack.Screen
+        name="ForgetPassScreen"
+        component={ForgetPassScreen}
+      />
+      <SignInStack.Screen name="PassResetScreen" component={PassResetScreen} />
+      <SignInStack.Screen name="ResetPassScreen" component={ResetPassScreen} />
     </SignInStack.Navigator>
   );
 }

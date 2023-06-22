@@ -12,6 +12,7 @@ import SearchTab from './SearchTab';
 import AddProfilePhoto from './AddProfilePhoto';
 import GoBackButton from './GoBackButton';
 import UserListingItem from './UserListingItem';
+import BookingRequestItem from './BookingRequestItem';
 
 export {
   InputField,
@@ -28,4 +29,5 @@ export {
   AddProfilePhoto,
   GoBackButton,
   UserListingItem,
+  BookingRequestItem,
 };
