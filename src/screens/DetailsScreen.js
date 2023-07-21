@@ -9,6 +9,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import FavoriteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GoBackButton, ProfileInformation} from '../components';
 import {useFocusEffect} from '@react-navigation/native';
 import {fetchDocumentById} from '../firebase/firebase';
@@ -16,19 +17,65 @@ import {fetchDocumentById} from '../firebase/firebase';
 export default function DetailsScreen({route, navigation}) {
   const item = route.params.item;
   const [uploader, setUploader] = useState('');
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleWishlistToggle = async () => {
+    try {
+      const wishlistItems = await AsyncStorage.getItem('wishlist');
+      const parsedWishlistItems = JSON.parse(wishlistItems) || [];
+
+      if (isFavorite) {
+        // Remove item from wishlist
+        const updatedWishlist = parsedWishlistItems.filter(
+          wishlistItem => wishlistItem !== item.id,
+        );
+        await AsyncStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+      } else {
+        // Add item to wishlist
+        const updatedWishlist = [...parsedWishlistItems, item.id];
+        await AsyncStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+      }
+
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.log('Error toggling wishlist:', error);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
+      const checkIsFavorite = async () => {
+        try {
+          const wishlistItems = await AsyncStorage.getItem('wishlist');
+          const parsedWishlistItems = wishlistItems
+            ? JSON.parse(wishlistItems)
+            : [];
+
+          const filteredWishlistItems = parsedWishlistItems.filter(
+            wishlistItem => wishlistItem !== null,
+          );
+
+          const isInWishlist = filteredWishlistItems.some(
+            wishlistItem => wishlistItem === item.id,
+          );
+          setIsFavorite(isInWishlist);
+        } catch (error) {
+          console.log('Error checking wishlist:', error);
+        }
+      };
       const fetchData = async () => {
         try {
-          let response = await fetchDocumentById('users', item.user_id);
-          setUploader(response);
+          if (item && item.user_id) {
+            let response = await fetchDocumentById('users', item.user_id);
+            setUploader(response);
+          }
         } catch (error) {
           console.log('Error fetching listing uploader:', error);
         }
       };
+      checkIsFavorite();
       fetchData();
-    }, [item.user_id]),
+    }, [item]),
   );
 
   return (
@@ -39,11 +86,13 @@ export default function DetailsScreen({route, navigation}) {
             <View style={Styles.topView}>
               <GoBackButton navigation={navigation} />
               <View style={Styles.topButtonView}>
-                <TouchableOpacity style={Styles.favoriteIconViewStyle}>
+                <TouchableOpacity
+                  style={Styles.favoriteIconViewStyle}
+                  onPress={handleWishlistToggle}>
                   <FavoriteIcon
-                    name="cards-heart-outline"
+                    name={isFavorite ? 'cards-heart' : 'cards-heart-outline'}
                     size={20}
-                    color={'black'}
+                    color={'red'}
                   />
                 </TouchableOpacity>
               </View>
@@ -287,5 +336,11 @@ const Styles = StyleSheet.create({
   },
   uploaderInfo: {
     width: '100%',
+  },
+  favoriteIconViewStyle: {
+    height: 40,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

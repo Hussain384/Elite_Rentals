@@ -6,7 +6,7 @@ export default function SelectionOptions({name, options, onSelect}) {
 
   useEffect(() => {
     onSelect(selectedOptions);
-  }, [selectedOptions]);
+  }, [onSelect, selectedOptions]);
 
   const toggleOption = option => {
     const index = selectedOptions.indexOf(option);
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderColor: '#3DA7AE',
     borderWidth: 2,
-    minWidth: 80,
+    minWidth: 50,
     paddingHorizontal: 10,
     paddingVertical: 15,
     alignItems: 'center',

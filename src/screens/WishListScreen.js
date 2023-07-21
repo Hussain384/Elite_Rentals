@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet, FlatList, Image} from 'react-native';
-import uuid from 'react-uuid';
-import {fetchWishlistItems} from '../firebase/firebase';
+import {fetchWishlistItems} from '../asyncStorage/asyncStorage';
+import {WishlistItem} from '../components';
 
 function WishListScreen({navigation}) {
   const [wishlistItems, setWishlistItems] = useState([]);
@@ -38,12 +38,13 @@ function WishListScreen({navigation}) {
   );
 
   const renderItem = ({item}) => (
-    <Item
-      name={item.name}
-      imageUrl={item.imageUrl}
-      price={item.price}
-      address={item.address}
-    />
+    <WishlistItem item={item} navigation={navigation} />
+    // <Item
+    //   name={item.name}
+    //   imageUrl={item.imageUrl}
+    //   price={item.price}
+    //   address={item.address}
+    // />
   );
 
   return (
@@ -51,7 +52,7 @@ function WishListScreen({navigation}) {
       <FlatList
         data={wishlistItems}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id}
       />
     </View>
   );

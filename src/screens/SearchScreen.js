@@ -51,7 +51,7 @@ export default function SearchScreen({navigation}) {
         queries.push({
           field: 'price',
           operator: '<=',
-          value: parseInt(price),
+          value: parseInt(price, 10),
         });
       }
 
@@ -65,15 +65,7 @@ export default function SearchScreen({navigation}) {
     fetchData();
   }, [activeButton, price]);
 
-  const renderItem = ({item}) => (
-    <Item
-      name={item.name}
-      imageUrl={item.imageUrl}
-      price={item.price}
-      address={item.address}
-      navigation={navigation}
-    />
-  );
+  const renderItem = ({item}) => <Item item={item} navigation={navigation} />;
 
   const renderButton = (label, widthValue) => (
     <TouchableOpacity

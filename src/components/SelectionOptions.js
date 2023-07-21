@@ -39,9 +39,8 @@ export default function SelectionOptions({name, options, onSelect}) {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'red',
-    // height: '10%',
-    // justifyContent: 'center',
+    height: '10%',
+    justifyContent: 'center',
   },
   inputText: {
     fontSize: 20,
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderColor: '#3DA7AE',
     borderWidth: 2,
-    minWidth: 80,
+    minWidth: 50,
     paddingHorizontal: 10,
     paddingVertical: 15,
     alignItems: 'center',
