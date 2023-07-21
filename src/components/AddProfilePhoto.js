@@ -51,13 +51,15 @@ export default function AddProfilePhoto({onSelect, user}) {
   return (
     <View>
       <View style={styles.profilePictureView}>
-        <View style={styles.profilePictureStyle}>
+        <TouchableOpacity
+          style={styles.profilePictureStyle}
+          onPress={handleAddPhotoButton}>
           {Photo === '' ? (
             <AddIcon name="plus" size={50} color="grey" />
           ) : (
             <Image style={styles.profilePicture} source={{uri: Photo}} />
           )}
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.editPhotoButton}
           onPress={handleAddPhotoButton}>

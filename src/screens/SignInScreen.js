@@ -37,13 +37,24 @@ function SignIn({navigation}) {
         navigation.navigate('Authenticated');
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
-          Alert.alert('Error! That email address is already in use!');
+          Alert.alert('Error', 'That email address is already in use!');
         } else if (error.code === 'auth/invalid-email') {
-          Alert.alert('Error! That email address is invalid!');
+          Alert.alert('Error', 'That email address is invalid!');
+        } else if (error.code === 'auth/wrong-password') {
+          Alert.alert('Error', 'Invalid password!');
+        } else if (error.code === 'auth/network-request-failed') {
+          Alert.alert(
+            'Error',
+            'Connection error. Please check your internet connection.',
+          );
         } else {
-          Alert.alert('This email is not registered.');
+          Alert.alert(
+            'Error',
+            'An unexpected error occurred. Please try again later.',
+          );
         }
       }
+
       setLoading(false);
     }
   };

@@ -13,6 +13,7 @@ import AddProfilePhoto from './AddProfilePhoto';
 import GoBackButton from './GoBackButton';
 import UserListingItem from './UserListingItem';
 import BookingRequestItem from './BookingRequestItem';
+import WishlistItem from './WishlistItem';
 
 export {
   InputField,
@@ -30,4 +31,5 @@ export {
   GoBackButton,
   UserListingItem,
   BookingRequestItem,
+  WishlistItem,
 };
